@@ -108,7 +108,58 @@ textarea.field{resize:none}
 .err-msg{color:var(–rust);font-size:13px;text-align:center;margin-bottom:12px;display:none}
 </style>
 
-<!-- Firebase -->
+<!-- Google Maps -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd_1byT6zXNUKSI2W0pNeztXCqJhfJppE&callback=initMap" async defer></script>
+
+<script>
+let map, directionsService, directionsRenderer;
+
+// مناطق طرابلس بالإحداثيات
+const zones = {
+  'سوق الجمعة': {lat: 32.8872, lng: 13.1913},
+  'قرجي': {lat: 32.8773, lng: 13.1654},
+  'تاجوراء': {lat: 32.8867, lng: 13.3572},
+  'سوق الثلاثاء': {lat: 32.8943, lng: 13.1802},
+  'أبو سليم': {lat: 32.8601, lng: 13.2134},
+  'عين زارة': {lat: 32.8234, lng: 13.2345},
+  'فشلوم': {lat: 32.9012, lng: 13.1923},
+  'حي الأندلس': {lat: 32.8756, lng: 13.2234},
+  'السياحية': {lat: 32.9123, lng: 13.2012},
+  'الظهرة': {lat: 32.8645, lng: 13.1756}
+};
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('real-map'), {
+    center: {lat: 32.8872, lng: 13.1913},
+    zoom: 12,
+    styles: [
+      {elementType:'geometry',stylers:[{color:'#0D1B2A'}]},
+      {elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},
+      {featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}
+    ]
+  });
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer({
+    map: map,
+    polylineOptions: {strokeColor: '#C0392B', strokeWeight: 4}
+  });
+}
+
+function showRoute(from, to) {
+  if(!directionsService || !zones[from] || !zones[to]) return;
+  directionsService.route({
+    origin: zones[from],
+    destination: zones[to],
+    travelMode: google.maps.TravelMode.DRIVING
+  }, (result, status) => {
+    if(status === 'OK') {
+      directionsRenderer.setDirections(result);
+    }
+  });
+}
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 
@@ -287,16 +338,7 @@ const db = firebase.database();
       <div style="text-align:left"><p style="font-weight:700;font-size:15px" id="l-to">—</p><p style="color:var(--smoke);font-size:12px;margin-top:2px">وجهة</p></div>
     </div>
   </div>
-  <div class="fake-map">
-    <div class="map-block" style="left:5%;top:10%;width:22%;height:35%"></div>
-    <div class="map-block" style="left:30%;top:10%;width:22%;height:35%"></div>
-    <div class="map-block" style="left:55%;top:10%;width:22%;height:35%"></div>
-    <div class="map-block" style="left:5%;top:55%;width:22%;height:35%"></div>
-    <div class="map-block" style="left:30%;top:55%;width:22%;height:35%"></div>
-    <div class="map-block" style="left:55%;top:55%;width:22%;height:35%"></div>
-    <div class="map-truck">🚚</div>
-    <div class="map-dest">📍</div>
-  </div>
+  <div id="real-map" style="height:220px;border-radius:16px;margin-bottom:14px;overflow:hidden"></div>
   <div class="card">
     <div class="driver-row">
       <div style="display:flex;align-items:center">
@@ -501,7 +543,12 @@ function confirm(){
 }
 function startTracking(){
   setTimeout(()=>go('found'),2500);
-  setTimeout(()=>go('live'),5500);
+  setTimeout(()=>{
+    go('live');
+    const f=document.getElementById('from').value;
+    const t=document.getElementById('to').value;
+    setTimeout(()=>showRoute(f,t), 500);
+  },5500);
 }
 function rate(n){
   document.querySelectorAll('.star').forEach((s,i)=>{
