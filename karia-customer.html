@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
@@ -16,63 +17,63 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;direction:rtl;overflow-x:hidden}
 
-.header{background:var(--nav);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.header h1{font-size:20px;font-weight:900}.header h1 span{color:var(--rust)}
-.header p{font-size:11px;color:var(--smoke);margin-top:2px}
+.header{background:var(–nav);border-bottom:1px solid var(–border);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.header h1{font-size:20px;font-weight:900}.header h1 span{color:var(–rust)}
+.header p{font-size:11px;color:var(–smoke);margin-top:2px}
 .badge{border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700}
 
 .screen{display:none;padding:16px 20px 100px}.screen.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
+.card{background:var(–card);border:1px solid var(–border);border-radius:16px;padding:18px;margin-bottom:14px}
 .section-title{font-size:16px;font-weight:700;margin-bottom:14px}
 
 /* Hero */
-.hero{background:linear-gradient(135deg,var(--rust) 0%,#8B1A10 100%);border-radius:20px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-20px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
-.hero::after{content:'';position:absolute;bottom:-30px;right:-10px;width:160px;height:160px;border-radius:50%;background:rgba(0,0,0,.1)}
+.hero{background:linear-gradient(135deg,var(–rust) 0%,#8B1A10 100%);border-radius:20px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:’’;position:absolute;top:-20px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero::after{content:’’;position:absolute;bottom:-30px;right:-10px;width:160px;height:160px;border-radius:50%;background:rgba(0,0,0,.1)}
 .hero-sub{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:4px}
 .hero h2{font-size:26px;font-weight:900;margin-bottom:8px}
 .hero-desc{color:rgba(255,255,255,.85);font-size:13px;line-height:1.7;margin-bottom:20px}
-.btn-white{background:var(--white);color:var(--rust);border:none;border-radius:12px;padding:12px 28px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;position:relative;z-index:1}
+.btn-white{background:var(–white);color:var(–rust);border:none;border-radius:12px;padding:12px 28px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;position:relative;z-index:1}
 
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center}
-.stat-val{color:var(--gold);font-size:22px;font-weight:900}
-.stat-lbl{color:var(--smoke);font-size:11px;margin-top:2px}
+.stat-card{background:var(–card);border:1px solid var(–border);border-radius:14px;padding:14px 8px;text-align:center}
+.stat-val{color:var(–gold);font-size:22px;font-weight:900}
+.stat-lbl{color:var(–smoke);font-size:11px;margin-top:2px}
 
 /* Order card */
 .order-row{display:flex;justify-content:space-between;align-items:flex-start}
-.order-id{color:var(--smoke);font-size:11px;margin-bottom:4px}
+.order-id{color:var(–smoke);font-size:11px;margin-bottom:4px}
 .order-route{font-weight:700;font-size:14px;margin-bottom:4px}
-.order-meta{color:var(--smoke);font-size:12px}
+.order-meta{color:var(–smoke);font-size:12px}
 .status-badge{border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;display:inline-block;margin-bottom:6px}
-.order-price{font-size:14px;font-weight:700;color:var(--gold);text-align:center}
+.order-price{font-size:14px;font-weight:700;color:var(–gold);text-align:center}
 
 /* Fields */
-.field-label{color:var(--smoke);font-size:12px;letter-spacing:.5px;display:block;margin-bottom:6px}
-select.field,textarea.field{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;appearance:none}
+.field-label{color:var(–smoke);font-size:12px;letter-spacing:.5px;display:block;margin-bottom:6px}
+select.field,textarea.field{width:100%;background:var(–bg);border:1.5px solid var(–border);border-radius:10px;padding:11px 14px;color:var(–white);font-size:14px;font-family:‘Cairo’,sans-serif;direction:rtl;outline:none;appearance:none}
 textarea.field{resize:none}
 
 /* Truck options */
-.truck-opt{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;transition:all .2s}
-.truck-opt.sel{border-color:var(--rust);background:#1A2E42}
+.truck-opt{background:var(–card);border:2px solid var(–border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.truck-opt.sel{border-color:var(–rust);background:#1A2E42}
 .truck-icon{font-size:30px}
 .truck-info{flex:1}
 .truck-name{font-weight:700;font-size:15px;margin-bottom:3px}
-.truck-cap{color:var(--smoke);font-size:12px}
-.truck-price{font-size:18px;font-weight:900;color:var(--gold)}
+.truck-cap{color:var(–smoke);font-size:12px}
+.truck-price{font-size:18px;font-weight:900;color:var(–gold)}
 .truck-price small{font-size:11px;font-weight:400}
 
 /* Buttons */
-.btn-primary{width:100%;background:var(--rust);color:var(--white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s}
-.btn-primary:disabled{background:var(--border);color:var(--smoke);cursor:not-allowed}
-.btn-secondary{flex:1;background:transparent;border:1.5px solid var(--border);border-radius:14px;padding:14px;color:var(--smoke);font-size:14px;font-family:'Cairo',sans-serif;cursor:pointer}
+.btn-primary{width:100%;background:var(–rust);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;transition:opacity .2s}
+.btn-primary:disabled{background:var(–border);color:var(–smoke);cursor:not-allowed}
+.btn-secondary{flex:1;background:transparent;border:1.5px solid var(–border);border-radius:14px;padding:14px;color:var(–smoke);font-size:14px;font-family:‘Cairo’,sans-serif;cursor:pointer}
 .btn-row{display:flex;gap:12px}
 .step-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.back-btn{background:transparent;border:none;color:var(--smoke);font-size:22px;cursor:pointer}
+.back-btn{background:transparent;border:none;color:var(–smoke);font-size:22px;cursor:pointer}
 
 /* Summary */
 .sum-row{display:flex;justify-content:space-between;margin-bottom:10px}
-.sum-row span:first-child{color:var(--smoke);font-size:13px}
+.sum-row span:first-child{color:var(–smoke);font-size:13px}
 .sum-row span:last-child{font-weight:600;font-size:13px}
 
 /* Tracking */
@@ -85,12 +86,12 @@ textarea.field{resize:none}
 .live-route{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 .fake-map{height:160px;border-radius:16px;margin-bottom:14px;background:linear-gradient(135deg,#0D1F35,#0A2744);position:relative;overflow:hidden}
 .map-block{position:absolute;border-radius:4px;background:#0F2B40;border:1px solid #1A3555}
-.map-truck{position:absolute;bottom:30%;left:20%;width:36px;height:36px;border-radius:50%;background:var(--rust);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px #C0392B88;animation:pulse 2s infinite}
+.map-truck{position:absolute;bottom:30%;left:20%;width:36px;height:36px;border-radius:50%;background:var(–rust);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px #C0392B88;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 16px #C0392B88}50%{box-shadow:0 0 28px #C0392Bcc}}
-.map-dest{position:absolute;top:20%;right:20%;width:28px;height:28px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px #27AE6088}
-.call-btn{background:var(--green);color:var(--white);border-radius:12px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none;font-family:'Cairo',sans-serif}
+.map-dest{position:absolute;top:20%;right:20%;width:28px;height:28px;border-radius:50%;background:var(–green);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px #27AE6088}
+.call-btn{background:var(–green);color:var(–white);border-radius:12px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none;font-family:‘Cairo’,sans-serif}
 .driver-row{display:flex;justify-content:space-between;align-items:center}
-.d-avatar{width:48px;height:48px;border-radius:50%;background:var(--bg);font-size:20px;display:flex;align-items:center;justify-content:center;margin-left:12px}
+.d-avatar{width:48px;height:48px;border-radius:50%;background:var(–bg);font-size:20px;display:flex;align-items:center;justify-content:center;margin-left:12px}
 
 /* Rating */
 .star-row{display:flex;gap:8px;justify-content:center;margin:14px 0}
@@ -98,14 +99,36 @@ textarea.field{resize:none}
 .star.lit{filter:none}
 
 /* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--nav);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0 24px;z-index:100}
-.nav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'Cairo',sans-serif}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(–nav);border-top:1px solid var(–border);display:flex;justify-content:space-around;padding:10px 0 24px;z-index:100}
+.nav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:‘Cairo’,sans-serif}
 .nav-btn .icon{font-size:22px}
-.nav-btn .label{font-size:11px;color:var(--smoke)}
-.nav-btn.active .label{color:var(--rust);font-weight:700}
+.nav-btn .label{font-size:11px;color:var(–smoke)}
+.nav-btn.active .label{color:var(–rust);font-weight:700}
 
-.err-msg{color:var(--rust);font-size:13px;text-align:center;margin-bottom:12px;display:none}
+.err-msg{color:var(–rust);font-size:13px;text-align:center;margin-bottom:12px;display:none}
 </style>
+
+<!-- Firebase -->
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
+  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: "maria-26135.firebaseapp.com",
+  projectId: "maria-26135",
+  storageBucket: "maria-26135.firebasestorage.app",
+  messagingSenderId: "989218013644",
+  appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
+};
+firebase.initializeApp(firebaseConfig);
+firebase.database.defaultEventsURL = "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app";
+const db = firebase.database();
+</script>
+
 </head>
 <body>
 
@@ -115,6 +138,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- HOME -->
+
 <div class="screen active" id="s-home">
   <div class="hero">
     <p class="hero-sub">مرحباً بك في</p>
@@ -143,6 +167,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- BOOK 1: Route -->
+
 <div class="screen" id="s-book1">
   <div class="step-header"><button class="back-btn" onclick="go('home')">←</button><h2>📍 المسار</h2></div>
   <div class="card">
@@ -168,6 +193,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- BOOK 2: Truck -->
+
 <div class="screen" id="s-book2">
   <div class="step-header"><button class="back-btn" onclick="go('book1')">←</button><h2>🚛 نوع المركبة</h2></div>
   <div class="truck-opt" onclick="selTruck('pickup',this)">
@@ -192,6 +218,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- BOOK 3: Goods + Summary -->
+
 <div class="screen" id="s-book3">
   <div class="step-header"><button class="back-btn" onclick="go('book2')">←</button><h2>📦 البضاعة والتأكيد</h2></div>
   <div class="card">
@@ -218,6 +245,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- TRACKING: Searching -->
+
 <div class="screen" id="s-searching">
   <div class="searching">
     <div class="spin">🔍</div>
@@ -232,6 +260,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- TRACKING: Found -->
+
 <div class="screen" id="s-found">
   <div class="found-hero">
     <div style="color:var(--green);font-size:13px;margin-bottom:8px">✅ تم العثور على سائق</div>
@@ -248,6 +277,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- TRACKING: Live -->
+
 <div class="screen" id="s-live">
   <div class="live-hero">
     <div style="color:var(--gold);font-size:13px;margin-bottom:4px">🚛 الشاحنة في الطريق</div>
@@ -280,6 +310,7 @@ textarea.field{resize:none}
 </div>
 
 <!-- RATE -->
+
 <div class="screen" id="s-rate">
   <div style="text-align:center;padding-top:40px">
     <div style="font-size:56px;margin-bottom:16px">🎉</div>
@@ -299,7 +330,52 @@ textarea.field{resize:none}
   </div>
 </div>
 
+<!-- CALCULATOR -->
+
+<div class="screen" id="s-calc">
+  <div class="section-title">🧮 حاسبة السعر</div>
+  <div class="card">
+    <label class="field-label">نوع المركبة</label>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div class="truck-opt" onclick="calcSelTruck('pickup',this,15,3)">
+        <div class="truck-icon">🛻</div>
+        <div class="truck-info"><div class="truck-name">بيك أب</div><div class="truck-cap">15 د.ل بداية + 3 د.ل/كم</div></div>
+      </div>
+      <div class="truck-opt" onclick="calcSelTruck('small',this,25,5)">
+        <div class="truck-icon">🚚</div>
+        <div class="truck-info"><div class="truck-name">شاحنة صغيرة</div><div class="truck-cap">25 د.ل بداية + 5 د.ل/كم</div></div>
+      </div>
+      <div class="truck-opt" onclick="calcSelTruck('medium',this,40,8)">
+        <div class="truck-icon">🚛</div>
+        <div class="truck-info"><div class="truck-name">شاحنة متوسطة</div><div class="truck-cap">40 د.ل بداية + 8 د.ل/كم</div></div>
+      </div>
+    </div>
+    <label class="field-label">المسافة بالكيلومتر</label>
+    <input type="number" id="calc-km" min="1" max="100" placeholder="مثال: 10" oninput="calcPrice()"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:18px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;margin-bottom:16px"/>
+  </div>
+
+  <div class="card" id="calc-result" style="display:none;background:#0A1520;text-align:center">
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:8px">السعر التقديري</p>
+    <p id="calc-total" style="color:var(--gold);font-size:42px;font-weight:900;margin-bottom:4px">0</p>
+    <p style="color:var(--smoke);font-size:12px">دينار ليبي</p>
+    <div style="border-top:1px solid var(--border);margin:14px 0"></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="color:var(--smoke);font-size:13px">سعر البداية</span>
+      <span id="calc-base" style="font-size:13px;font-weight:600">—</span>
+    </div>
+    <div style="display:flex;justify-content:space-between">
+      <span style="color:var(--smoke);font-size:13px">سعر المسافة</span>
+      <span id="calc-dist" style="font-size:13px;font-weight:600">—</span>
+    </div>
+  </div>
+
+<button class="btn-primary" onclick="go('book1')" style="margin-top:4px">احجز الآن بهذا السعر</button>
+
+</div>
+
 <!-- PROFILE -->
+
 <div class="screen" id="s-profile">
   <div style="text-align:center;padding:30px 0 20px">
     <div style="width:80px;height:80px;border-radius:50%;background:var(--card);border:3px solid var(--rust);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px">👤</div>
@@ -324,15 +400,34 @@ textarea.field{resize:none}
 </div>
 
 <!-- BOTTOM NAV -->
+
 <div class="bottom-nav" id="bnav">
   <button class="nav-btn active" id="nb-home" onclick="tab('home')"><span class="icon">🏠</span><span class="label">الرئيسية</span></button>
   <button class="nav-btn" id="nb-book1" onclick="tab('book1')"><span class="icon">➕</span><span class="label">حجز</span></button>
+  <button class="nav-btn" id="nb-calc" onclick="tab('calc')"><span class="icon">🧮</span><span class="label">الأسعار</span></button>
   <button class="nav-btn" id="nb-profile" onclick="tab('profile')"><span class="icon">👤</span><span class="label">حسابي</span></button>
 </div>
 
 <script>
 const trucks={pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
-let selTruckId=null;
+let calcBase=0, calcPerKm=0;
+function calcSelTruck(id,el,base,perKm){
+  document.querySelectorAll('#s-calc .truck-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  calcBase=base; calcPerKm=perKm;
+  calcPrice();
+}
+function calcPrice(){
+  const km=parseFloat(document.getElementById('calc-km').value)||0;
+  if(!calcBase||!km){document.getElementById('calc-result').style.display='none';return;}
+  const dist=km*calcPerKm;
+  const total=calcBase+dist;
+  document.getElementById('calc-result').style.display='block';
+  document.getElementById('calc-total').textContent=total;
+  document.getElementById('calc-base').textContent=calcBase+' د.ل';
+  document.getElementById('calc-dist').textContent=dist+' د.ل ('+km+' كم × '+calcPerKm+')';
+}
+
 const noNavScreens=['book1','book2','book3','searching','found','live','rate'];
 
 function go(id){
@@ -380,6 +475,24 @@ function confirm(){
   const f=document.getElementById('from').value;
   const t=document.getElementById('to').value;
   const tk=trucks[selTruckId]||{};
+  const phone=document.getElementById('phone').value;
+  const goods=document.getElementById('goods').value;
+  // حفظ الطلب في Firebase
+  const order = {
+    from: f,
+    to: t,
+    truck: tk.label||'—',
+    price: tk.price||'—',
+    phone: phone,
+    goods: goods,
+    status: 'بانتظار',
+    time: new Date().toLocaleString('ar-LY'),
+    timestamp: Date.now()
+  };
+  const newOrder = db.ref('orders').push();
+  newOrder.set(order).then(()=>{
+    console.log('تم حفظ الطلب:', newOrder.key);
+  });
   ['t-from','f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
   ['t-to','f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
   ['t-price','f-price'].forEach(id=>document.getElementById(id).textContent=tk.price||'—');
@@ -396,5 +509,6 @@ function rate(n){
   });
 }
 </script>
+
 </body>
 </html>
