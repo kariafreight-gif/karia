@@ -382,10 +382,13 @@ function listenForOrders(){
     const order = snapshot.val();
     currentOrderKey = snapshot.key;
     // عرض الطلب الحقيقي
-    document.querySelector('.inc-order .inc-point:first-child p:first-child').textContent = order.from || '—';
-    document.querySelector('.inc-order .inc-point:last-child p:first-child').textContent = order.to || '—';
-    document.querySelector('.inc-detail:first-child .v').textContent = order.truck || '—';
-    document.querySelector('.inc-detail:nth-child(2) .v').textContent = order.price || '—';
+    const incOrder = document.getElementById('inc-order');
+    const points = incOrder.querySelectorAll('.inc-point p:first-child');
+    if(points[0]) points[0].textContent = order.from || '—';
+    if(points[1]) points[1].textContent = order.to || '—';
+    const details = incOrder.querySelectorAll('.inc-detail .v');
+    if(details[0]) details[0].textContent = order.truck || '—';
+    if(details[1]) details[1].textContent = order.price || '—';
     showIncoming();
   });
 }
