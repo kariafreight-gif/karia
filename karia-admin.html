@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
@@ -17,14 +18,14 @@ body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-
 
 /* Sidebar (desktop) / Bottom nav (mobile) */
 .layout{display:flex;min-height:100vh}
-.sidebar{width:220px;background:var(--nav);border-left:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;position:fixed;height:100vh;right:0;z-index:100}
-.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.sidebar-logo h1{font-size:22px;font-weight:900;color:var(--white)}
-.sidebar-logo h1 span{color:var(--rust)}
-.sidebar-logo p{font-size:11px;color:var(--smoke);margin-top:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;transition:all .2s;font-size:14px;color:var(--smoke);border-right:3px solid transparent}
-.nav-item:hover{background:var(--card);color:var(--white)}
-.nav-item.active{background:var(--card);color:var(--white);border-right-color:var(--rust)}
+.sidebar{width:220px;background:var(–nav);border-left:1px solid var(–border);padding:20px 0;display:flex;flex-direction:column;position:fixed;height:100vh;right:0;z-index:100}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(–border);margin-bottom:16px}
+.sidebar-logo h1{font-size:22px;font-weight:900;color:var(–white)}
+.sidebar-logo h1 span{color:var(–rust)}
+.sidebar-logo p{font-size:11px;color:var(–smoke);margin-top:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;transition:all .2s;font-size:14px;color:var(–smoke);border-right:3px solid transparent}
+.nav-item:hover{background:var(–card);color:var(–white)}
+.nav-item.active{background:var(–card);color:var(–white);border-right-color:var(–rust)}
 .nav-item .ni{font-size:18px}
 
 .main{margin-right:220px;padding:24px;min-height:100vh;width:calc(100% - 220px)}
@@ -32,77 +33,99 @@ body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-
 /* Top bar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 .topbar h2{font-size:20px;font-weight:900}
-.topbar p{color:var(--smoke);font-size:13px;margin-top:2px}
-.live-pill{background:#27AE6020;color:var(--green);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1s infinite}
+.topbar p{color:var(–smoke);font-size:13px;margin-top:2px}
+.live-pill{background:#27AE6020;color:var(–green);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(–green);animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* KPI cards */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+.kpi{background:var(–card);border:1px solid var(–border);border-radius:16px;padding:18px}
 .kpi-val{font-size:28px;font-weight:900;margin-bottom:4px}
-.kpi-lbl{color:var(--smoke);font-size:12px}
+.kpi-lbl{color:var(–smoke);font-size:12px}
 .kpi-delta{font-size:11px;margin-top:6px}
-.up{color:var(--green)}.down{color:var(--rust)}
+.up{color:var(–green)}.down{color:var(–rust)}
 
 /* Two-col grid */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
 
 /* Charts (CSS bars) */
-.chart-title{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--white)}
+.chart-title{font-size:14px;font-weight:700;margin-bottom:14px;color:var(–white)}
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.bar-label{width:60px;font-size:12px;color:var(--smoke);text-align:left;flex-shrink:0}
-.bar-track{flex:1;background:var(--card2);border-radius:100px;height:10px;overflow:hidden}
+.bar-label{width:60px;font-size:12px;color:var(–smoke);text-align:left;flex-shrink:0}
+.bar-track{flex:1;background:var(–card2);border-radius:100px;height:10px;overflow:hidden}
 .bar-fill{height:100%;border-radius:100px;transition:width .8s ease}
 .bar-val{width:40px;font-size:12px;font-weight:700;text-align:right;flex-shrink:0}
 
 /* Table */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
-th{color:var(--smoke);font-size:12px;font-weight:600;padding:10px 14px;text-align:right;border-bottom:1px solid var(--border)}
+th{color:var(–smoke);font-size:12px;font-weight:600;padding:10px 14px;text-align:right;border-bottom:1px solid var(–border)}
 td{padding:12px 14px;font-size:13px;border-bottom:1px solid #0F1D32}
-tr:hover td{background:var(--card2)}
+tr:hover td{background:var(–card2)}
 .status-pill{border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700}
 
 /* Map overview */
 .map-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.zone-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .2s}
-.zone-card:hover{border-color:var(--rust)}
+.zone-card{background:var(–card2);border:1px solid var(–border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .2s}
+.zone-card:hover{border-color:var(–rust)}
 .zone-name{font-size:13px;font-weight:700;margin-bottom:6px}
 .zone-drivers{font-size:20px;font-weight:900}
 .zone-status{font-size:10px;margin-top:4px}
 
 /* Driver rows */
-.driver-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.driver-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(–border)}
 .driver-row:last-child{border:none}
 .d-info{display:flex;align-items:center;gap:10px}
-.d-avatar{width:38px;height:38px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.d-avatar{width:38px;height:38px;border-radius:50%;background:var(–card2);display:flex;align-items:center;justify-content:center;font-size:18px}
 
 /* Alert cards */
-.alert-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.alert-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(–border)}
 .alert-item:last-child{border:none}
 .alert-icon{font-size:22px;flex-shrink:0}
 .alert-text p:first-child{font-size:13px;font-weight:600;margin-bottom:2px}
-.alert-text p:last-child{color:var(--smoke);font-size:11px}
+.alert-text p:last-child{color:var(–smoke);font-size:11px}
 
 /* Screen */
 .screen{display:none}.screen.active{display:block}
 
 /* Responsive */
 @media(max-width:768px){
-  .sidebar{display:none}
-  .main{margin-right:0;width:100%;padding:16px 16px 80px}
-  .kpi-grid{grid-template-columns:1fr 1fr}
-  .grid2{grid-template-columns:1fr}
-  .map-grid{grid-template-columns:repeat(2,1fr)}
-  .mobile-nav{display:flex!important}
+.sidebar{display:none}
+.main{margin-right:0;width:100%;padding:16px 16px 80px}
+.kpi-grid{grid-template-columns:1fr 1fr}
+.grid2{grid-template-columns:1fr}
+.map-grid{grid-template-columns:repeat(2,1fr)}
+.mobile-nav{display:flex!important}
 }
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--nav);border-top:1px solid var(--border);justify-content:space-around;padding:10px 0 20px;z-index:100}
-.mnav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Cairo',sans-serif}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(–nav);border-top:1px solid var(–border);justify-content:space-around;padding:10px 0 20px;z-index:100}
+.mnav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:‘Cairo’,sans-serif}
 .mnav-btn span:first-child{font-size:20px}
-.mnav-btn span:last-child{font-size:10px;color:var(--smoke)}
-.mnav-btn.active span:last-child{color:var(--rust);font-weight:700}
+.mnav-btn span:last-child{font-size:10px;color:var(–smoke)}
+.mnav-btn.active span:last-child{color:var(–rust);font-weight:700}
 </style>
+
+<!-- Firebase -->
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
+  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: "maria-26135.firebaseapp.com",
+  projectId: "maria-26135",
+  storageBucket: "maria-26135.firebasestorage.app",
+  messagingSenderId: "989218013644",
+  appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
+};
+firebase.initializeApp(firebaseConfig);
+firebase.database.defaultEventsURL = "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app";
+const db = firebase.database();
+</script>
+
 </head>
 <body>
 
@@ -124,146 +147,150 @@ tr:hover td{background:var(--card2)}
   </div>
 
   <!-- MAIN -->
+
   <div class="main">
 
-    <!-- DASHBOARD -->
-    <div class="screen active" id="p-dashboard">
-      <div class="topbar">
-        <div><h2>لوحة التحكم</h2><p>الأحد، 20 أبريل 2026 · طرابلس</p></div>
-        <div class="live-pill"><div class="live-dot"></div> مباشر</div>
-      </div>
+```
+<!-- DASHBOARD -->
+<div class="screen active" id="p-dashboard">
+  <div class="topbar">
+    <div><h2>لوحة التحكم</h2><p>الأحد، 20 أبريل 2026 · طرابلس</p></div>
+    <div class="live-pill"><div class="live-dot"></div> مباشر</div>
+  </div>
 
-      <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-val" style="color:var(--gold)">123</div><div class="kpi-lbl">رحلات اليوم</div><div class="kpi-delta up">↑ 18٪ عن أمس</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--green)">47</div><div class="kpi-lbl">سائق نشط الآن</div><div class="kpi-delta up">↑ 5 عن الأمس</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--white)">4320</div><div class="kpi-lbl">د.ل إيرادات اليوم</div><div class="kpi-delta up">↑ 22٪</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--amber)">12</div><div class="kpi-lbl">طلب قيد الانتظار</div><div class="kpi-delta down">↓ 3 عن أمس</div></div>
-      </div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold)">123</div><div class="kpi-lbl">رحلات اليوم</div><div class="kpi-delta up">↑ 18٪ عن أمس</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">47</div><div class="kpi-lbl">سائق نشط الآن</div><div class="kpi-delta up">↑ 5 عن الأمس</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--white)">4320</div><div class="kpi-lbl">د.ل إيرادات اليوم</div><div class="kpi-delta up">↑ 22٪</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">12</div><div class="kpi-lbl">طلب قيد الانتظار</div><div class="kpi-delta down">↓ 3 عن أمس</div></div>
+  </div>
 
-      <div class="grid2">
-        <!-- Hourly chart -->
-        <div class="card">
-          <div class="chart-title">📈 الرحلات بالساعة</div>
-          <div id="hourly-chart"></div>
-        </div>
-        <!-- Zone activity -->
-        <div class="card">
-          <div class="chart-title">🗺️ نشاط المناطق</div>
-          <div id="zone-chart"></div>
-        </div>
-      </div>
-
-      <!-- Live orders -->
-      <div class="card" style="margin-bottom:14px">
-        <div class="chart-title">🔴 الطلبات الحية الآن</div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>من</th><th>إلى</th><th>السائق</th><th>المركبة</th><th>الحالة</th><th>الأجرة</th></tr></thead>
-            <tbody>
-              <tr><td style="color:var(--smoke)">KR-124</td><td>سوق الجمعة</td><td>تاجوراء</td><td>محمد الشريف</td><td>🛻 بيك أب</td><td><span class="status-pill" style="background:#27AE6022;color:var(--green)">جارية</span></td><td style="color:var(--gold);font-weight:700">35 د.ل</td></tr>
-              <tr><td style="color:var(--smoke)">KR-123</td><td>قرجي</td><td>أبو سليم</td><td>خالد البوسيفي</td><td>🚚 صغيرة</td><td><span class="status-pill" style="background:#27AE6022;color:var(--green)">جارية</span></td><td style="color:var(--gold);font-weight:700">65 د.ل</td></tr>
-              <tr><td style="color:var(--smoke)">KR-122</td><td>عين زارة</td><td>فشلوم</td><td>—</td><td>🚛 متوسطة</td><td><span class="status-pill" style="background:#D4A01722;color:var(--gold)">بانتظار</span></td><td style="color:var(--gold);font-weight:700">110 د.ل</td></tr>
-              <tr><td style="color:var(--smoke)">KR-121</td><td>حي الأندلس</td><td>قرجي</td><td>علي الزروق</td><td>🛻 بيك أب</td><td><span class="status-pill" style="background:#2980B922;color:var(--blue)">استلام</span></td><td style="color:var(--gold);font-weight:700">35 د.ل</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="grid2">
+    <!-- Hourly chart -->
+    <div class="card">
+      <div class="chart-title">📈 الرحلات بالساعة</div>
+      <div id="hourly-chart"></div>
     </div>
-
-    <!-- ORDERS -->
-    <div class="screen" id="p-orders">
-      <div class="topbar"><div><h2>📦 إدارة الطلبات</h2><p>جميع الطلبات اليوم</p></div></div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="kpi"><div class="kpi-val" style="color:var(--green)">108</div><div class="kpi-lbl">مكتملة</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--gold)">12</div><div class="kpi-lbl">جارية</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--rust)">3</div><div class="kpi-lbl">ملغاة</div></div>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>من</th><th>إلى</th><th>السائق</th><th>الوقت</th><th>الحالة</th><th>الأجرة</th></tr></thead>
-            <tbody id="orders-tbody"></tbody>
-          </table>
-        </div>
-      </div>
+    <!-- Zone activity -->
+    <div class="card">
+      <div class="chart-title">🗺️ نشاط المناطق</div>
+      <div id="zone-chart"></div>
     </div>
+  </div>
 
-    <!-- DRIVERS -->
-    <div class="screen" id="p-drivers">
-      <div class="topbar"><div><h2>🚛 إدارة السائقين</h2><p>62 سائق مسجل</p></div>
-        <button style="background:var(--rust);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer">+ إضافة سائق</button>
-      </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="kpi"><div class="kpi-val" style="color:var(--green)">47</div><div class="kpi-lbl">متاح الآن</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--amber)">11</div><div class="kpi-lbl">في رحلة</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--smoke)">4</div><div class="kpi-lbl">غير متاح</div></div>
-      </div>
-      <div class="card">
-        <div class="chart-title">السائقون النشطون</div>
-        <div id="drivers-list"></div>
-      </div>
+  <!-- Live orders -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="chart-title">🔴 الطلبات الحية الآن</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>من</th><th>إلى</th><th>السائق</th><th>المركبة</th><th>الحالة</th><th>الأجرة</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--smoke)">KR-124</td><td>سوق الجمعة</td><td>تاجوراء</td><td>محمد الشريف</td><td>🛻 بيك أب</td><td><span class="status-pill" style="background:#27AE6022;color:var(--green)">جارية</span></td><td style="color:var(--gold);font-weight:700">35 د.ل</td></tr>
+          <tr><td style="color:var(--smoke)">KR-123</td><td>قرجي</td><td>أبو سليم</td><td>خالد البوسيفي</td><td>🚚 صغيرة</td><td><span class="status-pill" style="background:#27AE6022;color:var(--green)">جارية</span></td><td style="color:var(--gold);font-weight:700">65 د.ل</td></tr>
+          <tr><td style="color:var(--smoke)">KR-122</td><td>عين زارة</td><td>فشلوم</td><td>—</td><td>🚛 متوسطة</td><td><span class="status-pill" style="background:#D4A01722;color:var(--gold)">بانتظار</span></td><td style="color:var(--gold);font-weight:700">110 د.ل</td></tr>
+          <tr><td style="color:var(--smoke)">KR-121</td><td>حي الأندلس</td><td>قرجي</td><td>علي الزروق</td><td>🛻 بيك أب</td><td><span class="status-pill" style="background:#2980B922;color:var(--blue)">استلام</span></td><td style="color:var(--gold);font-weight:700">35 د.ل</td></tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
-    <!-- ZONES -->
-    <div class="screen" id="p-zones">
-      <div class="topbar"><div><h2>🗺️ المناطق</h2><p>تغطية طرابلس</p></div></div>
-      <div class="card" style="margin-bottom:14px">
-        <div class="chart-title">نشاط المناطق الآن</div>
-        <div class="map-grid" id="zones-grid"></div>
-      </div>
-      <div class="card">
-        <div class="chart-title">تفاصيل المناطق</div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>المنطقة</th><th>السائقون</th><th>الطلبات</th><th>الإيراد</th><th>الحالة</th></tr></thead>
-            <tbody id="zones-tbody"></tbody>
-          </table>
-        </div>
-      </div>
+<!-- ORDERS -->
+<div class="screen" id="p-orders">
+  <div class="topbar"><div><h2>📦 إدارة الطلبات</h2><p>جميع الطلبات اليوم</p></div></div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">108</div><div class="kpi-lbl">مكتملة</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold)">12</div><div class="kpi-lbl">جارية</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--rust)">3</div><div class="kpi-lbl">ملغاة</div></div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>من</th><th>إلى</th><th>السائق</th><th>الوقت</th><th>الحالة</th><th>الأجرة</th></tr></thead>
+        <tbody id="orders-tbody"></tbody>
+      </table>
     </div>
+  </div>
+</div>
 
-    <!-- EARNINGS -->
-    <div class="screen" id="p-earnings">
-      <div class="topbar"><div><h2>💰 الإيرادات</h2><p>التقرير المالي</p></div></div>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-val" style="color:var(--gold)">4320</div><div class="kpi-lbl">د.ل اليوم</div><div class="kpi-delta up">↑ 22٪</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--gold)">28600</div><div class="kpi-lbl">د.ل الأسبوع</div><div class="kpi-delta up">↑ 14٪</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--gold)">124000</div><div class="kpi-lbl">د.ل الشهر</div><div class="kpi-delta up">↑ 31٪</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:var(--green)">35</div><div class="kpi-lbl">د.ل متوسط الرحلة</div></div>
-      </div>
-      <div class="card">
-        <div class="chart-title">📊 إيرادات الأسبوع</div>
-        <div id="weekly-chart"></div>
-      </div>
-    </div>
+<!-- DRIVERS -->
+<div class="screen" id="p-drivers">
+  <div class="topbar"><div><h2>🚛 إدارة السائقين</h2><p>62 سائق مسجل</p></div>
+    <button style="background:var(--rust);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer">+ إضافة سائق</button>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">47</div><div class="kpi-lbl">متاح الآن</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">11</div><div class="kpi-lbl">في رحلة</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--smoke)">4</div><div class="kpi-lbl">غير متاح</div></div>
+  </div>
+  <div class="card">
+    <div class="chart-title">السائقون النشطون</div>
+    <div id="drivers-list"></div>
+  </div>
+</div>
 
-    <!-- ALERTS -->
-    <div class="screen" id="p-alerts">
-      <div class="topbar"><div><h2>🔔 التنبيهات</h2><p>3 تنبيهات جديدة</p></div></div>
-      <div class="card">
-        <div class="alert-item">
-          <div class="alert-icon">🔴</div>
-          <div class="alert-text"><p>طلب KR-122 بدون سائق منذ 18 دقيقة</p><p>عين زارة ← فشلوم · شاحنة متوسطة</p></div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-icon">⭐</div>
-          <div class="alert-text"><p>سائق جديد يحتاج موافقة: يوسف الفيتوري</p><p>بيك أب · منطقة الظهرة</p></div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-icon">💰</div>
-          <div class="alert-text"><p>تجاوزت إيرادات اليوم الهدف ✓</p><p>4320 د.ل من هدف 4000 د.ل</p></div>
-        </div>
-        <div class="alert-item" style="opacity:.5">
-          <div class="alert-icon">📍</div>
-          <div class="alert-text"><p>منطقة تاجوراء: نقص سائقين</p><p>2 سائق فقط في المنطقة — أمس</p></div>
-        </div>
-      </div>
+<!-- ZONES -->
+<div class="screen" id="p-zones">
+  <div class="topbar"><div><h2>🗺️ المناطق</h2><p>تغطية طرابلس</p></div></div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="chart-title">نشاط المناطق الآن</div>
+    <div class="map-grid" id="zones-grid"></div>
+  </div>
+  <div class="card">
+    <div class="chart-title">تفاصيل المناطق</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>المنطقة</th><th>السائقون</th><th>الطلبات</th><th>الإيراد</th><th>الحالة</th></tr></thead>
+        <tbody id="zones-tbody"></tbody>
+      </table>
     </div>
+  </div>
+</div>
+
+<!-- EARNINGS -->
+<div class="screen" id="p-earnings">
+  <div class="topbar"><div><h2>💰 الإيرادات</h2><p>التقرير المالي</p></div></div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold)">4320</div><div class="kpi-lbl">د.ل اليوم</div><div class="kpi-delta up">↑ 22٪</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold)">28600</div><div class="kpi-lbl">د.ل الأسبوع</div><div class="kpi-delta up">↑ 14٪</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold)">124000</div><div class="kpi-lbl">د.ل الشهر</div><div class="kpi-delta up">↑ 31٪</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">35</div><div class="kpi-lbl">د.ل متوسط الرحلة</div></div>
+  </div>
+  <div class="card">
+    <div class="chart-title">📊 إيرادات الأسبوع</div>
+    <div id="weekly-chart"></div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="screen" id="p-alerts">
+  <div class="topbar"><div><h2>🔔 التنبيهات</h2><p>3 تنبيهات جديدة</p></div></div>
+  <div class="card">
+    <div class="alert-item">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-text"><p>طلب KR-122 بدون سائق منذ 18 دقيقة</p><p>عين زارة ← فشلوم · شاحنة متوسطة</p></div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">⭐</div>
+      <div class="alert-text"><p>سائق جديد يحتاج موافقة: يوسف الفيتوري</p><p>بيك أب · منطقة الظهرة</p></div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">💰</div>
+      <div class="alert-text"><p>تجاوزت إيرادات اليوم الهدف ✓</p><p>4320 د.ل من هدف 4000 د.ل</p></div>
+    </div>
+    <div class="alert-item" style="opacity:.5">
+      <div class="alert-icon">📍</div>
+      <div class="alert-text"><p>منطقة تاجوراء: نقص سائقين</p><p>2 سائق فقط في المنطقة — أمس</p></div>
+    </div>
+  </div>
+</div>
+```
 
   </div><!-- /main -->
 </div><!-- /layout -->
 
 <!-- MOBILE NAV -->
+
 <div class="mobile-nav">
   <button class="mnav-btn active" id="mn-dashboard" onclick="mTab('dashboard',this)"><span>📊</span><span>الرئيسية</span></button>
   <button class="mnav-btn" id="mn-orders" onclick="mTab('orders',this)"><span>📦</span><span>الطلبات</span></button>
@@ -395,6 +422,32 @@ function buildWeekly(){
 
 // Build all
 buildHourly(); buildZones(); buildOrders(); buildDrivers(); buildZonesGrid(); buildWeekly();
+
+// استمع للطلبات الحقيقية من Firebase
+db.ref('orders').orderByChild('timestamp').limitToLast(20).on('value', (snapshot)=>{
+  const orders = [];
+  snapshot.forEach(child => {
+    orders.unshift({id: child.key.slice(-6).toUpperCase(), ...child.val()});
+  });
+  if(orders.length > 0){
+    const sc = {'بانتظار':'#D4A017','جارية':'#27AE60','مكتملة':'#8A9BB0','ملغاة':'#C0392B'};
+    document.getElementById('orders-tbody').innerHTML = orders.map(o=>`
+      <tr>
+        <td style="color:var(--smoke)">${o.id}</td>
+        <td>${o.from||'—'}</td>
+        <td>${o.to||'—'}</td>
+        <td>${o.driver||'—'}</td>
+        <td style="color:var(--smoke)">${o.time||'—'}</td>
+        <td><span class="status-pill" style="background:${sc[o.status]||'#8A9BB0'}22;color:${sc[o.status]||'#8A9BB0'}">${o.status||'—'}</span></td>
+        <td style="color:var(--gold);font-weight:700">${o.price||'—'}</td>
+      </tr>`).join('');
+    // تحديث KPI
+    const waiting = orders.filter(o=>o.status==='بانتظار').length;
+    const active = orders.filter(o=>o.status==='جارية').length;
+    document.querySelector('.kpi:last-child .kpi-val').textContent = waiting;
+  }
+});
 </script>
+
 </body>
 </html>
