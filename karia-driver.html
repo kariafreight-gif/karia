@@ -100,7 +100,14 @@ const driverZones = {
   'السياحية':{lat:32.9123,lng:13.2012},'الظهرة':{lat:32.8645,lng:13.1756}
 };
 function initDriverMap(){
-  driverMap = new google.maps.Map(document.getElementById('driver-map'),{
+  // نؤخر الخريطة حتى يفتح السائق شاشة الرحلة
+  driverDirectionsService = new google.maps.DirectionsService();
+}
+function loadDriverMap(){
+  if(driverMap) return;
+  const el = document.getElementById('driver-map');
+  if(!el) return;
+  driverMap = new google.maps.Map(el,{
     center:{lat:32.8872,lng:13.1913}, zoom:12,
     styles:[
       {elementType:'geometry',stylers:[{color:'#0A1A0A'}]},
@@ -109,7 +116,6 @@ function initDriverMap(){
       {featureType:'water',elementType:'geometry',stylers:[{color:'#071407'}]}
     ]
   });
-  driverDirectionsService = new google.maps.DirectionsService();
   driverDirectionsRenderer = new google.maps.DirectionsRenderer({
     map: driverMap,
     polylineOptions:{strokeColor:'#27AE60',strokeWeight:4}
@@ -411,10 +417,14 @@ function acceptOrder(){
   document.getElementById('inc-order').style.display='none';
   if(currentOrderKey){
     db.ref('orders/'+currentOrderKey).update({status:'جارية',driver:'عمر القذافي'});
-    // عرض المسار على الخريطة
     db.ref('orders/'+currentOrderKey).once('value',(snap)=>{
       const o=snap.val();
-      if(o) setTimeout(()=>showDriverRoute(o.from,o.to),800);
+      if(o){
+        setTimeout(()=>{
+          loadDriverMap();
+          setTimeout(()=>showDriverRoute(o.from,o.to),800);
+        },500);
+      }
     });
   }
   dtab('trip');
