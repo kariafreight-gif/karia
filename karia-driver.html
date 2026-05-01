@@ -86,6 +86,46 @@ body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-
 .btn-primary{width:100%;background:var(–green);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;margin-top:4px}
 </style>
 
+<!-- Google Maps -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd_1byT6zXNUKSI2W0pNeztXCqJhfJppE&callback=initDriverMap" async defer></script>
+
+<script>
+let driverMap, driverDirectionsService, driverDirectionsRenderer;
+const driverZones = {
+  'سوق الجمعة': {lat:32.8872,lng:13.1913},'قرجي':{lat:32.8773,lng:13.1654},
+  'تاجوراء':{lat:32.8867,lng:13.3572},'سوق الثلاثاء':{lat:32.8943,lng:13.1802},
+  'أبو سليم':{lat:32.8601,lng:13.2134},'عين زارة':{lat:32.8234,lng:13.2345},
+  'فشلوم':{lat:32.9012,lng:13.1923},'حي الأندلس':{lat:32.8756,lng:13.2234},
+  'السياحية':{lat:32.9123,lng:13.2012},'الظهرة':{lat:32.8645,lng:13.1756}
+};
+function initDriverMap(){
+  driverMap = new google.maps.Map(document.getElementById('driver-map'),{
+    center:{lat:32.8872,lng:13.1913}, zoom:12,
+    styles:[
+      {elementType:'geometry',stylers:[{color:'#0A1A0A'}]},
+      {elementType:'labels.text.fill',stylers:[{color:'#7A9B7A'}]},
+      {featureType:'road',elementType:'geometry',stylers:[{color:'#1E3B1E'}]},
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#071407'}]}
+    ]
+  });
+  driverDirectionsService = new google.maps.DirectionsService();
+  driverDirectionsRenderer = new google.maps.DirectionsRenderer({
+    map: driverMap,
+    polylineOptions:{strokeColor:'#27AE60',strokeWeight:4}
+  });
+}
+function showDriverRoute(from,to){
+  if(!driverDirectionsService||!driverZones[from]||!driverZones[to]) return;
+  driverDirectionsService.route({
+    origin:driverZones[from], destination:driverZones[to],
+    travelMode:google.maps.TravelMode.DRIVING
+  },(result,status)=>{
+    if(status==='OK') driverDirectionsRenderer.setDirections(result);
+  });
+}
+</script>
+
 <!-- Firebase -->
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
@@ -192,6 +232,8 @@ const db = firebase.database();
       <button style="flex:2;background:var(--gold);color:#000;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer" onclick="nextPhase()">المرحلة التالية ←</button>
     </div>
   </div>
+
+  <div id="driver-map" style="height:200px;border-radius:16px;margin-bottom:14px;overflow:hidden"></div>
 
   <div class="card" style="background:#071407;text-align:center">
     <p style="color:var(--smoke);font-size:12px;margin-bottom:4px">أجرة هذه الرحلة</p>
@@ -364,9 +406,13 @@ function showIncoming(){
 function acceptOrder(){
   clearInterval(timerInt);
   document.getElementById('inc-order').style.display='none';
-  // تحديث حالة الطلب في Firebase
   if(currentOrderKey){
-    db.ref('orders/'+currentOrderKey).update({status: 'جارية', driver: 'عمر القذافي'});
+    db.ref('orders/'+currentOrderKey).update({status:'جارية',driver:'عمر القذافي'});
+    // عرض المسار على الخريطة
+    db.ref('orders/'+currentOrderKey).once('value',(snap)=>{
+      const o=snap.val();
+      if(o) setTimeout(()=>showDriverRoute(o.from,o.to),800);
+    });
   }
   dtab('trip');
 }
