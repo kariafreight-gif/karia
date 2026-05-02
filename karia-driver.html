@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
@@ -7,252 +8,396 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="كرية | سائق"/>
 <title>كرية — تطبيق السائق</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
-
 <style>
 :root{
   --bg:#0A1A0A;--nav:#071407;--card:#112011;--border:#1E3B1E;
   --green:#27AE60;--gold:#D4A017;--rust:#C0392B;--smoke:#7A9B7A;--white:#F4FAF4;
   --amber:#E67E22;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;direction:rtl;overflow-x:hidden}
 
-body{
-  background:var(--bg);
-  font-family:'Cairo',sans-serif;
-  color:var(--white);
-  min-height:100vh;
-  max-width:430px;
-  margin:0 auto;
-  direction:rtl;
-  overflow-x:hidden;
-}
+.header{background:var(–nav);border-bottom:1px solid var(–border);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.header h1{font-size:20px;font-weight:900}.header h1 span{color:var(–green)}
+.header p{font-size:11px;color:var(–smoke);margin-top:2px}
 
-.header{
-  background:var(--nav);
-  border-bottom:1px solid var(--border);
-  padding:14px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:100;
-}
+.screen{display:none;padding:16px 20px 100px}.screen.active{display:block}
+.card{background:var(–card);border:1px solid var(–border);border-radius:16px;padding:18px;margin-bottom:14px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px}
 
-.header h1{font-size:20px;font-weight:900}
-.header h1 span{color:var(--green)}
-.header p{font-size:11px;color:var(--smoke);margin-top:2px}
+/* Status Toggle */
+.status-toggle{background:var(–card);border:1px solid var(–border);border-radius:20px;padding:20px;margin-bottom:20px;text-align:center}
+.toggle-label{font-size:13px;color:var(–smoke);margin-bottom:12px}
+.big-toggle{width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;transition:all .3s;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.big-toggle.online{background:var(–green);box-shadow:0 0 24px #27AE6066;animation:glow 2s infinite}
+.big-toggle.offline{background:#1E3B1E;box-shadow:none}
+@keyframes glow{0%,100%{box-shadow:0 0 24px #27AE6066}50%{box-shadow:0 0 40px #27AE60aa}}
+.toggle-status{font-size:14px;font-weight:700;margin-top:12px}
+.toggle-status.on{color:var(–green)}.toggle-status.off{color:var(–smoke)}
 
-.screen{display:none;padding:16px 20px 100px}
-.screen.active{display:block}
+/* Stats */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.stat-card{background:var(–card);border:1px solid var(–border);border-radius:14px;padding:16px;text-align:center}
+.stat-val{font-size:24px;font-weight:900;color:var(–gold)}
+.stat-lbl{color:var(–smoke);font-size:11px;margin-top:2px}
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:14px
-}
-
-/* toggle */
-.status-toggle{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:20px;
-  text-align:center;
-  margin-bottom:20px
-}
-
-.big-toggle{
-  width:80px;height:80px;border-radius:50%;
-  border:none;font-size:32px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center
-}
-
-.big-toggle.online{background:var(--green)}
-.big-toggle.offline{background:#1E3B1E}
-
-.toggle-status.on{color:var(--green)}
-.toggle-status.off{color:var(--smoke)}
-
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:20px
-}
-
-.stat-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:16px;
-  text-align:center
-}
-
-.stat-val{font-size:24px;font-weight:900;color:var(--gold)}
-.stat-lbl{color:var(--smoke);font-size:11px}
-
-.incoming{
-  border:2px solid var(--green);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:20px
-}
-
+/* Incoming order */
+.incoming{background:linear-gradient(135deg,#0F3A0F,#071407);border:2px solid var(–green);border-radius:20px;padding:20px;margin-bottom:20px;animation:borderPulse 1.5s infinite}
+@keyframes borderPulse{0%,100%{border-color:var(–green)}50%{border-color:#4CAF50}}
+.inc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.inc-badge{background:#27AE6022;color:var(–green);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700}
+.inc-timer{color:var(–rust);font-weight:900;font-size:20px}
+.inc-route{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.inc-point{flex:1}
+.inc-point p:first-child{font-weight:700;font-size:15px}
+.inc-point p:last-child{color:var(–smoke);font-size:11px;margin-top:2px}
+.inc-arrow{color:var(–green);font-size:20px}
+.inc-details{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.inc-detail{background:#0A2A0A;border-radius:10px;padding:10px;text-align:center}
+.inc-detail .v{font-weight:700;font-size:14px}
+.inc-detail .l{color:var(–smoke);font-size:10px;margin-top:2px}
 .inc-btns{display:flex;gap:10px}
+.btn-accept{flex:2;background:var(–green);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer}
+.btn-reject{flex:1;background:transparent;border:1.5px solid var(–rust);border-radius:14px;padding:14px;color:var(–rust);font-size:14px;font-family:‘Cairo’,sans-serif;cursor:pointer}
 
-.btn-accept{
-  flex:2;
-  background:var(--green);
-  color:white;
-  border:none;
-  border-radius:14px;
-  padding:14px;
-  font-weight:700;
-  cursor:pointer;
-}
+/* Active trip */
+.active-trip{background:linear-gradient(135deg,#1A2E1A,#0A1A0A);border:2px solid var(–gold);border-radius:20px;padding:20px;margin-bottom:16px}
+.trip-phase{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px}
+.phase{background:#0A2A0A;border-radius:10px;padding:8px 14px;font-size:12px;white-space:nowrap;color:var(–smoke)}
+.phase.active{background:var(–gold);color:#000;font-weight:700}
+.phase.done{background:#27AE6022;color:var(–green)}
 
-.btn-reject{
-  flex:1;
-  border:1px solid var(--rust);
-  background:transparent;
-  color:var(--rust);
-  border-radius:14px;
-  padding:14px;
-  cursor:pointer;
-}
+/* Earnings */
+.earnings-hero{background:linear-gradient(135deg,#1A1A0A,#2A2400);border:1px solid #3A3400;border-radius:20px;padding:24px;text-align:center;margin-bottom:20px}
 
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:430px;
-  background:var(--nav);
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0 20px;
-}
+/* Orders history */
+.hist-card{display:flex;justify-content:space-between;align-items:center}
+.hist-info p:first-child{font-weight:700;font-size:14px;margin-bottom:3px}
+.hist-info p:last-child{color:var(–smoke);font-size:12px}
 
-.nav-btn{
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  font-family:'Cairo',sans-serif;
-}
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(–nav);border-top:1px solid var(–border);display:flex;justify-content:space-around;padding:10px 0 24px;z-index:100}
+.nav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:‘Cairo’,sans-serif}
+.nav-btn .icon{font-size:22px}
+.nav-btn .label{font-size:11px;color:var(–smoke)}
+.nav-btn.active .label{color:var(–green);font-weight:700}
 
-.nav-btn.active{color:var(--green)}
+.btn-primary{width:100%;background:var(–green);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;margin-top:4px}
 </style>
 
+<!-- Firebase -->
+
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
-  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app"
+  apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
+  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: "maria-26135.firebaseapp.com",
+  projectId: "maria-26135",
+  storageBucket: "maria-26135.firebasestorage.app",
+  messagingSenderId: "989218013644",
+  appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
-let online=false;
-let currentOrderKey=null;
-let timer=null;
-
-function toggleStatus(){
-  online=!online;
-
-  if(online){
-    listenForOrders();
-  }else{
-    db.ref('orders').off();
-    currentOrderKey=null;
-  }
-}
-
-function listenForOrders(){
-  db.ref('orders')
-    .orderByChild('status')
-    .equalTo('بانتظار')
-    .limitToLast(1)
-    .on('child_added',(snap)=>{
-
-      if(!online || currentOrderKey) return;
-
-      const order=snap.val();
-      currentOrderKey=snap.key;
-
-      document.getElementById('inc-order').style.display='block';
-
-      startTimer();
-    });
-}
-
-function startTimer(){
-  let t=30;
-  timer=setInterval(()=>{
-    t--;
-    if(t<=0){
-      clearInterval(timer);
-      rejectOrder();
-    }
-  },1000);
-}
-
-function acceptOrder(){
-  clearInterval(timer);
-
-  if(currentOrderKey){
-    db.ref('orders/'+currentOrderKey).update({
-      status:'جارية',
-      driver:'driver_001'
-    });
-  }
-}
-
-function rejectOrder(){
-  clearInterval(timer);
-  currentOrderKey=null;
-  document.getElementById('inc-order').style.display='none';
-}
 </script>
 
 </head>
-
 <body>
 
 <div class="header">
-  <h1>كرية <span>•</span></h1>
+  <div><h1>كرية <span>•</span></h1><p>تطبيق السائق — طرابلس</p></div>
+  <div id="hdr-badge" style="background:#C0392B20;color:var(--rust);border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700">● غير متاح</div>
 </div>
 
-<div class="screen active">
+<!-- HOME / STATUS -->
+
+<div class="screen active" id="s-home">
   <div class="status-toggle">
-    <button class="big-toggle offline" onclick="toggleStatus()">🔌</button>
-    <div>الحالة</div>
+    <div class="toggle-label">الحالة الحالية</div>
+    <button class="big-toggle offline" id="toggle-btn" onclick="toggleStatus()">🔌</button>
+    <div class="toggle-status off" id="toggle-txt">غير متاح</div>
   </div>
 
-  <div id="inc-order" class="incoming" style="display:none">
-    <p>طلب جديد</p>
+  <div class="stats">
+    <div class="stat-card"><div class="stat-val">8</div><div class="stat-lbl">رحلات اليوم</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">280</div><div class="stat-lbl">د.ل اليوم</div></div>
+    <div class="stat-card"><div class="stat-val">4.8</div><div class="stat-lbl">تقييمي</div></div>
+    <div class="stat-card"><div class="stat-val">145</div><div class="stat-lbl">رحلة إجمالي</div></div>
+  </div>
+
+  <!-- Incoming Order (shown when online) -->
+
+  <div class="incoming" id="inc-order" style="display:none">
+    <div class="inc-header">
+      <span class="inc-badge">🔔 طلب جديد</span>
+      <span class="inc-timer" id="inc-timer">30</span>
+    </div>
+    <div class="inc-route">
+      <div class="inc-point"><p>سوق الجمعة</p><p>نقطة الانطلاق</p></div>
+      <div class="inc-arrow">←</div>
+      <div class="inc-point" style="text-align:left"><p>تاجوراء</p><p>الوجهة</p></div>
+    </div>
+    <div class="inc-details">
+      <div class="inc-detail"><div class="v">بيك أب 🛻</div><div class="l">المركبة</div></div>
+      <div class="inc-detail"><div class="v" style="color:var(--gold)">35 د.ل</div><div class="l">الأجرة</div></div>
+      <div class="inc-detail"><div class="v">~12 دق</div><div class="l">المسافة</div></div>
+    </div>
     <div class="inc-btns">
       <button class="btn-reject" onclick="rejectOrder()">رفض</button>
-      <button class="btn-accept" onclick="acceptOrder()">قبول</button>
+      <button class="btn-accept" onclick="acceptOrder()">✓ قبول</button>
+    </div>
+  </div>
+
+  <div id="no-orders" style="text-align:center;padding:30px 0;color:var(--smoke);font-size:14px">
+    <div style="font-size:48px;margin-bottom:12px">🟡</div>
+    <p>فعّل الحالة لاستقبال الطلبات</p>
+  </div>
+</div>
+
+<!-- ACTIVE TRIP -->
+
+<div class="screen" id="s-trip">
+  <div class="active-trip">
+    <div style="color:var(--gold);font-size:13px;margin-bottom:12px;font-weight:700">🚛 رحلة نشطة</div>
+    <div class="trip-phase">
+      <div class="phase done" id="ph1">✓ تأكيد</div>
+      <div class="phase active" id="ph2">في الطريق للاستلام</div>
+      <div class="phase" id="ph3">استلام البضاعة</div>
+      <div class="phase" id="ph4">التوصيل</div>
+      <div class="phase" id="ph5">مكتمل</div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <span style="color:var(--smoke);font-size:13px">العميل</span>
+        <span style="font-weight:700">فراج المبروك</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <span style="color:var(--smoke);font-size:13px">من</span><span style="font-weight:700">سوق الجمعة</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <span style="color:var(--smoke);font-size:13px">إلى</span><span style="font-weight:700">تاجوراء</span>
+      </div>
+      <div style="display:flex;justify-content:space-between">
+        <span style="color:var(--smoke);font-size:13px">البضاعة</span><span style="font-weight:700">أثاث منزلي</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="tel:+218913456789" style="flex:1;background:#27AE6022;color:var(--green);border:1.5px solid var(--green);border-radius:12px;padding:12px;text-align:center;text-decoration:none;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px">📞 اتصال</a>
+      <button style="flex:2;background:var(--gold);color:#000;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer" onclick="nextPhase()">المرحلة التالية ←</button>
+    </div>
+  </div>
+
+  <div class="card" style="background:#071407;text-align:center">
+    <p style="color:var(--smoke);font-size:12px;margin-bottom:4px">أجرة هذه الرحلة</p>
+    <p style="color:var(--gold);font-size:28px;font-weight:900">35 د.ل</p>
+  </div>
+</div>
+
+<!-- EARNINGS -->
+
+<div class="screen" id="s-earnings">
+  <div class="earnings-hero">
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:4px">إجمالي الأسبوع</p>
+    <p style="font-size:36px;font-weight:900;color:var(--gold)">1280 <span style="font-size:16px">د.ل</span></p>
+    <p style="color:var(--smoke);font-size:12px;margin-top:8px">32 رحلة هذا الأسبوع</p>
+  </div>
+  <div class="stats" style="grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div class="stat-card"><div class="stat-val" style="font-size:18px">280</div><div class="stat-lbl">اليوم د.ل</div></div>
+    <div class="stat-card"><div class="stat-val" style="font-size:18px">8</div><div class="stat-lbl">رحلات اليوم</div></div>
+    <div class="stat-card"><div class="stat-val" style="font-size:18px">35</div><div class="stat-lbl">متوسط د.ل</div></div>
+  </div>
+  <div class="section-title">سجل الرحلات</div>
+  <div class="card"><div class="hist-card"><div class="hist-info"><p>سوق الجمعة ← تاجوراء</p><p>بيك أب · 12:30 ظهراً</p></div><div style="color:var(--gold);font-weight:700;font-size:16px">35 د.ل</div></div></div>
+  <div class="card"><div class="hist-card"><div class="hist-info"><p>قرجي ← أبو سليم</p><p>شاحنة صغيرة · 10:15 ص</p></div><div style="color:var(--gold);font-weight:700;font-size:16px">65 د.ل</div></div></div>
+  <div class="card"><div class="hist-card"><div class="hist-info"><p>عين زارة ← فشلوم</p><p>بيك أب · 08:45 ص</p></div><div style="color:var(--gold);font-weight:700;font-size:16px">35 د.ل</div></div></div>
+</div>
+
+<!-- PROFILE -->
+
+<div class="screen" id="s-dprofile">
+  <div style="text-align:center;padding:30px 0 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:var(--card);border:3px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px">🧑‍✈️</div>
+    <h3 style="font-size:18px;font-weight:900">عمر القذافي</h3>
+    <p style="color:var(--smoke);font-size:13px;margin-top:4px">⭐ 4.8 · سائق بيك أب</p>
+    <p style="color:var(--smoke);font-size:12px;margin-top:2px">طرابلس 2234 أ</p>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:var(--smoke)">نوع المركبة</span><span style="font-weight:700">بيك أب 🛻</span></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="color:var(--smoke)">لوحة الترخيص</span><span style="font-weight:700">طرابلس 2234 أ</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--smoke)">المنطقة</span><span style="font-weight:700">قرجي</span></div>
+  </div>
+  <div class="card" style="cursor:pointer;border-color:#C0392B33" onclick="alert('تم تسجيل الخروج')">
+    <div style="color:var(--rust);text-align:center;font-weight:700">تسجيل الخروج</div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+
+<div class="screen" id="s-calc">
+  <div class="section-title">🧮 حاسبة الأجرة</div>
+  <div class="card">
+    <label style="color:var(--smoke);font-size:12px;display:block;margin-bottom:8px">نوع المركبة</label>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer" id="dc1" onclick="dCalcSel(this,15,3)">
+        <span style="font-size:26px">🛻</span><div><div style="font-weight:700">بيك أب</div><div style="color:var(--smoke);font-size:12px">15 د.ل بداية + 3 د.ل/كم</div></div>
+      </div>
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer" id="dc2" onclick="dCalcSel(this,25,5)">
+        <span style="font-size:26px">🚚</span><div><div style="font-weight:700">شاحنة صغيرة</div><div style="color:var(--smoke);font-size:12px">25 د.ل بداية + 5 د.ل/كم</div></div>
+      </div>
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer" id="dc3" onclick="dCalcSel(this,40,8)">
+        <span style="font-size:26px">🚛</span><div><div style="font-weight:700">شاحنة متوسطة</div><div style="color:var(--smoke);font-size:12px">40 د.ل بداية + 8 د.ل/كم</div></div>
+      </div>
+    </div>
+    <label style="color:var(--smoke);font-size:12px;display:block;margin-bottom:6px">المسافة بالكيلومتر</label>
+    <input type="number" id="d-calc-km" min="1" max="100" placeholder="مثال: 10" oninput="dCalcPrice()"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:18px;font-family:'Cairo',sans-serif;direction:rtl;outline:none"/>
+  </div>
+  <div class="card" id="d-calc-result" style="display:none;background:#071407;text-align:center">
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:8px">الأجرة التقديرية</p>
+    <p id="d-calc-total" style="color:var(--gold);font-size:42px;font-weight:900;margin-bottom:4px">0</p>
+    <p style="color:var(--smoke);font-size:12px">دينار ليبي</p>
+    <div style="border-top:1px solid var(--border);margin:14px 0"></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="color:var(--smoke);font-size:13px">سعر البداية</span><span id="d-calc-base" style="font-size:13px;font-weight:600">—</span>
+    </div>
+    <div style="display:flex;justify-content:space-between">
+      <span style="color:var(--smoke);font-size:13px">سعر المسافة</span><span id="d-calc-dist" style="font-size:13px;font-weight:600">—</span>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
+
 <div class="bottom-nav">
-  <button class="nav-btn active">🏠</button>
-  <button class="nav-btn">🚛</button>
-  <button class="nav-btn">💰</button>
-  <button class="nav-btn">👤</button>
+  <button class="nav-btn active" id="nb-home" onclick="dtab('home')"><span class="icon">🏠</span><span class="label">الرئيسية</span></button>
+  <button class="nav-btn" id="nb-trip" onclick="dtab('trip')"><span class="icon">🚛</span><span class="label">رحلتي</span></button>
+  <button class="nav-btn" id="nb-earnings" onclick="dtab('earnings')"><span class="icon">💰</span><span class="label">أرباحي</span></button>
+  <button class="nav-btn" id="nb-calc" onclick="dtab('calc')"><span class="icon">🧮</span><span class="label">الأسعار</span></button>
+  <button class="nav-btn" id="nb-dprofile" onclick="dtab('dprofile')"><span class="icon">👤</span><span class="label">حسابي</span></button>
 </div>
+
+<script>
+let dCalcBase=0,dCalcPerKm=0;
+function dCalcSel(el,base,perKm){
+  document.querySelectorAll('#s-calc [id^=dc]').forEach(o=>o.style.borderColor='var(--border)');
+  el.style.borderColor='var(--green)';
+  dCalcBase=base; dCalcPerKm=perKm; dCalcPrice();
+}
+function dCalcPrice(){
+  const km=parseFloat(document.getElementById('d-calc-km').value)||0;
+  if(!dCalcBase||!km){document.getElementById('d-calc-result').style.display='none';return;}
+  const dist=km*dCalcPerKm, total=dCalcBase+dist;
+  document.getElementById('d-calc-result').style.display='block';
+  document.getElementById('d-calc-total').textContent=total;
+  document.getElementById('d-calc-base').textContent=dCalcBase+' د.ل';
+  document.getElementById('d-calc-dist').textContent=dist+' د.ل ('+km+' كم × '+dCalcPerKm+')';
+}
+let timerVal=30, timerInt=null, tripPhase=1;
+let online=false;
+
+function dtab(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nb-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggleStatus(){
+  online=!online;
+  const btn=document.getElementById('toggle-btn');
+  const txt=document.getElementById('toggle-txt');
+  const badge=document.getElementById('hdr-badge');
+  const noOrd=document.getElementById('no-orders');
+  if(online){
+    btn.className='big-toggle online'; btn.textContent='✅';
+    txt.className='toggle-status on'; txt.textContent='متاح — تستقبل الطلبات';
+    badge.style.background='#27AE6020'; badge.style.color='#27AE60'; badge.textContent='● متاح';
+    noOrd.style.display='none';
+    // استمع للطلبات الحقيقية من Firebase
+    listenForOrders();
+  } else {
+    btn.className='big-toggle offline'; btn.textContent='🔌';
+    txt.className='toggle-status off'; txt.textContent='غير متاح';
+    badge.style.background='#C0392B20'; badge.style.color='var(--rust)'; badge.textContent='● غير متاح';
+    document.getElementById('inc-order').style.display='none';
+    noOrd.style.display='block';
+    clearInterval(timerInt);
+    // أوقف الاستماع
+    db.ref('orders').off();
+  }
+}
+
+let currentOrderKey = null;
+function listenForOrders(){
+  db.ref('orders').orderByChild('status').equalTo('بانتظار').limitToLast(1).on('child_added', (snapshot)=>{
+    if(!online) return;
+    const order = snapshot.val();
+    currentOrderKey = snapshot.key;
+    // عرض الطلب الحقيقي
+    const incOrder = document.getElementById('inc-order');
+    const points = incOrder.querySelectorAll('.inc-point p:first-child');
+    if(points[0]) points[0].textContent = order.from || '—';
+    if(points[1]) points[1].textContent = order.to || '—';
+    const details = incOrder.querySelectorAll('.inc-detail .v');
+    if(details[0]) details[0].textContent = order.truck || '—';
+    if(details[1]) details[1].textContent = order.price || '—';
+    showIncoming();
+  });
+}
+
+function showIncoming(){
+  if(!online) return;
+  timerVal=30;
+  document.getElementById('inc-order').style.display='block';
+  document.getElementById('no-orders').style.display='none';
+  clearInterval(timerInt);
+  timerInt=setInterval(()=>{
+    timerVal--;
+    document.getElementById('inc-timer').textContent=timerVal;
+    if(timerVal<=0){ clearInterval(timerInt); rejectOrder(); }
+  },1000);
+}
+
+function acceptOrder(){
+  clearInterval(timerInt);
+  document.getElementById('inc-order').style.display='none';
+  if(currentOrderKey){
+    db.ref('orders/'+currentOrderKey).update({status:'جارية',driver:'عمر القذافي'});
+  }
+  dtab('trip');
+}
+
+function rejectOrder(){
+  clearInterval(timerInt);
+  document.getElementById('inc-order').style.display='none';
+  document.getElementById('no-orders').style.display='block';
+  document.getElementById('no-orders').innerHTML='<div style="font-size:48px;margin-bottom:12px">⏳</div><p style="color:var(--smoke)">في انتظار طلب جديد...</p>';
+}
+
+const phases=['','في الطريق للاستلام','عند العميل — استلام البضاعة','في الطريق للتوصيل','تم التوصيل ✓'];
+function nextPhase(){
+  tripPhase++;
+  if(tripPhase>4){
+    dtab('earnings');
+    tripPhase=1;
+    document.querySelectorAll('.phase').forEach((p,i)=>{p.className='phase'+(i===1?' active':'')});
+    if(online) setTimeout(showIncoming,2000);
+    return;
+  }
+  document.querySelectorAll('.phase').forEach((p,i)=>{
+    if(i+1<tripPhase) p.className='phase done';
+    else if(i+1===tripPhase) p.className='phase active';
+    else p.className='phase';
+    if(i+1>0&&i<phases.length) p.textContent=(i+1<tripPhase?'✓ ':'')+phases[i+1]||p.textContent;
+  });
+}
+</script>
 
 </body>
 </html>
