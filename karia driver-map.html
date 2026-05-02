@@ -1,587 +1,329 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>كرية | السائق</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0}
 
-:root {
-–bg: #0b0d10;
-–panel: #14181d;
-–panel-2: #1c2127;
-–ink: #f4f1ea;
-–muted: #8a8f96;
-–gold: #e0a64a;
-–gold-2: #f6c674;
-–green: #2ecc71;
-–red: #e74c3c;
-–line: rgba(255,255,255,0.06);
-}
-
-html, body {
-height: 100%; width: 100%;
-background: var(–bg);
-color: var(–ink);
-font-family: ‘Cairo’, sans-serif;
-overflow: hidden;
--webkit-tap-highlight-color: transparent;
+:root{
+  --bg:#0b0d10;
+  --panel:#14181d;
+  --panel-2:#1c2127;
+  --ink:#f4f1ea;
+  --muted:#8a8f96;
+  --gold:#e0a64a;
+  --gold-2:#f6c674;
+  --green:#2ecc71;
+  --red:#e74c3c;
+  --line:rgba(255,255,255,0.06);
 }
 
-#map {
-position: absolute; inset: 0;
-background: var(–bg);
-z-index: 1;
+html,body{
+  height:100%;
+  width:100%;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Cairo',sans-serif;
+  overflow:hidden;
 }
 
-/* Dark tile filter */
-.leaflet-tile-pane {
-filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.92) saturate(0.6);
+/* MAP */
+#map{
+  position:absolute;
+  inset:0;
+  z-index:1;
 }
 
-/* Top bar */
-.top-bar {
-position: absolute; top: 0; left: 0; right: 0;
-z-index: 1000;
-padding: 14px 16px;
-background: linear-gradient(to bottom, rgba(11,13,16,0.95) 0%, rgba(11,13,16,0.7) 70%, transparent 100%);
-display: flex;
-justify-content: space-between;
-align-items: center;
-pointer-events: none;
+/* fix leaflet inversion issues */
+.leaflet-tile-pane{
+  filter:invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
 }
-.top-bar > * { pointer-events: auto; }
-
-.brand {
-display: flex; align-items: center; gap: 8px;
-font-weight: 900;
-font-size: 18px;
-letter-spacing: 0.5px;
-}
-.brand-dot {
-width: 10px; height: 10px;
-border-radius: 50%;
-background: var(–gold);
-box-shadow: 0 0 12px var(–gold);
-}
-.brand-text { color: var(–gold-2); }
-.brand-sub { color: var(–muted); font-size: 12px; font-weight: 600; margin-right: 6px; }
-
-.status-pill {
-display: flex; align-items: center; gap: 8px;
-padding: 8px 14px;
-background: var(–panel);
-border: 1px solid var(–line);
-border-radius: 999px;
-font-weight: 700;
-font-size: 13px;
-}
-.status-pill.online { color: var(–green); }
-.status-pill.offline { color: var(–red); }
-.pulse {
-width: 8px; height: 8px;
-border-radius: 50%;
-background: currentColor;
-animation: pulse 2s infinite;
-}
-@keyframes pulse {
-0%, 100% { opacity: 1; transform: scale(1); }
-50% { opacity: 0.4; transform: scale(1.3); }
+.leaflet-marker-icon,
+.leaflet-marker-shadow{
+  filter:none !important;
 }
 
-/* GPS info badge */
-.gps-info {
-position: absolute;
-top: 70px; right: 16px;
-z-index: 1000;
-padding: 8px 12px;
-background: rgba(20,24,29,0.85);
-backdrop-filter: blur(10px);
-border: 1px solid var(–line);
-border-radius: 12px;
-font-size: 11px;
-color: var(–muted);
-font-weight: 600;
-}
-.gps-info b { color: var(–ink); font-weight: 700; }
-
-/* Recenter button */
-.recenter-btn {
-position: absolute;
-bottom: 220px; right: 16px;
-z-index: 1000;
-width: 48px; height: 48px;
-border-radius: 14px;
-background: var(–panel);
-border: 1px solid var(–line);
-color: var(–gold);
-display: flex; align-items: center; justify-content: center;
-cursor: pointer;
-box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-transition: transform 0.15s;
-}
-.recenter-btn:active { transform: scale(0.92); }
-.recenter-btn svg { width: 22px; height: 22px; }
-
-/* Bottom panel */
-.bottom-panel {
-position: absolute;
-bottom: 0; left: 0; right: 0;
-z-index: 1000;
-background: var(–panel);
-border-top: 1px solid var(–line);
-border-radius: 24px 24px 0 0;
-padding: 18px 18px 24px;
-box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+/* TOP BAR */
+.top-bar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.8),transparent);
 }
 
-.panel-handle {
-width: 44px; height: 4px;
-background: var(–line);
-border-radius: 2px;
-margin: 0 auto 14px;
+.brand{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-weight:900;
 }
 
-.metrics-grid {
-display: grid;
-grid-template-columns: 1.2fr 1fr 1fr;
-gap: 10px;
-margin-bottom: 14px;
+.brand-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--gold);
 }
 
-.metric {
-background: var(–panel-2);
-border-radius: 14px;
-padding: 12px 14px;
-border: 1px solid var(–line);
-}
-.metric-label {
-font-size: 11px;
-color: var(–muted);
-font-weight: 600;
-margin-bottom: 4px;
-}
-.metric-value {
-font-size: 22px;
-font-weight: 900;
-color: var(–ink);
-font-feature-settings: “tnum”;
-line-height: 1;
-}
-.metric-value .unit {
-font-size: 11px;
-color: var(–muted);
-font-weight: 600;
-margin-right: 4px;
-}
-.metric.speed .metric-value { color: var(–gold-2); font-size: 28px; }
+.brand-text{color:var(--gold-2)}
 
-.track-btn {
-width: 100%;
-padding: 16px;
-background: var(–gold);
-color: #1a1410;
-border: none;
-border-radius: 14px;
-font-family: inherit;
-font-size: 16px;
-font-weight: 800;
-cursor: pointer;
-transition: transform 0.15s, background 0.2s;
-box-shadow: 0 6px 16px rgba(224,166,74,0.25);
-}
-.track-btn:active { transform: scale(0.98); }
-.track-btn.active {
-background: var(–red);
-color: #fff;
-box-shadow: 0 6px 16px rgba(231,76,60,0.3);
-}
-.track-btn.active::before {
-content: “■ “;
-margin-left: 6px;
+.status-pill{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding:8px 12px;
+  border-radius:999px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  font-size:13px;
 }
 
-/* Driver marker */
-.driver-marker {
-width: 38px; height: 38px;
-background: var(–gold);
-border: 3px solid #1a1410;
-border-radius: 50%;
-display: flex; align-items: center; justify-content: center;
-box-shadow: 0 0 0 4px rgba(224,166,74,0.25), 0 4px 12px rgba(0,0,0,0.4);
-transition: transform 0.3s;
-}
-.driver-marker svg { width: 20px; height: 20px; color: #1a1410; }
+.status-pill.online{color:var(--green)}
+.status-pill.offline{color:var(--red)}
 
-/* Toast */
-.toast {
-position: absolute;
-top: 110px;
-left: 50%;
-transform: translateX(-50%);
-z-index: 2000;
-padding: 10px 18px;
-background: rgba(20,24,29,0.95);
-backdrop-filter: blur(10px);
-border: 1px solid var(–line);
-border-radius: 999px;
-font-size: 13px;
-font-weight: 600;
-color: var(–ink);
-opacity: 0;
-transition: opacity 0.3s;
-pointer-events: none;
+.pulse{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:currentColor;
+  animation:pulse 1.5s infinite;
 }
-.toast.show { opacity: 1; }
-.toast.error { color: var(–red); border-color: rgba(231,76,60,0.3); }
-.toast.success { color: var(–green); border-color: rgba(46,204,113,0.3); }
 
-.leaflet-control-attribution {
-background: rgba(20,24,29,0.7) !important;
-color: var(–muted) !important;
-font-size: 9px !important;
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.3);opacity:.4}
 }
-.leaflet-control-attribution a { color: var(–gold) !important; }
-.leaflet-control-zoom { display: none !important; }
+
+/* GPS INFO */
+.gps-info{
+  position:absolute;
+  top:70px;
+  right:16px;
+  z-index:1000;
+  background:rgba(20,24,29,0.9);
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:12px;
+  border:1px solid var(--line);
+}
+
+/* BUTTON */
+.recenter-btn{
+  position:absolute;
+  bottom:220px;
+  right:16px;
+  z-index:1000;
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--gold);
+}
+
+/* BOTTOM PANEL */
+.bottom-panel{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  background:var(--panel);
+  border-top:1px solid var(--line);
+  padding:16px;
+}
+
+.metrics{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.metric{
+  background:var(--panel-2);
+  padding:10px;
+  border-radius:12px;
+  border:1px solid var(--line);
+}
+
+.metric-value{
+  font-size:20px;
+  font-weight:900;
+}
+
+.metric-label{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.track-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-weight:800;
+  background:var(--gold);
+  color:#000;
+}
+
+.track-btn.active{
+  background:var(--red);
+  color:#fff;
+}
+
+/* DRIVER MARKER */
+.driver-marker{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#000;
+  border:3px solid #111;
+}
 </style>
-
 </head>
+
 <body>
 
 <div id="map"></div>
 
 <div class="top-bar">
   <div class="brand">
-    <span class="brand-dot"></span>
-    <span class="brand-text">كرية</span>
-    <span class="brand-sub">| السائق</span>
+    <div class="brand-dot"></div>
+    <div class="brand-text">كرية</div>
   </div>
-  <div class="status-pill online" id="status-pill">
+
+  <div class="status-pill online" id="status">
     <span class="pulse"></span>
-    <span id="status-text">متصل</span>
+    متصل
   </div>
 </div>
 
-<div class="gps-info" id="gps-info">
-  GPS: <b id="gps-accuracy">--</b> م · <b id="gps-points">0</b> نقطة
+<div class="gps-info">
+  GPS: <b id="acc">--</b> م
 </div>
 
-<button class="recenter-btn" id="recenter-btn" aria-label="توسيط على موقعي">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <line x1="12" y1="2" x2="12" y2="5"/>
-    <line x1="12" y1="19" x2="12" y2="22"/>
-    <line x1="2" y1="12" x2="5" y2="12"/>
-    <line x1="19" y1="12" x2="22" y2="12"/>
-  </svg>
-</button>
-
-<div class="toast" id="toast"></div>
+<button class="recenter-btn" id="center">⌖</button>
 
 <div class="bottom-panel">
-  <div class="panel-handle"></div>
-  <div class="metrics-grid">
-    <div class="metric speed">
+  <div class="metrics">
+    <div class="metric">
       <div class="metric-label">السرعة</div>
-      <div class="metric-value"><span id="speed">0</span><span class="unit">كم/س</span></div>
+      <div class="metric-value"><span id="speed">0</span></div>
     </div>
     <div class="metric">
       <div class="metric-label">المسافة</div>
-      <div class="metric-value"><span id="distance">0.00</span><span class="unit">كم</span></div>
+      <div class="metric-value"><span id="dist">0</span></div>
     </div>
     <div class="metric">
       <div class="metric-label">الوقت</div>
-      <div class="metric-value" id="duration">00:00</div>
+      <div class="metric-value" id="time">00:00</div>
     </div>
   </div>
-  <button class="track-btn" id="track-btn">بدء الرحلة</button>
+
+  <button class="track-btn" id="track">بدء الرحلة</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-(function() {
-  'use strict';
+const map = L.map('map').setView([32.8872,13.1913],13);
 
-  // ==== State ====
-  const state = {
-    map: null,
-    marker: null,
-    accuracyCircle: null,
-    pathLine: null,
-    watchId: null,
-    isTracking: false,
-    isFollowing: true,
-    currentPos: null,
-    pathPoints: [],
-    distance: 0,
-    tripStart: null,
-    tripTimer: null,
-    lastHeading: 0
-  };
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19
+}).addTo(map);
 
-  // Tripoli, Libya as default center
-  const TRIPOLI = [32.8872, 13.1913];
+const icon = L.divIcon({
+  className:"",
+  html:`<div class="driver-marker">🚚</div>`
+});
 
-  // ==== Map setup ====
-  state.map = L.map('map', {
-    zoomControl: false,
-    attributionControl: true
-  }).setView(TRIPOLI, 13);
+let marker = null;
+let watchId = null;
+let tracking = false;
+let path = [];
+let line = null;
+let distance = 0;
+let start = null;
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-  }).addTo(state.map);
+function hav(a,b){
+  const R=6371;
+  const d1=(b[0]-a[0])*Math.PI/180;
+  const d2=(b[1]-a[1])*Math.PI/180;
+  const x=Math.sin(d1/2)**2+
+  Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*
+  Math.sin(d2/2)**2;
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
 
-  // Disable auto-follow when user interacts with map
-  state.map.on('dragstart zoomstart', () => {
-    state.isFollowing = false;
-  });
+function update(pos){
+  const p=[pos.coords.latitude,pos.coords.longitude];
 
-  // ==== Driver marker (custom) ====
-  const driverIcon = L.divIcon({
-    className: '',
-    html: `<div class="driver-marker">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
-      </svg>
-    </div>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19]
-  });
+  document.getElementById("acc").textContent=Math.round(pos.coords.accuracy);
 
-  // ==== UI elements ====
-  const $ = (id) => document.getElementById(id);
-  const ui = {
-    speed: $('speed'),
-    distance: $('distance'),
-    duration: $('duration'),
-    accuracy: $('gps-accuracy'),
-    points: $('gps-points'),
-    statusPill: $('status-pill'),
-    statusText: $('status-text'),
-    trackBtn: $('track-btn'),
-    recenterBtn: $('recenter-btn'),
-    toast: $('toast')
-  };
-
-  // ==== Toast ====
-  let toastTimer;
-  function toast(msg, type = '') {
-    ui.toast.textContent = msg;
-    ui.toast.className = `toast show ${type}`;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      ui.toast.classList.remove('show');
-    }, 2800);
+  if(!marker){
+    marker=L.marker(p,{icon}).addTo(map);
+    map.setView(p,16);
+  }else{
+    marker.setLatLng(p);
   }
 
-  // ==== Status ====
-  function setStatus(online) {
-    if (online) {
-      ui.statusPill.classList.remove('offline');
-      ui.statusPill.classList.add('online');
-      ui.statusText.textContent = 'متصل';
-    } else {
-      ui.statusPill.classList.remove('online');
-      ui.statusPill.classList.add('offline');
-      ui.statusText.textContent = 'غير متصل';
+  if(tracking){
+    if(path.length>0){
+      distance+=hav(path[path.length-1],p);
+      document.getElementById("dist").textContent=distance.toFixed(2);
+    }
+    path.push(p);
+
+    if(!line){
+      line=L.polyline(path,{color:"#e0a64a"}).addTo(map);
+    }else{
+      line.setLatLngs(path);
     }
   }
+}
 
-  // ==== Distance calculation (Haversine) ====
-  function haversine(p1, p2) {
-    const R = 6371;
-    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
-    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
-    const a = Math.sin(dLat/2) ** 2 +
-              Math.cos(p1[0] * Math.PI / 180) *
-              Math.cos(p2[0] * Math.PI / 180) *
-              Math.sin(dLon/2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+function startGPS(){
+  watchId=navigator.geolocation.watchPosition(update);
+}
+
+document.getElementById("track").onclick=()=>{
+  tracking=!tracking;
+
+  if(tracking){
+    path=[];
+    distance=0;
+    start=Date.now();
+    document.getElementById("track").classList.add("active");
+    document.getElementById("track").textContent="إنهاء الرحلة";
+  }else{
+    document.getElementById("track").classList.remove("active");
+    document.getElementById("track").textContent="بدء الرحلة";
   }
+};
 
-  // ==== Position handling ====
-  function onPosition(pos) {
-    setStatus(true);
-    const { latitude, longitude, accuracy, speed, heading } = pos.coords;
-    const point = [latitude, longitude];
-    state.currentPos = point;
-
-    // Update GPS info
-    ui.accuracy.textContent = Math.round(accuracy);
-
-    // Speed in km/h (speed is m/s; null if not moving)
-    const kmh = speed != null ? Math.max(0, Math.round(speed * 3.6)) : 0;
-    ui.speed.textContent = kmh;
-
-    // Marker
-    if (!state.marker) {
-      state.marker = L.marker(point, { icon: driverIcon }).addTo(state.map);
-      state.accuracyCircle = L.circle(point, {
-        radius: accuracy,
-        color: '#e0a64a',
-        fillColor: '#e0a64a',
-        fillOpacity: 0.08,
-        weight: 1
-      }).addTo(state.map);
-      state.map.setView(point, 16);
-    } else {
-      state.marker.setLatLng(point);
-      state.accuracyCircle.setLatLng(point);
-      state.accuracyCircle.setRadius(accuracy);
-    }
-
-    if (state.isFollowing) {
-      state.map.panTo(point, { animate: true, duration: 0.5 });
-    }
-
-    // Tracking trip
-    if (state.isTracking) {
-      const last = state.pathPoints[state.pathPoints.length - 1];
-      if (last) {
-        const segment = haversine(last, point);
-        // Filter noise: ignore micro-movements smaller than accuracy
-        if (segment * 1000 > Math.max(5, accuracy * 0.5)) {
-          state.distance += segment;
-          state.pathPoints.push(point);
-          state.pathLine.setLatLngs(state.pathPoints);
-          ui.distance.textContent = state.distance.toFixed(2);
-        }
-      } else {
-        state.pathPoints.push(point);
-      }
-      ui.points.textContent = state.pathPoints.length;
-    }
-
-    // === Sync with backend ===
-    // For local testing: write to localStorage so customer/admin apps on the same origin can read it.
-    // For production: replace with WebSocket / Firebase / Supabase / your API.
-    try {
-      const payload = {
-        driverId: 'driver-001',
-        lat: latitude,
-        lng: longitude,
-        accuracy,
-        speed: kmh,
-        heading: heading || state.lastHeading,
-        isTracking: state.isTracking,
-        timestamp: Date.now()
-      };
-      localStorage.setItem('karia_driver_location', JSON.stringify(payload));
-      // Hook for real backend:
-      // fetch('/api/location', { method:'POST', body: JSON.stringify(payload) });
-    } catch (e) { /* ignore */ }
-
-    if (heading != null && !isNaN(heading)) state.lastHeading = heading;
+document.getElementById("center").onclick=()=>{
+  if(marker){
+    map.setView(marker.getLatLng(),16);
   }
+};
 
-  function onPositionError(err) {
-    setStatus(false);
-    let msg = 'تعذّر تحديد الموقع';
-    if (err.code === 1) msg = 'الرجاء السماح بالوصول إلى الموقع';
-    if (err.code === 2) msg = 'إشارة GPS غير متوفرة';
-    if (err.code === 3) msg = 'انتهت مهلة تحديد الموقع';
-    toast(msg, 'error');
-  }
-
-  // ==== Start watching position ====
-  function startWatching() {
-    if (!navigator.geolocation) {
-      toast('المتصفح لا يدعم تحديد الموقع', 'error');
-      return;
-    }
-    state.watchId = navigator.geolocation.watchPosition(
-      onPosition,
-      onPositionError,
-      {
-        enableHighAccuracy: true,
-        maximumAge: 1000,
-        timeout: 15000
-      }
-    );
-  }
-
-  // ==== Trip controls ====
-  ui.trackBtn.addEventListener('click', () => {
-    if (!state.isTracking) {
-      // Start trip
-      state.isTracking = true;
-      state.pathPoints = state.currentPos ? [state.currentPos] : [];
-      state.distance = 0;
-      state.tripStart = Date.now();
-
-      state.pathLine = L.polyline(state.pathPoints, {
-        color: '#e0a64a',
-        weight: 5,
-        opacity: 0.9,
-        lineCap: 'round',
-        lineJoin: 'round'
-      }).addTo(state.map);
-
-      ui.trackBtn.classList.add('active');
-      ui.trackBtn.textContent = 'إنهاء الرحلة';
-      ui.distance.textContent = '0.00';
-
-      state.tripTimer = setInterval(() => {
-        const sec = Math.floor((Date.now() - state.tripStart) / 1000);
-        const m = String(Math.floor(sec / 60)).padStart(2, '0');
-        const s = String(sec % 60).padStart(2, '0');
-        ui.duration.textContent = `${m}:${s}`;
-      }, 500);
-
-      toast('بدأت الرحلة', 'success');
-    } else {
-      // End trip
-      state.isTracking = false;
-      clearInterval(state.tripTimer);
-
-      const tripData = {
-        startedAt: state.tripStart,
-        endedAt: Date.now(),
-        distanceKm: +state.distance.toFixed(3),
-        path: state.pathPoints,
-        durationSec: Math.floor((Date.now() - state.tripStart) / 1000)
-      };
-
-      // Save trip history
-      try {
-        const trips = JSON.parse(localStorage.getItem('karia_trips') || '[]');
-        trips.push(tripData);
-        localStorage.setItem('karia_trips', JSON.stringify(trips));
-      } catch(e) {}
-
-      ui.trackBtn.classList.remove('active');
-      ui.trackBtn.textContent = 'بدء الرحلة';
-      toast(`انتهت الرحلة · ${tripData.distanceKm} كم`, 'success');
-    }
-  });
-
-  // Recenter
-  ui.recenterBtn.addEventListener('click', () => {
-    if (state.currentPos) {
-      state.isFollowing = true;
-      state.map.flyTo(state.currentPos, 16, { duration: 0.6 });
-    } else {
-      toast('في انتظار إشارة GPS...', '');
-    }
-  });
-
-  // Network status
-  window.addEventListener('online', () => setStatus(true));
-  window.addEventListener('offline', () => setStatus(false));
-  setStatus(navigator.onLine);
-
-  // Boot
-  startWatching();
-  toast('جارٍ تحديد موقعك...', '');
-
-})();
+startGPS();
 </script>
 
 </body>
