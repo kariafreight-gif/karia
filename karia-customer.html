@@ -1,147 +1,561 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#0D1B2A"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="كرية | زبون"/>
 <title>كرية — تطبيق الزبون</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
-
 <style>
-:root{
-  --bg:#0D1B2A;--nav:#0A1520;--card:#111E2E;--border:#1E3048;
-  --rust:#C0392B;--gold:#D4A017;--green:#27AE60;--smoke:#8A9BB0;--white:#FDFAF4;
+:root {
+  --bg: #0D1B2A; --nav: #0A1520; --card: #111E2E; --border: #1E3048;
+  --rust: #C0392B; --gold: #D4A017; --green: #27AE60; --smoke: #8A9BB0; --white: #FDFAF4;
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;direction:rtl;overflow-x:hidden}
 
-*{box-sizing:border-box;margin:0;padding:0}
+.header{background:var(–nav);border-bottom:1px solid var(–border);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.header h1{font-size:20px;font-weight:900}.header h1 span{color:var(–rust)}
+.header p{font-size:11px;color:var(–smoke);margin-top:2px}
+.badge{border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700}
 
-body{
-  background:var(--bg);
-  font-family:'Cairo',sans-serif;
-  color:var(--white);
-  max-width:430px;
-  margin:auto;
-}
+.screen{display:none;padding:16px 20px 100px}.screen.active{display:block}
+.card{background:var(–card);border:1px solid var(–border);border-radius:16px;padding:18px;margin-bottom:14px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px}
 
-/* HEADER */
-.header{
-  background:var(--nav);
-  border-bottom:1px solid var(--border);
-  padding:14px;
-  display:flex;
-  justify-content:space-between;
-}
+/* Hero */
+.hero{background:linear-gradient(135deg,var(–rust) 0%,#8B1A10 100%);border-radius:20px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:’’;position:absolute;top:-20px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero::after{content:’’;position:absolute;bottom:-30px;right:-10px;width:160px;height:160px;border-radius:50%;background:rgba(0,0,0,.1)}
+.hero-sub{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:4px}
+.hero h2{font-size:26px;font-weight:900;margin-bottom:8px}
+.hero-desc{color:rgba(255,255,255,.85);font-size:13px;line-height:1.7;margin-bottom:20px}
+.btn-white{background:var(–white);color:var(–rust);border:none;border-radius:12px;padding:12px 28px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;position:relative;z-index:1}
 
-/* CARD */
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:14px;
-  margin:10px;
-}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.stat-card{background:var(–card);border:1px solid var(–border);border-radius:14px;padding:14px 8px;text-align:center}
+.stat-val{color:var(–gold);font-size:22px;font-weight:900}
+.stat-lbl{color:var(–smoke);font-size:11px;margin-top:2px}
 
-/* BUTTON */
-.btn{
-  background:var(--rust);
-  color:white;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  width:100%;
-  cursor:pointer;
-  font-family:'Cairo',sans-serif;
-}
+/* Order card */
+.order-row{display:flex;justify-content:space-between;align-items:flex-start}
+.order-id{color:var(–smoke);font-size:11px;margin-bottom:4px}
+.order-route{font-weight:700;font-size:14px;margin-bottom:4px}
+.order-meta{color:var(–smoke);font-size:12px}
+.status-badge{border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;display:inline-block;margin-bottom:6px}
+.order-price{font-size:14px;font-weight:700;color:var(–gold);text-align:center}
 
-/* INPUT */
-.field{
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:var(--bg);
-  color:white;
-  margin-bottom:10px;
-}
+/* Fields */
+.field-label{color:var(–smoke);font-size:12px;letter-spacing:.5px;display:block;margin-bottom:6px}
+select.field,textarea.field{width:100%;background:#0D1B2A;border:1.5px solid var(–border);border-radius:10px;padding:11px 14px;color:#FDFAF4;font-size:14px;font-family:‘Cairo’,sans-serif;direction:rtl;outline:none;appearance:none}
+select.field option{background:#0D1B2A;color:#FDFAF4}
+textarea.field{resize:none}
+
+/* Truck options */
+.truck-opt{background:var(–card);border:2px solid var(–border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.truck-opt.sel{border-color:var(–rust);background:#1A2E42}
+.truck-icon{font-size:30px}
+.truck-info{flex:1}
+.truck-name{font-weight:700;font-size:15px;margin-bottom:3px}
+.truck-cap{color:var(–smoke);font-size:12px}
+.truck-price{font-size:18px;font-weight:900;color:var(–gold)}
+.truck-price small{font-size:11px;font-weight:400}
+
+/* Buttons */
+.btn-primary{width:100%;background:var(–rust);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;transition:opacity .2s}
+.btn-primary:disabled{background:var(–border);color:var(–smoke);cursor:not-allowed}
+.btn-secondary{flex:1;background:transparent;border:1.5px solid var(–border);border-radius:14px;padding:14px;color:var(–smoke);font-size:14px;font-family:‘Cairo’,sans-serif;cursor:pointer}
+.btn-row{display:flex;gap:12px}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.back-btn{background:transparent;border:none;color:var(–smoke);font-size:22px;cursor:pointer}
+
+/* Summary */
+.sum-row{display:flex;justify-content:space-between;margin-bottom:10px}
+.sum-row span:first-child{color:var(–smoke);font-size:13px}
+.sum-row span:last-child{font-weight:600;font-size:13px}
+
+/* Tracking */
+.searching{text-align:center;padding-top:60px}
+.spin{font-size:64px;display:inline-block;animation:spin 1.5s linear infinite;margin-bottom:20px}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.found-hero{background:linear-gradient(135deg,#1A4A2E,#0D2B1A);border-radius:20px;padding:24px;margin-bottom:16px;text-align:center}
+.live-hero{background:linear-gradient(135deg,#1A2E4A,#0D1B2A);border-radius:20px;padding:24px;margin-bottom:16px}
+.live-route{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.fake-map{height:160px;border-radius:16px;margin-bottom:14px;background:linear-gradient(135deg,#0D1F35,#0A2744);position:relative;overflow:hidden}
+.map-block{position:absolute;border-radius:4px;background:#0F2B40;border:1px solid #1A3555}
+.map-truck{position:absolute;bottom:30%;left:20%;width:36px;height:36px;border-radius:50%;background:var(–rust);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px #C0392B88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 16px #C0392B88}50%{box-shadow:0 0 28px #C0392Bcc}}
+.map-dest{position:absolute;top:20%;right:20%;width:28px;height:28px;border-radius:50%;background:var(–green);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px #27AE6088}
+.call-btn{background:var(–green);color:var(–white);border-radius:12px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none;font-family:‘Cairo’,sans-serif}
+.driver-row{display:flex;justify-content:space-between;align-items:center}
+.d-avatar{width:48px;height:48px;border-radius:50%;background:var(–bg);font-size:20px;display:flex;align-items:center;justify-content:center;margin-left:12px}
+
+/* Rating */
+.star-row{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.star{font-size:32px;cursor:pointer;filter:grayscale(1);transition:filter .2s}
+.star.lit{filter:none}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(–nav);border-top:1px solid var(–border);display:flex;justify-content:space-around;padding:10px 0 24px;z-index:100}
+.nav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:‘Cairo’,sans-serif}
+.nav-btn .icon{font-size:22px}
+.nav-btn .label{font-size:11px;color:var(–smoke)}
+.nav-btn.active .label{color:var(–rust);font-weight:700}
+
+.err-msg{color:var(–rust);font-size:13px;text-align:center;margin-bottom:12px;display:none}
 </style>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+<!-- Google Maps -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd_1byT6zXNUKSI2W0pNeztXCqJhfJppE&callback=initMap" async defer></script>
 
 <script>
-const firebaseConfig={
-  apiKey:"YOUR_KEY",
-  databaseURL:"https://your-db.firebaseio.com"
+let map, directionsService, directionsRenderer;
+
+// مناطق طرابلس بالإحداثيات
+const zones = {
+  'سوق الجمعة': {lat: 32.8872, lng: 13.1913},
+  'قرجي': {lat: 32.8773, lng: 13.1654},
+  'تاجوراء': {lat: 32.8867, lng: 13.3572},
+  'سوق الثلاثاء': {lat: 32.8943, lng: 13.1802},
+  'أبو سليم': {lat: 32.8601, lng: 13.2134},
+  'عين زارة': {lat: 32.8234, lng: 13.2345},
+  'فشلوم': {lat: 32.9012, lng: 13.1923},
+  'حي الأندلس': {lat: 32.8756, lng: 13.2234},
+  'السياحية': {lat: 32.9123, lng: 13.2012},
+  'الظهرة': {lat: 32.8645, lng: 13.1756}
 };
 
-firebase.initializeApp(firebaseConfig);
-const db=firebase.database();
-
-let selTruckId=null;
-
-const trucks={
-  pickup:{label:'بيك أب 🛻',price:35},
-  small:{label:'شاحنة صغيرة 🚚',price:65},
-  medium:{label:'شاحنة متوسطة 🚛',price:110}
-};
-
-function selectTruck(id){
-  selTruckId=id;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('real-map'), {
+    center: {lat: 32.8872, lng: 13.1913},
+    zoom: 12,
+    styles: [
+      {elementType:'geometry',stylers:[{color:'#0D1B2A'}]},
+      {elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},
+      {featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}
+    ]
+  });
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer({
+    map: map,
+    polylineOptions: {strokeColor: '#C0392B', strokeWeight: 4}
+  });
 }
 
-function confirmOrder(){
-  if(!selTruckId){
-    alert('اختر نوع المركبة');
-    return;
-  }
-
-  const order={
-    from:document.getElementById('from').value,
-    to:document.getElementById('to').value,
-    truck:trucks[selTruckId].label,
-    price:trucks[selTruckId].price,
-    phone:document.getElementById('phone').value,
-    goods:document.getElementById('goods').value,
-    status:'بانتظار',
-    createdAt:Date.now()
-  };
-
-  db.ref('orders').push(order);
-
-  alert('تم إرسال الطلب');
+function showRoute(from, to) {
+  if(!directionsService || !zones[from] || !zones[to]) return;
+  directionsService.route({
+    origin: zones[from],
+    destination: zones[to],
+    travelMode: google.maps.TravelMode.DRIVING
+  }, (result, status) => {
+    if(status === 'OK') {
+      directionsRenderer.setDirections(result);
+    }
+  });
 }
 </script>
 
-</head>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
+  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: "maria-26135.firebaseapp.com",
+  projectId: "maria-26135",
+  storageBucket: "maria-26135.firebasestorage.app",
+  messagingSenderId: "989218013644",
+  appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+</script>
+
+</head>
 <body>
 
 <div class="header">
-  <h3>كرية 🚚</h3>
+  <div><h1>كرية <span>•</span></h1><p>تطبيق الزبون — طرابلس</p></div>
+  <div class="badge" style="background:#27AE6020;color:var(--green)">● مفتوح</div>
 </div>
 
-<div class="card">
-  <label>من</label>
-  <input id="from" class="field"/>
+<!-- HOME -->
 
-  <label>إلى</label>
-  <input id="to" class="field"/>
+<div class="screen active" id="s-home">
+  <div class="hero">
+    <p class="hero-sub">مرحباً بك في</p>
+    <h2>كرية 🚚</h2>
+    <p class="hero-desc">توصيل البضائع بالشاحنات الصغيرة<br/>داخل مدينة طرابلس</p>
+    <button class="btn-white" onclick="go('book1')">احجز شاحنة الآن</button>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="stat-val">47</div><div class="stat-lbl">سائق نشط</div></div>
+    <div class="stat-card"><div class="stat-val">123</div><div class="stat-lbl">رحلة اليوم</div></div>
+    <div class="stat-card"><div class="stat-val">~15</div><div class="stat-lbl">دقيقة وصول</div></div>
+  </div>
+  <div class="section-title">طلباتي الأخيرة</div>
+  <div class="card">
+    <div class="order-row">
+      <div><div class="order-id">KR-001</div><div class="order-route">سوق الجمعة ← تاجوراء</div><div class="order-meta">بيك أب · محمد الشريف · أمس</div></div>
+      <div style="text-align:center"><span class="status-badge" style="background:#27AE6022;color:var(--green)">مكتملة</span><div class="order-price">35 د.ل</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="order-row">
+      <div><div class="order-id">KR-002</div><div class="order-route">أبو سليم ← فشلوم</div><div class="order-meta">شاحنة صغيرة · خالد · الأسبوع الماضي</div></div>
+      <div style="text-align:center"><span class="status-badge" style="background:#27AE6022;color:var(--green)">مكتملة</span><div class="order-price">65 د.ل</div></div>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <button class="btn" onclick="selectTruck('pickup')">🛻 بيك أب (35)</button>
-  <button class="btn" onclick="selectTruck('small')">🚚 صغيرة (65)</button>
-  <button class="btn" onclick="selectTruck('medium')">🚛 متوسطة (110)</button>
+<!-- BOOK 1: Route -->
+
+<div class="screen" id="s-book1">
+  <div class="step-header"><button class="back-btn" onclick="go('home')">←</button><h2>📍 المسار</h2></div>
+  <div class="card">
+    <label class="field-label">نقطة الانطلاق</label>
+    <select class="field" id="from" onchange="chk1()">
+      <option value="">اختر المنطقة</option>
+      <option>سوق الجمعة</option><option>قرجي</option><option>تاجوراء</option>
+      <option>سوق الثلاثاء</option><option>أبو سليم</option><option>عين زارة</option>
+      <option>فشلوم</option><option>حي الأندلس</option><option>السياحية</option><option>الظهرة</option>
+    </select>
+  </div>
+  <div class="card">
+    <label class="field-label">نقطة الوصول</label>
+    <select class="field" id="to" onchange="chk1()">
+      <option value="">اختر المنطقة</option>
+      <option>سوق الجمعة</option><option>قرجي</option><option>تاجوراء</option>
+      <option>سوق الثلاثاء</option><option>أبو سليم</option><option>عين زارة</option>
+      <option>فشلوم</option><option>حي الأندلس</option><option>السياحية</option><option>الظهرة</option>
+    </select>
+  </div>
+  <p class="err-msg" id="same-err">⚠ نقطة الانطلاق والوصول متطابقتان</p>
+  <button class="btn-primary" id="btn1" disabled onclick="go('book2')">التالي →</button>
 </div>
 
-<div class="card">
-  <input id="goods" class="field" placeholder="وصف البضاعة"/>
-  <input id="phone" class="field" placeholder="رقم الهاتف"/>
+<!-- BOOK 2: Truck -->
+
+<div class="screen" id="s-book2">
+  <div class="step-header"><button class="back-btn" onclick="go('book1')">←</button><h2>🚛 نوع المركبة</h2></div>
+  <div class="truck-opt" onclick="selTruck('pickup',this)">
+    <div class="truck-icon">🛻</div>
+    <div class="truck-info"><div class="truck-name">بيك أب</div><div class="truck-cap">حتى 1 طن · مناسب للأثاث والصناديق</div></div>
+    <div class="truck-price">35<small> د.ل</small></div>
+  </div>
+  <div class="truck-opt" onclick="selTruck('small',this)">
+    <div class="truck-icon">🚚</div>
+    <div class="truck-info"><div class="truck-name">شاحنة صغيرة</div><div class="truck-cap">حتى 3 طن · مواد بناء وبضائع</div></div>
+    <div class="truck-price">65<small> د.ل</small></div>
+  </div>
+  <div class="truck-opt" onclick="selTruck('medium',this)">
+    <div class="truck-icon">🚛</div>
+    <div class="truck-info"><div class="truck-name">شاحنة متوسطة</div><div class="truck-cap">حتى 7 طن · شحن تجاري كبير</div></div>
+    <div class="truck-price">110<small> د.ل</small></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="go('book1')">رجوع</button>
+    <button class="btn-primary" id="btn2" disabled style="flex:2" onclick="go('book3')">التالي →</button>
+  </div>
 </div>
 
-<div class="card">
-  <button class="btn" onclick="confirmOrder()">تأكيد الطلب</button>
+<!-- BOOK 3: Goods + Summary -->
+
+<div class="screen" id="s-book3">
+  <div class="step-header"><button class="back-btn" onclick="go('book2')">←</button><h2>📦 البضاعة والتأكيد</h2></div>
+  <div class="card">
+    <label class="field-label">وصف البضاعة</label>
+    <textarea class="field" id="goods" rows="3" placeholder="مثال: أثاث منزلي، مواد بناء، بضائع تجارية..." oninput="chk3()"></textarea>
+  </div>
+  <div class="card">
+    <label class="field-label">رقم التواصل</label>
+    <input type="tel" class="field" id="phone" placeholder="09xxxxxxxx" oninput="chk3()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none"/>
+  </div>
+  <div class="card" style="background:#0A1520">
+    <div style="color:var(--gold);font-weight:700;margin-bottom:12px;font-size:14px">📋 ملخص الطلب</div>
+    <div class="sum-row"><span>من</span><span id="s-from">—</span></div>
+    <div class="sum-row"><span>إلى</span><span id="s-to">—</span></div>
+    <div class="sum-row"><span>المركبة</span><span id="s-truck">—</span></div>
+    <div class="sum-row" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px">
+      <span style="font-weight:700">الإجمالي</span><span id="s-price" style="color:var(--gold);font-weight:900;font-size:16px">—</span>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="go('book2')">رجوع</button>
+    <button class="btn-primary" id="btn3" disabled style="flex:2" onclick="confirm()">✓ تأكيد الطلب</button>
+  </div>
 </div>
+
+<!-- TRACKING: Searching -->
+
+<div class="screen" id="s-searching">
+  <div class="searching">
+    <div class="spin">🔍</div>
+    <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">جاري البحث عن سائق...</h3>
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:20px">نبحث في المنطقة المحددة</p>
+    <div class="card" style="text-align:right;max-width:280px;margin:0 auto">
+      <div class="sum-row"><span>من</span><span id="t-from">—</span></div>
+      <div class="sum-row"><span>إلى</span><span id="t-to">—</span></div>
+      <div class="sum-row"><span>السعر</span><span id="t-price" style="color:var(--gold)">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKING: Found -->
+
+<div class="screen" id="s-found">
+  <div class="found-hero">
+    <div style="color:var(--green);font-size:13px;margin-bottom:8px">✅ تم العثور على سائق</div>
+    <div style="font-size:20px;font-weight:900;margin-bottom:4px">عمر القذافي</div>
+    <div style="color:var(--smoke);font-size:13px;margin-bottom:12px">⭐ 4.8 · طرابلس 2234 أ</div>
+    <div style="color:var(--gold);font-size:22px;font-weight:900">وصول خلال 15 دقيقة</div>
+  </div>
+  <div class="card">
+    <div class="sum-row"><span>من</span><span id="f-from">—</span></div>
+    <div class="sum-row"><span>إلى</span><span id="f-to">—</span></div>
+    <div class="sum-row"><span>المركبة</span><span id="f-truck">—</span></div>
+    <div class="sum-row"><span>السعر</span><span id="f-price" style="color:var(--gold)">—</span></div>
+  </div>
+</div>
+
+<!-- TRACKING: Live -->
+
+<div class="screen" id="s-live">
+  <div class="live-hero">
+    <div style="color:var(--gold);font-size:13px;margin-bottom:4px">🚛 الشاحنة في الطريق</div>
+    <div class="live-route">
+      <div><p style="font-weight:700;font-size:15px" id="l-from">—</p><p style="color:var(--smoke);font-size:12px;margin-top:2px">انطلاق</p></div>
+      <div style="color:var(--rust);font-size:24px">→</div>
+      <div style="text-align:left"><p style="font-weight:700;font-size:15px" id="l-to">—</p><p style="color:var(--smoke);font-size:12px;margin-top:2px">وجهة</p></div>
+    </div>
+  </div>
+  <div id="real-map" style="height:220px;border-radius:16px;margin-bottom:14px;overflow:hidden"></div>
+  <div class="card">
+    <div class="driver-row">
+      <div style="display:flex;align-items:center">
+        <div class="d-avatar" style="margin-left:12px">👤</div>
+        <div><div style="font-weight:700;margin-bottom:3px">عمر القذافي</div><div style="color:var(--smoke);font-size:12px">⭐ 4.8 · طرابلس 2234 أ</div></div>
+      </div>
+      <a href="tel:+218913456789" class="call-btn">📞 اتصال</a>
+    </div>
+  </div>
+  <button class="btn-primary" onclick="go('rate')" style="margin-top:4px">تم الاستلام ✓</button>
+</div>
+
+<!-- RATE -->
+
+<div class="screen" id="s-rate">
+  <div style="text-align:center;padding-top:40px">
+    <div style="font-size:56px;margin-bottom:16px">🎉</div>
+    <h3 style="font-size:20px;font-weight:900;margin-bottom:8px">تم التوصيل بنجاح!</h3>
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:24px">كيف كانت تجربتك مع السائق؟</p>
+    <div class="star-row" id="stars">
+      <span class="star" onclick="rate(1)">⭐</span>
+      <span class="star" onclick="rate(2)">⭐</span>
+      <span class="star" onclick="rate(3)">⭐</span>
+      <span class="star" onclick="rate(4)">⭐</span>
+      <span class="star" onclick="rate(5)">⭐</span>
+    </div>
+    <div class="card" style="margin:0 0 16px">
+      <textarea class="field" rows="3" placeholder="تعليق اختياري..." style="width:100%"></textarea>
+    </div>
+    <button class="btn-primary" onclick="go('home')">إرسال التقييم والعودة</button>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+
+<div class="screen" id="s-calc">
+  <div class="section-title">🧮 حاسبة السعر</div>
+  <div class="card">
+    <label class="field-label">نوع المركبة</label>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div class="truck-opt" onclick="calcSelTruck('pickup',this,15,3)">
+        <div class="truck-icon">🛻</div>
+        <div class="truck-info"><div class="truck-name">بيك أب</div><div class="truck-cap">15 د.ل بداية + 3 د.ل/كم</div></div>
+      </div>
+      <div class="truck-opt" onclick="calcSelTruck('small',this,25,5)">
+        <div class="truck-icon">🚚</div>
+        <div class="truck-info"><div class="truck-name">شاحنة صغيرة</div><div class="truck-cap">25 د.ل بداية + 5 د.ل/كم</div></div>
+      </div>
+      <div class="truck-opt" onclick="calcSelTruck('medium',this,40,8)">
+        <div class="truck-icon">🚛</div>
+        <div class="truck-info"><div class="truck-name">شاحنة متوسطة</div><div class="truck-cap">40 د.ل بداية + 8 د.ل/كم</div></div>
+      </div>
+    </div>
+    <label class="field-label">المسافة بالكيلومتر</label>
+    <input type="number" id="calc-km" min="1" max="100" placeholder="مثال: 10" oninput="calcPrice()"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:18px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;margin-bottom:16px"/>
+  </div>
+
+  <div class="card" id="calc-result" style="display:none;background:#0A1520;text-align:center">
+    <p style="color:var(--smoke);font-size:13px;margin-bottom:8px">السعر التقديري</p>
+    <p id="calc-total" style="color:var(--gold);font-size:42px;font-weight:900;margin-bottom:4px">0</p>
+    <p style="color:var(--smoke);font-size:12px">دينار ليبي</p>
+    <div style="border-top:1px solid var(--border);margin:14px 0"></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="color:var(--smoke);font-size:13px">سعر البداية</span>
+      <span id="calc-base" style="font-size:13px;font-weight:600">—</span>
+    </div>
+    <div style="display:flex;justify-content:space-between">
+      <span style="color:var(--smoke);font-size:13px">سعر المسافة</span>
+      <span id="calc-dist" style="font-size:13px;font-weight:600">—</span>
+    </div>
+  </div>
+
+<button class="btn-primary" onclick="go('book1')" style="margin-top:4px">احجز الآن بهذا السعر</button>
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="screen" id="s-profile">
+  <div style="text-align:center;padding:30px 0 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:var(--card);border:3px solid var(--rust);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px">👤</div>
+    <h3 style="font-size:18px;font-weight:900">فراج المبروك</h3>
+    <p style="color:var(--smoke);font-size:13px;margin-top:4px">+218 91 234 5678</p>
+  </div>
+  <div class="stats" style="margin-bottom:20px">
+    <div class="stat-card"><div class="stat-val">12</div><div class="stat-lbl">رحلة</div></div>
+    <div class="stat-card"><div class="stat-val">4.9</div><div class="stat-lbl">تقييمي</div></div>
+    <div class="stat-card"><div class="stat-val">380</div><div class="stat-lbl">د.ل أجمالي</div></div>
+  </div>
+  <div class="section-title">الإعدادات</div>
+  <div class="card" style="cursor:pointer" onclick="alert('قريباً')">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span>الإشعارات</span><span style="color:var(--smoke)">←</span></div>
+  </div>
+  <div class="card" style="cursor:pointer" onclick="alert('قريباً')">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span>اللغة</span><span style="color:var(--smoke)">العربية ←</span></div>
+  </div>
+  <div class="card" style="cursor:pointer;border-color:#C0392B33" onclick="alert('تم تسجيل الخروج')">
+    <div style="color:var(--rust);text-align:center;font-weight:700">تسجيل الخروج</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav" id="bnav">
+  <button class="nav-btn active" id="nb-home" onclick="tab('home')"><span class="icon">🏠</span><span class="label">الرئيسية</span></button>
+  <button class="nav-btn" id="nb-book1" onclick="tab('book1')"><span class="icon">➕</span><span class="label">حجز</span></button>
+  <button class="nav-btn" id="nb-calc" onclick="tab('calc')"><span class="icon">🧮</span><span class="label">الأسعار</span></button>
+  <button class="nav-btn" id="nb-profile" onclick="tab('profile')"><span class="icon">👤</span><span class="label">حسابي</span></button>
+</div>
+
+<script>
+const trucks={pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
+let calcBase=0, calcPerKm=0;
+function calcSelTruck(id,el,base,perKm){
+  document.querySelectorAll('#s-calc .truck-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  calcBase=base; calcPerKm=perKm;
+  calcPrice();
+}
+function calcPrice(){
+  const km=parseFloat(document.getElementById('calc-km').value)||0;
+  if(!calcBase||!km){document.getElementById('calc-result').style.display='none';return;}
+  const dist=km*calcPerKm;
+  const total=calcBase+dist;
+  document.getElementById('calc-result').style.display='block';
+  document.getElementById('calc-total').textContent=total;
+  document.getElementById('calc-base').textContent=calcBase+' د.ل';
+  document.getElementById('calc-dist').textContent=dist+' د.ل ('+km+' كم × '+calcPerKm+')';
+}
+
+const noNavScreens=['book1','book2','book3','searching','found','live','rate'];
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('bnav').style.display=noNavScreens.includes(id)?'none':'flex';
+  if(id==='book3') fillSummary();
+  if(id==='searching') startTracking();
+  window.scrollTo(0,0);
+}
+function tab(id){
+  go(id);
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nb-'+id);
+  if(nb) nb.classList.add('active');
+}
+function chk1(){
+  const f=document.getElementById('from').value,t=document.getElementById('to').value;
+  const err=document.getElementById('same-err'),btn=document.getElementById('btn1');
+  if(f&&t&&f===t){err.style.display='block';btn.disabled=true;}
+  else if(f&&t){err.style.display='none';btn.disabled=false;}
+  else{err.style.display='none';btn.disabled=true;}
+}
+function selTruck(id,el){
+  document.querySelectorAll('.truck-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); selTruckId=id;
+  document.getElementById('btn2').disabled=false;
+}
+function chk3(){
+  const g=document.getElementById('goods').value.trim();
+  const p=document.getElementById('phone').value.trim();
+  document.getElementById('btn3').disabled=!(g.length>2&&p.length>6);
+  fillSummary();
+}
+function fillSummary(){
+  const f=document.getElementById('from').value||'—';
+  const t=document.getElementById('to').value||'—';
+  const tk=trucks[selTruckId]||{};
+  document.getElementById('s-from').textContent=f;
+  document.getElementById('s-to').textContent=t;
+  document.getElementById('s-truck').textContent=tk.label||'—';
+  document.getElementById('s-price').textContent=tk.price||'—';
+}
+function confirm(){
+  const f=document.getElementById('from').value;
+  const t=document.getElementById('to').value;
+  const tk=trucks[selTruckId]||{};
+  const phone=document.getElementById('phone').value;
+  const goods=document.getElementById('goods').value;
+  // حفظ الطلب في Firebase
+  const order = {
+    from: f,
+    to: t,
+    truck: tk.label||'—',
+    price: tk.price||'—',
+    phone: phone,
+    goods: goods,
+    status: 'بانتظار',
+    time: new Date().toLocaleString('ar-LY'),
+    timestamp: Date.now()
+  };
+  const newOrder = db.ref('orders').push();
+  newOrder.set(order).then(()=>{
+    console.log('تم حفظ الطلب:', newOrder.key);
+  });
+  ['t-from','f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
+  ['t-to','f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
+  ['t-price','f-price'].forEach(id=>document.getElementById(id).textContent=tk.price||'—');
+  document.getElementById('f-truck').textContent=tk.label||'—';
+  go('searching');
+}
+function startTracking(){
+  setTimeout(()=>go('found'),2500);
+  setTimeout(()=>{
+    go('live');
+    const f=document.getElementById('from').value;
+    const t=document.getElementById('to').value;
+    setTimeout(()=>showRoute(f,t), 500);
+  },5500);
+}
+function rate(n){
+  document.querySelectorAll('.star').forEach((s,i)=>{
+    s.classList.toggle('lit',i<n);
+  });
+}
+</script>
 
 </body>
 </html>
