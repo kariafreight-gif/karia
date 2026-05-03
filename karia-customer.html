@@ -188,31 +188,44 @@ const db = firebase.database();
   <div class="badge" style="background:#27AE6020;color:var(--green)">● مفتوح</div>
 </div>
 
+<!-- REGISTRATION -->
+
+<div class="screen active" id="s-register">
+  <div style="text-align:center;padding:40px 0 24px">
+    <div style="font-size:56px;margin-bottom:12px">🚚</div>
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:6px">مرحباً في كرية</h2>
+    <p style="color:var(--smoke);font-size:13px">أدخل بياناتك للبدء</p>
+  </div>
+  <div class="card">
+    <label class="field-label">الاسم الكامل</label>
+    <input type="text" class="field" id="creg-name" placeholder="مثال: فرج المبروك" oninput="chkCReg()"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;margin-bottom:12px"/>
+    <label class="field-label">رقم الهاتف</label>
+    <input type="tel" class="field" id="creg-phone" placeholder="09xxxxxxxx" oninput="chkCReg()"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none"/>
+  </div>
+  <button class="btn-primary" id="creg-btn" disabled onclick="registerCustomer()">ابدأ الاستخدام ✓</button>
+</div>
+
 <!-- HOME -->
 
-<div class="screen active" id="s-home">
+<div class="screen" id="s-home">
   <div class="hero">
-    <p class="hero-sub">مرحباً بك في</p>
+    <p class="hero-sub">مرحباً <span id="customer-name">بك</span> في</p>
     <h2>كرية 🚚</h2>
     <p class="hero-desc">توصيل البضائع بالشاحنات الصغيرة<br/>داخل مدينة طرابلس</p>
     <button class="btn-white" onclick="go('book1')">احجز شاحنة الآن</button>
   </div>
   <div class="stats">
-    <div class="stat-card"><div class="stat-val">47</div><div class="stat-lbl">سائق نشط</div></div>
-    <div class="stat-card"><div class="stat-val">123</div><div class="stat-lbl">رحلة اليوم</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-drivers">--</div><div class="stat-lbl">سائق نشط</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-trips">--</div><div class="stat-lbl">رحلة اليوم</div></div>
     <div class="stat-card"><div class="stat-val">~15</div><div class="stat-lbl">دقيقة وصول</div></div>
   </div>
   <div class="section-title">طلباتي الأخيرة</div>
-  <div class="card">
-    <div class="order-row">
-      <div><div class="order-id">KR-001</div><div class="order-route">سوق الجمعة ← تاجوراء</div><div class="order-meta">بيك أب · محمد الشريف · أمس</div></div>
-      <div style="text-align:center"><span class="status-badge" style="background:#27AE6022;color:var(--green)">مكتملة</span><div class="order-price">35 د.ل</div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="order-row">
-      <div><div class="order-id">KR-002</div><div class="order-route">أبو سليم ← فشلوم</div><div class="order-meta">شاحنة صغيرة · خالد · الأسبوع الماضي</div></div>
-      <div style="text-align:center"><span class="status-badge" style="background:#27AE6022;color:var(--green)">مكتملة</span><div class="order-price">65 د.ل</div></div>
+  <div id="my-orders">
+    <div class="card" style="text-align:center;color:var(--smoke);padding:30px">
+      <div style="font-size:36px;margin-bottom:10px">📦</div>
+      <p>لا توجد طلبات بعد</p>
     </div>
   </div>
 </div>
@@ -451,6 +464,86 @@ const db = firebase.database();
 </div>
 
 <script>
+// Customer Registration
+function chkCReg(){
+  const n=document.getElementById('creg-name').value.trim();
+  const p=document.getElementById('creg-phone').value.trim();
+  document.getElementById('creg-btn').disabled=!(n.length>2&&p.length>7);
+}
+
+function registerCustomer(){
+  const name=document.getElementById('creg-name').value.trim();
+  const phone=document.getElementById('creg-phone').value.trim();
+  const customerId='customer_'+Date.now();
+  const customer={name,phone,joinDate:new Date().toLocaleDateString('ar-LY'),timestamp:Date.now()};
+  db.ref('customers/'+customerId).set(customer).then(()=>{
+    localStorage.setItem('kariaCustomerId', customerId);
+    localStorage.setItem('kariaCustomerName', name);
+    localStorage.setItem('kariaCustomerPhone', phone);
+    startApp(name, customerId);
+  });
+}
+
+function startApp(name, customerId){
+  document.getElementById('s-register').classList.remove('active');
+  document.getElementById('s-home').classList.add('active');
+  document.getElementById('customer-name').textContent = name;
+  loadStats();
+  loadMyOrders(customerId);
+}
+
+function loadStats(){
+  db.ref('drivers').on('value', snap=>{
+    let active=0;
+    snap.forEach(d=>{ if(d.val().status==='متاح') active++; });
+    document.getElementById('stat-drivers').textContent = active||'--';
+  });
+  db.ref('orders').orderByChild('timestamp').limitToLast(100).on('value', snap=>{
+    const today=new Date().toLocaleDateString('ar-LY');
+    let count=0;
+    snap.forEach(o=>{ if(o.val().time&&o.val().time.includes(today.split('/')[0])) count++; });
+    document.getElementById('stat-trips').textContent = snap.numChildren()||'--';
+  });
+}
+
+function loadMyOrders(customerId){
+  const phone=localStorage.getItem('kariaCustomerPhone');
+  if(!phone) return;
+  db.ref('orders').orderByChild('phone').equalTo(phone).limitToLast(5).on('value', snap=>{
+    const orders=[];
+    snap.forEach(o=>orders.unshift({id:o.key,...o.val()}));
+    const container=document.getElementById('my-orders');
+    if(orders.length===0){
+      container.innerHTML='<div class="card" style="text-align:center;color:var(--smoke);padding:30px"><div style="font-size:36px;margin-bottom:10px">📦</div><p>لا توجد طلبات بعد</p></div>';
+      return;
+    }
+    const sc={'بانتظار':'#D4A017','جارية':'#27AE60','مكتملة':'#8A9BB0','ملغاة':'#C0392B'};
+    container.innerHTML=orders.map(o=>`
+      <div class="card">
+        <div class="order-row">
+          <div>
+            <div class="order-id">${o.id.slice(-6).toUpperCase()}</div>
+            <div class="order-route">${o.from} ← ${o.to}</div>
+            <div class="order-meta">${o.truck} · ${o.time||''}</div>
+          </div>
+          <div style="text-align:center">
+            <span class="status-badge" style="background:${sc[o.status]||'#8A9BB0'}22;color:${sc[o.status]||'#8A9BB0'}">${o.status}</span>
+            <div class="order-price">${o.price}</div>
+          </div>
+        </div>
+      </div>`).join('');
+  });
+}
+
+// تحقق إذا مسجل مسبقاً
+window.addEventListener('load',()=>{
+  const savedId=localStorage.getItem('kariaCustomerId');
+  const savedName=localStorage.getItem('kariaCustomerName');
+  if(savedId&&savedName){
+    startApp(savedName, savedId);
+  }
+});
+
 const trucks={pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
 let calcBase=0, calcPerKm=0;
 function calcSelTruck(id,el,base,perKm){
