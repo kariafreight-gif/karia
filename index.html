@@ -1032,56 +1032,54 @@ function loadDriverMap(from, to){
 }
 function showRoute(from,to){
   if(!map)return;
-  // إذا عندنا إحداثيات GPS للزبون نستخدمها
   const origin = customerLat&&customerLng ? {lat:customerLat,lng:customerLng} : zones[from];
-  const dest = zones[to] || null;
 
-  // علامة الزبون
-  if(origin){
-    new google.maps.Marker({
-      position:origin,
-      map:map,
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#C0392B',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-      title:'موقعك'
-    });
-    map.setCenter(origin);
-    map.setZoom(14);
-  }
-
-  // علامة الوجهة
-  if(dest){
-    new google.maps.Marker({
-      position:dest,
-      map:map,
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-      title:'الوجهة'
+  if(zones[to]){
+    drawRoute(origin, zones[to]);
+  } else {
+    // تحويل العنوان النصي لإحداثيات
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({address: to + '، طرابلس، ليبيا'}, (results, status)=>{
+      if(status==='OK'&&results[0]){
+        drawRoute(origin, results[0].geometry.location);
+      } else {
+        drawRoute(origin, {lat:32.8872,lng:13.1913});
+      }
     });
   }
+}
 
-  // رسم خط مباشر بين النقطتين إذا كلاهما موجود
-  if(origin&&dest){
-    new google.maps.Polyline({
-      path:[origin,dest],
-      geodesic:true,
-      strokeColor:'#C0392B',
-      strokeOpacity:0.7,
-      strokeWeight:3,
-      map:map
-    });
-    // تكييف الخريطة لتظهر كلا النقطتين
-    const bounds=new google.maps.LatLngBounds();
-    bounds.extend(origin);
-    bounds.extend(dest);
-    map.fitBounds(bounds);
-  }
+function drawRoute(origin, dest){
+  if(!origin||!dest)return;
 
-  // محاولة رسم المسار الحقيقي إذا Directions API يعمل
-  if(directionsService&&origin&&dest){
+  new google.maps.Marker({
+    position:origin, map:map,
+    icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#C0392B',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
+    title:'موقعك'
+  });
+
+  new google.maps.Marker({
+    position:dest, map:map,
+    icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
+    title:'الوجهة'
+  });
+
+  if(directionsService){
     directionsService.route({
-      origin,destination:dest,
+      origin, destination:dest,
       travelMode:google.maps.TravelMode.DRIVING
     },(result,status)=>{
-      if(status==='OK'&&directionsRenderer) directionsRenderer.setDirections(result);
+      if(status==='OK'&&directionsRenderer){
+        directionsRenderer.setDirections(result);
+      } else {
+        new google.maps.Polyline({
+          path:[origin,dest], geodesic:true,
+          strokeColor:'#C0392B', strokeOpacity:0.8, strokeWeight:4, map:map
+        });
+        const bounds=new google.maps.LatLngBounds();
+        bounds.extend(origin); bounds.extend(dest);
+        map.fitBounds(bounds);
+      }
     });
   }
 }
