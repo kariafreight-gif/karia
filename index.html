@@ -263,23 +263,22 @@ textarea.field{resize:none}
   <div class="step-header"><button class="back-btn" onclick="cgo('chome')">←</button><h2>📍 المسار</h2></div>
   <div class="card">
     <label class="field-label">نقطة الانطلاق</label>
-    <select class="field" id="from" onchange="chk1()">
-      <option value="">اختر المنطقة</option>
-      <option>الكريمية</option><option>سوق الجمعة</option><option>قرجي</option>
-      <option>تاجوراء</option><option>سوق الثلاثاء</option><option>أبو سليم</option>
-      <option>عين زارة</option><option>فشلوم</option><option>حي الأندلس</option>
-      <option>السياحية</option><option>الظهرة</option><option>بئر اسطى ميلاد</option>
-    </select>
+    <button id="gps-btn" onclick="getMyLocation()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--smoke);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;cursor:pointer;text-align:right;display:flex;align-items:center;gap:10px;justify-content:flex-end">
+      <span id="gps-txt">📍 استخدم موقعي الحالي</span>
+    </button>
+    <p id="gps-address" style="color:var(--green);font-size:12px;margin-top:6px;text-align:right;display:none"></p>
   </div>
   <div class="card">
     <label class="field-label">نقطة الوصول</label>
-    <select class="field" id="to" onchange="chk1()">
-      <option value="">اختر المنطقة</option>
-      <option>الكريمية</option><option>سوق الجمعة</option><option>قرجي</option>
-      <option>تاجوراء</option><option>سوق الثلاثاء</option><option>أبو سليم</option>
-      <option>عين زارة</option><option>فشلوم</option><option>حي الأندلس</option>
-      <option>السياحية</option><option>الظهرة</option><option>بئر اسطى ميلاد</option>
-    </select>
+    <input type="text" class="field" id="to" placeholder="أدخل العنوان أو المنطقة" oninput="chk1()" style="margin-bottom:8px"/>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+      <button onclick="setTo('سوق الجمعة')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">سوق الجمعة</button>
+      <button onclick="setTo('تاجوراء')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">تاجوراء</button>
+      <button onclick="setTo('أبو سليم')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">أبو سليم</button>
+      <button onclick="setTo('قرجي')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">قرجي</button>
+      <button onclick="setTo('فشلوم')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">فشلوم</button>
+      <button onclick="setTo('الكريمية')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">الكريمية</button>
+    </div>
   </div>
   <p class="err-msg" id="same-err">⚠ نقطة الانطلاق والوصول متطابقتان</p>
   <button class="btn-primary" id="btn1" disabled onclick="cgo('book2')">التالي →</button>
@@ -612,6 +611,37 @@ textarea.field{resize:none}
 </div><!-- end driver-app -->
 
 <script>
+let driverLocationInterval=null;
+function startDriverLocationTracking(driverId){
+  if(!driverId)return;
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      db.ref('drivers/'+driverId).update({
+        lat:pos.coords.latitude,
+        lng:pos.coords.longitude,
+        lastSeen:Date.now()
+      });
+    });
+    // تحديث كل 30 ثانية
+    driverLocationInterval=setInterval(()=>{
+      navigator.geolocation.getCurrentPosition(pos=>{
+        db.ref('drivers/'+driverId).update({
+          lat:pos.coords.latitude,
+          lng:pos.coords.longitude,
+          lastSeen:Date.now()
+        });
+      });
+    },30000);
+  }
+}
+
+function stopDriverLocationTracking(){
+  if(driverLocationInterval){
+    clearInterval(driverLocationInterval);
+    driverLocationInterval=null;
+  }
+}
+
 // ===== OFFLINE SUPPORT =====
 let isOnline = navigator.onLine;
 let pendingOrders = JSON.parse(localStorage.getItem('karia_pending_orders')||'[]');
@@ -762,12 +792,75 @@ function logoutCustomer(){
   selectRole(null);
 }
 
+let customerLat=null, customerLng=null, customerAddress='';
+
+function getMyLocation(){
+  const btn=document.getElementById('gps-btn');
+  const txt=document.getElementById('gps-txt');
+  txt.textContent='⏳ جاري تحديد موقعك...';
+  btn.style.color='var(--gold)';
+
+  if(!navigator.geolocation){
+    txt.textContent='⚠ GPS غير متاح';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(pos=>{
+    customerLat=pos.coords.latitude;
+    customerLng=pos.coords.longitude;
+
+    // عكس الإحداثيات لعنوان نصي
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${customerLat}&lon=${customerLng}&format=json&accept-language=ar`)
+      .then(r=>r.json())
+      .then(data=>{
+        const addr=data.address;
+        customerAddress=addr.suburb||addr.neighbourhood||addr.quarter||addr.city_district||addr.road||'موقعك الحالي';
+        txt.textContent='✅ '+customerAddress;
+        btn.style.color='var(--green)';
+        btn.style.borderColor='var(--green)';
+        document.getElementById('gps-address').style.display='block';
+        document.getElementById('gps-address').textContent=`${customerLat.toFixed(5)}, ${customerLng.toFixed(5)}`;
+        chk1();
+      })
+      .catch(()=>{
+        customerAddress='موقعك الحالي';
+        txt.textContent='✅ تم تحديد موقعك';
+        btn.style.color='var(--green)';
+        btn.style.borderColor='var(--green)';
+        chk1();
+      });
+  }, err=>{
+    txt.textContent='⚠ لم يتم السماح بالوصول للموقع';
+    btn.style.color='var(--rust)';
+  },{enableHighAccuracy:true,timeout:10000});
+}
+
+function setTo(zone){
+  document.getElementById('to').value=zone;
+  // تحديث لون الأزرار
+  document.querySelectorAll('#s-book1 button[onclick^="setTo"]').forEach(b=>{
+    b.style.background='var(--card)';
+    b.style.color='var(--smoke)';
+    b.style.borderColor='var(--border)';
+  });
+  event.target.style.background='var(--rust)';
+  event.target.style.color='white';
+  event.target.style.borderColor='var(--rust)';
+  chk1();
+}
+
 function chk1(){
-  const f=document.getElementById('from').value,t=document.getElementById('to').value;
-  const err=document.getElementById('same-err'),btn=document.getElementById('btn1');
-  if(f&&t&&f===t){err.style.display='block';btn.disabled=true;}
-  else if(f&&t){err.style.display='none';btn.disabled=false;}
-  else{err.style.display='none';btn.disabled=true;}
+  const from=customerAddress||customerLat;
+  const t=document.getElementById('to').value.trim();
+  document.getElementById('btn1').disabled=!(from&&t);
+}
+
+function setTo(zone){
+  document.getElementById('to').value=zone;
+  document.querySelectorAll('#s-book1 .zone-btn').forEach(b=>{
+    b.style.background='var(--card)';b.style.color='var(--smoke)';b.style.borderColor='var(--border)';
+  });
+  chk1();
 }
 function selTruck(id,el){
   document.querySelectorAll('.truck-opt').forEach(o=>o.classList.remove('sel'));
@@ -790,12 +883,16 @@ function fillSummary(){
   document.getElementById('s-price').textContent=tk.price||'—';
 }
 function confirmOrder(){
-  const f=document.getElementById('from').value;
+  const f=customerAddress||'موقع الزبون';
   const t=document.getElementById('to').value;
   const tk=trucks[selTruckId]||{};
   const phone=document.getElementById('cphone').value;
   const goods=document.getElementById('goods').value;
-  const order={from:f,to:t,truck:tk.label||'—',price:tk.price||'—',phone,goods,
+  const order={
+    from: customerAddress||'موقع الزبون',
+    fromLat: customerLat,
+    fromLng: customerLng,
+    to:t,truck:tk.label||'—',price:tk.price||'—',phone,goods,
     customerName:localStorage.getItem('kariaCustomerName')||'—',
     status:'بانتظار',time:new Date().toLocaleString('ar-LY'),timestamp:Date.now()};
   const ref=db.ref('orders').push();
@@ -973,6 +1070,8 @@ function toggleStatus(){
     badge.style.background='#27AE6020';badge.style.color='#27AE60';badge.textContent='● متاح';
     document.getElementById('no-orders').style.display='none';
     if(driverId)db.ref('drivers/'+driverId+'/status').set('متاح');
+    // تحديث موقع السائق تلقائياً
+    startDriverLocationTracking(driverId);
     listenForOrders();
   }else{
     btn.className='big-toggle offline';btn.textContent='🔌';
