@@ -177,10 +177,19 @@ textarea.field{resize:none}
 /* CALC */
 .calc-opt{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer}
 .calc-opt.sel{border-color:var(--rust)}
+
+/* OFFLINE */
+.offline-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C0392B;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
+.back-online-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#27AE60;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
 </style>
 
 </head>
 <body>
+
+<!-- OFFLINE BANNERS -->
+
+<div class="offline-banner" id="offline-banner">⚠ لا يوجد اتصال بالإنترنت — البيانات محفوظة محلياً</div>
+<div class="back-online-banner" id="online-banner">✅ عاد الاتصال — جاري المزامنة...</div>
 
 <!-- ===== ROLE SELECTION ===== -->
 
@@ -534,6 +543,8 @@ textarea.field{resize:none}
 <!-- D: TRIP -->
 
 <div class="screen" id="s-dtrip">
+  <div id="driver-map" style="height:200px;border-radius:16px;margin-bottom:14px;overflow:hidden;background:#0A1A0A"></div>
+
   <div class="dcard" style="border-color:var(--gold)">
     <div style="color:var(--gold);font-size:13px;margin-bottom:12px;font-weight:700">🚛 رحلة نشطة</div>
     <div class="trip-phase">
@@ -601,6 +612,59 @@ textarea.field{resize:none}
 </div><!-- end driver-app -->
 
 <script>
+// ===== OFFLINE SUPPORT =====
+let isOnline = navigator.onLine;
+let pendingOrders = JSON.parse(localStorage.getItem('karia_pending_orders')||'[]');
+
+function showOfflineBanner(){
+  document.getElementById('offline-banner').style.display='block';
+  document.getElementById('online-banner').style.display='none';
+}
+function showOnlineBanner(){
+  document.getElementById('offline-banner').style.display='none';
+  document.getElementById('online-banner').style.display='block';
+  setTimeout(()=>document.getElementById('online-banner').style.display='none',3000);
+  syncPendingOrders();
+}
+
+window.addEventListener('offline',()=>{
+  isOnline=false;
+  showOfflineBanner();
+});
+window.addEventListener('online',()=>{
+  isOnline=true;
+  showOnlineBanner();
+});
+
+if(!navigator.onLine) showOfflineBanner();
+
+// حفظ الطلب محلياً إذا لا يوجد إنترنت
+function saveOrderLocally(order){
+  pendingOrders.push({...order, savedAt: Date.now()});
+  localStorage.setItem('karia_pending_orders', JSON.stringify(pendingOrders));
+}
+
+// مزامنة الطلبات المحفوظة عند عودة الإنترنت
+function syncPendingOrders(){
+  if(!pendingOrders.length) return;
+  pendingOrders.forEach(order=>{
+    const ref=db.ref('orders').push();
+    ref.set(order).then(()=>{
+      console.log('تم مزامنة طلب محفوظ:', ref.key);
+    });
+  });
+  pendingOrders=[];
+  localStorage.setItem('karia_pending_orders','[]');
+}
+
+// حفظ بيانات الرحلة الحالية محلياً
+function saveTripLocally(tripData){
+  localStorage.setItem('karia_current_trip', JSON.stringify(tripData));
+}
+function loadSavedTrip(){
+  return JSON.parse(localStorage.getItem('karia_current_trip')||'null');
+}
+
 // ===== ROLE SELECTION =====
 function selectRole(role){
   document.getElementById('role-screen').style.display='none';
@@ -736,6 +800,21 @@ function confirmOrder(){
     status:'بانتظار',time:new Date().toLocaleString('ar-LY'),timestamp:Date.now()};
   const ref=db.ref('orders').push();
   currentOrderKey=ref.key;
+
+  if(!isOnline){
+    // حفظ محلياً إذا لا يوجد إنترنت
+    saveOrderLocally({...order, tempId: currentOrderKey});
+    saveTripLocally({from:f,to:t,truck:tk.label,price:tk.price});
+    ['f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
+    ['f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
+    document.getElementById('f-truck').textContent=tk.label||'—';
+    document.getElementById('f-price').textContent=tk.price||'—';
+    cgo('searching');
+    // انتقل للشاشة التالية بعد 5 ثواني حتى يعود الإنترنت
+    setTimeout(()=>{ if(!isOnline) cgo('found'); },5000);
+    return;
+  }
+
   ref.set(order).then(()=>{
     ['f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
     ['f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
@@ -791,15 +870,33 @@ function calcPrice(){
   document.getElementById('calc-dist').textContent=dist+' د.ل ('+km+' كم × '+calcPerKm+')';
 }
 
-// Google Maps
-let map,directionsService,directionsRenderer;
+// Google Maps - Driver
+let driverMap, driverDirService, driverDirRenderer;
 const zones={'الكريمية':{lat:32.8750,lng:13.1800},'سوق الجمعة':{lat:32.8872,lng:13.1913},'قرجي':{lat:32.8773,lng:13.1654},'تاجوراء':{lat:32.8867,lng:13.3572},'سوق الثلاثاء':{lat:32.8943,lng:13.1802},'أبو سليم':{lat:32.8601,lng:13.2134},'عين زارة':{lat:32.8234,lng:13.2345},'فشلوم':{lat:32.9012,lng:13.1923},'حي الأندلس':{lat:32.8756,lng:13.2234},'السياحية':{lat:32.9123,lng:13.2012},'الظهرة':{lat:32.8645,lng:13.1756},'بئر اسطى ميلاد':{lat:32.8820,lng:13.2100}};
+
 function initMap(){
+  // Customer map
   const el=document.getElementById('real-map');
+  if(el){
+    map=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:12,styles:[{elementType:'geometry',stylers:[{color:'#0D1B2A'}]},{elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}]});
+    directionsService=new google.maps.DirectionsService();
+    directionsRenderer=new google.maps.DirectionsRenderer({map,polylineOptions:{strokeColor:'#C0392B',strokeWeight:4}});
+  }
+  driverDirService=new google.maps.DirectionsService();
+}
+
+function loadDriverMap(from, to){
+  const el=document.getElementById('driver-map');
   if(!el)return;
-  map=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:12,styles:[{elementType:'geometry',stylers:[{color:'#0D1B2A'}]},{elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}]});
-  directionsService=new google.maps.DirectionsService();
-  directionsRenderer=new google.maps.DirectionsRenderer({map,polylineOptions:{strokeColor:'#C0392B',strokeWeight:4}});
+  if(!driverMap){
+    driverMap=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:12,styles:[{elementType:'geometry',stylers:[{color:'#0A1A0A'}]},{elementType:'labels.text.fill',stylers:[{color:'#7A9B7A'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3B1E'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#071407'}]}]});
+    driverDirRenderer=new google.maps.DirectionsRenderer({map:driverMap,polylineOptions:{strokeColor:'#27AE60',strokeWeight:4}});
+  }
+  if(from&&to&&zones[from]&&zones[to]){
+    driverDirService.route({origin:zones[from],destination:zones[to],travelMode:google.maps.TravelMode.DRIVING},(result,status)=>{
+      if(status==='OK')driverDirRenderer.setDirections(result);
+    });
+  }
 }
 function showRoute(from,to){
   if(!directionsService||!zones[from]||!zones[to])return;
@@ -926,6 +1023,7 @@ function acceptOrder(){
         document.getElementById('trip-customer').textContent=o.customerName||'—';
         document.getElementById('trip-price').textContent=o.price||'—';
         document.getElementById('trip-call').href='tel:'+o.phone;
+        setTimeout(()=>loadDriverMap(o.from,o.to),800);
       }
     });
   }
