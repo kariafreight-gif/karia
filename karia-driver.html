@@ -84,6 +84,10 @@ body{background:var(--bg);font-family:'Cairo',sans-serif;color:var(--white);min-
 .nav-btn.active .label{color:var(–green);font-weight:700}
 
 .btn-primary{width:100%;background:var(–green);color:var(–white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:‘Cairo’,sans-serif;cursor:pointer;margin-top:4px}
+.reg-field{width:100%;background:#071407;border:1.5px solid var(–border);border-radius:10px;padding:12px 14px;color:var(–white);font-size:14px;font-family:‘Cairo’,sans-serif;direction:rtl;outline:none;margin-bottom:4px}
+.reg-field::placeholder{color:var(–smoke)}
+.reg-label{color:var(–smoke);font-size:12px;display:block;margin-bottom:6px;margin-top:12px}
+.reg-select{width:100%;background:#071407;border:1.5px solid var(–border);border-radius:10px;padding:12px 14px;color:var(–white);font-size:14px;font-family:‘Cairo’,sans-serif;direction:rtl;outline:none;appearance:none}
 </style>
 
 <!-- Firebase -->
@@ -114,9 +118,59 @@ const db = firebase.database();
   <div id="hdr-badge" style="background:#C0392B20;color:var(--rust);border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700">● غير متاح</div>
 </div>
 
+<!-- REGISTRATION -->
+
+<div class="screen active" id="s-register">
+  <div style="text-align:center;padding:30px 0 20px">
+    <div style="font-size:56px;margin-bottom:12px">🚚</div>
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:6px">مرحباً في كرية</h2>
+    <p style="color:var(--smoke);font-size:13px">سجّل بياناتك للبدء</p>
+  </div>
+  <div class="card">
+    <label class="reg-label">الاسم الكامل</label>
+    <input type="text" class="reg-field" id="reg-name" placeholder="مثال: محمد الشريف" oninput="chkReg()"/>
+
+```
+<label class="reg-label">رقم الهاتف</label>
+<input type="tel" class="reg-field" id="reg-phone" placeholder="09xxxxxxxx" oninput="chkReg()"/>
+
+<label class="reg-label">نوع المركبة</label>
+<select class="reg-select" id="reg-truck" onchange="chkReg()">
+  <option value="">اختر نوع المركبة</option>
+  <option value="بيك أب 🛻">بيك أب 🛻</option>
+  <option value="شاحنة صغيرة 🚚">شاحنة صغيرة 🚚</option>
+  <option value="شاحنة متوسطة 🚛">شاحنة متوسطة 🚛</option>
+</select>
+
+<label class="reg-label">لوحة الترخيص</label>
+<input type="text" class="reg-field" id="reg-plate" placeholder="مثال: طرابلس 1234 أ" oninput="chkReg()"/>
+
+<label class="reg-label">المنطقة</label>
+<select class="reg-select" id="reg-zone" onchange="chkReg()">
+  <option value="">اختر منطقتك</option>
+  <option>الكريمية</option>
+  <option>سوق الجمعة</option>
+  <option>قرجي</option>
+  <option>تاجوراء</option>
+  <option>أبو سليم</option>
+  <option>عين زارة</option>
+  <option>فشلوم</option>
+  <option>حي الأندلس</option>
+  <option>السياحية</option>
+  <option>الظهرة</option>
+  <option>بئر اسطى ميلاد</option>
+</select>
+```
+
+  </div>
+
+<button class="btn-primary" id="reg-btn" disabled onclick="registerDriver()">تسجيل والبدء ✓</button>
+
+</div>
+
 <!-- HOME / STATUS -->
 
-<div class="screen active" id="s-home">
+<div class="screen" id="s-home">
   <div class="status-toggle">
     <div class="toggle-label">الحالة الحالية</div>
     <button class="big-toggle offline" id="toggle-btn" onclick="toggleStatus()">🔌</button>
@@ -298,6 +352,54 @@ function dCalcPrice(){
   document.getElementById('d-calc-dist').textContent=dist+' د.ل ('+km+' كم × '+dCalcPerKm+')';
 }
 let timerVal=30, timerInt=null, tripPhase=1;
+// Registration
+function chkReg(){
+  const n=document.getElementById('reg-name').value.trim();
+  const p=document.getElementById('reg-phone').value.trim();
+  const t=document.getElementById('reg-truck').value;
+  const pl=document.getElementById('reg-plate').value.trim();
+  const z=document.getElementById('reg-zone').value;
+  document.getElementById('reg-btn').disabled=!(n&&p&&t&&pl&&z);
+}
+
+function registerDriver(){
+  const driver={
+    name: document.getElementById('reg-name').value.trim(),
+    phone: document.getElementById('reg-phone').value.trim(),
+    truck: document.getElementById('reg-truck').value,
+    plate: document.getElementById('reg-plate').value.trim(),
+    zone: document.getElementById('reg-zone').value,
+    status: 'غير متاح',
+    rating: 5,
+    trips: 0,
+    joinDate: new Date().toLocaleDateString('ar-LY'),
+    timestamp: Date.now()
+  };
+
+  // حفظ السائق في Firebase
+  const driverId = 'driver_' + Date.now();
+  db.ref('drivers/' + driverId).set(driver).then(()=>{
+    // حفظ ID السائق محلياً
+    localStorage.setItem('kariaDriverId', driverId);
+    localStorage.setItem('kariaDriverName', driver.name);
+    // الانتقال للرئيسية
+    document.getElementById('s-home').classList.add('active');
+    document.getElementById('s-register').classList.remove('active');
+    // تحديث الاسم في الحساب
+    document.querySelector('#s-dprofile h3') && 
+      (document.querySelector('#s-dprofile h3').textContent = driver.name);
+  });
+}
+
+// تحقق إذا السائق مسجل مسبقاً
+window.addEventListener('load', ()=>{
+  const savedId = localStorage.getItem('kariaDriverId');
+  if(savedId){
+    document.getElementById('s-register').classList.remove('active');
+    document.getElementById('s-home').classList.add('active');
+  }
+});
+
 let online=false;
 
 function dtab(id){
