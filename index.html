@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0&callback=initMap&onerror=gm_authFailure" async defer></script>
 <style>
 :root{--bg:#0D1B2A;--nav:#0A1520;--card:#111E2E;--border:#1E3048;--rust:#C0392B;--gold:#D4A017;--green:#27AE60;--smoke:#8A9BB0;--white:#FDFAF4;--dbg:#0A1A0A;--dnav:#071407;--dcard:#112011;--dborder:#1E3B1E;--dsmoke:#7A9B7A}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -71,7 +71,7 @@ textarea.field{resize:none}
 .found-hero{background:linear-gradient(135deg,#1A4A2E,#0D2B1A);border-radius:20px;padding:24px;margin-bottom:16px;text-align:center}
 .live-hero{background:linear-gradient(135deg,#1A2E4A,#0D1B2A);border-radius:20px;padding:24px;margin-bottom:16px}
 .live-route{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
-.map-container{height:220px;border-radius:16px;margin-bottom:14px;overflow:hidden}
+.map-container{height:220px;border-radius:16px;margin-bottom:14px;overflow:hidden;background:#1a2a3a;min-height:220px;width:100%;display:block}
 .call-btn{background:var(--green);color:var(--white);border-radius:12px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none;font-family:'Cairo',sans-serif}
 .star-row{display:flex;gap:8px;justify-content:center;margin:14px 0}
 .star{font-size:32px;cursor:pointer;filter:grayscale(1);transition:filter .2s}.star.lit{filter:none}
@@ -561,7 +561,17 @@ function initMap() {
   try {
     directionsService = new google.maps.DirectionsService();
     driverDirService = new google.maps.DirectionsService();
-  } catch(e) { console.error('Maps init error:', e); }
+    console.log('✅ Google Maps ready');
+  } catch(e) {
+    console.error('Maps init error:', e);
+    alert('خطأ في تحميل الخريطة: ' + e.message);
+  }
+}
+
+// تُستدعى إذا فشل تحميل Maps API
+function gm_authFailure() {
+  console.error('🔴 Google Maps auth failed - check API key or Billing');
+  alert('⚠ خطأ في مفتاح الخريطة أو الفواتير (Billing). تحقق من Google Cloud Console.');
 }
 
 // Zones
@@ -608,7 +618,13 @@ function cgo(id) {
   document.getElementById('cbnav').style.display = cNoNav.indexOf(id)>-1 ? 'none' : 'flex';
   if(id==='book3') fillSummary();
   if(id==='searching') startTracking();
-  if(id==='live') { setTimeout(function(){showRoute(customerAddress, document.getElementById('to').value);}, 800); }
+  if(id==='live') {
+    // ✅ النقطة 4: الخريطة تظهر أولاً بدون انتظار Firebase
+    setTimeout(function(){
+      loadCustomerMap();
+      showRoute(customerAddress, document.getElementById('to').value);
+    }, 300);
+  }
   window.scrollTo(0,0);
 }
 function ctab(id) {
@@ -802,16 +818,36 @@ function calcPrice(){
 
 // Maps
 function loadCustomerMap() {
-  if(map) return;
+  if(map) { google.maps.event.trigger(map,'resize'); return; }
   var el = document.getElementById('real-map');
-  if(!el || typeof google==='undefined') return;
+  if(!el) { console.error('real-map div not found'); return; }
+  if(typeof google === 'undefined' || typeof google.maps === 'undefined') {
+    console.error('Google Maps not loaded yet');
+    setTimeout(loadCustomerMap, 1000);
+    return;
+  }
   try {
+    // ✅ النقطة 3: تبدأ على تاجوراء
     map = new google.maps.Map(el, {
-      center:{lat:32.8872,lng:13.1913}, zoom:12,
-      styles:[{elementType:'geometry',stylers:[{color:'#0D1B2A'}]},{elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}]
+      center: {lat:32.8867, lng:13.3572},
+      zoom: 13,
+      styles:[
+        {elementType:'geometry',stylers:[{color:'#0D1B2A'}]},
+        {elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},
+        {featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},
+        {featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}
+      ]
     });
-    directionsRenderer = new google.maps.DirectionsRenderer({map:map, polylineOptions:{strokeColor:'#C0392B',strokeWeight:4}});
-  } catch(e){ console.error('Customer map error:', e); }
+    if(!directionsService) directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+      map: map,
+      polylineOptions: {strokeColor:'#C0392B', strokeWeight:4}
+    });
+    console.log('✅ Customer map loaded');
+  } catch(e) {
+    console.error('Customer map error:', e);
+    alert('فشل تحميل الخريطة: ' + e.message);
+  }
 }
 function showRoute(from, to) {
   loadCustomerMap();
