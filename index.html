@@ -6,96 +6,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="theme-color" content="#0D1B2A"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="كرية"/>
 <title>كرية — طرابلس</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
-
-<!-- Google Maps -->
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd_1byT6zXNUKSI2W0pNeztXCqJhfJppE&callback=initMap" async defer></script>
-
-<!-- Firebase -->
-
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
-  databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
-  authDomain: "maria-26135.firebaseapp.com",
-  projectId: "maria-26135",
-  storageBucket: "maria-26135.firebasestorage.app",
-  messagingSenderId: "989218013644",
-  appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-</script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0&callback=initMap" async defer></script>
 <style>
-:root{
-  --bg:#0D1B2A;--nav:#0A1520;--card:#111E2E;--border:#1E3048;
-  --rust:#C0392B;--gold:#D4A017;--green:#27AE60;--smoke:#8A9BB0;--white:#FDFAF4;
-  --dbg:#0A1A0A;--dnav:#071407;--dcard:#112011;--dborder:#1E3B1E;--dsmoke:#7A9B7A;
-}
+:root{--bg:#0D1B2A;--nav:#0A1520;--card:#111E2E;--border:#1E3048;--rust:#C0392B;--gold:#D4A017;--green:#27AE60;--smoke:#8A9BB0;--white:#FDFAF4;--dbg:#0A1A0A;--dnav:#071407;--dcard:#112011;--dborder:#1E3B1E;--dsmoke:#7A9B7A}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Cairo',sans-serif;color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;direction:rtl;overflow-x:hidden;background:var(--bg)}
 body.driver-mode{background:var(--dbg)}
-
-/* SCREENS */
 .screen{display:none;padding:16px 20px 100px}.screen.active{display:block}
-
-/* HEADER */
 .header{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
-.header-customer{background:var(--nav)}
-.header-driver{background:var(--dnav);border-color:var(--dborder)}
-.header h1{font-size:20px;font-weight:900}
-.header h1 span{color:var(--rust)}
+.header-customer{background:var(--nav)}.header-driver{background:var(--dnav);border-color:var(--dborder)}
+.header h1{font-size:20px;font-weight:900}.header h1 span{color:var(--rust)}
 .header p{font-size:11px;color:var(--smoke);margin-top:2px}
 .badge{border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700}
-
-/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-around;padding:10px 0 24px;z-index:100;border-top:1px solid var(--border)}
-.bnav-customer{background:var(--nav)}
-.bnav-driver{background:var(--dnav);border-color:var(--dborder)}
+.bnav-customer{background:var(--nav)}.bnav-driver{background:var(--dnav);border-color:var(--dborder)}
 .nav-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'Cairo',sans-serif}
-.nav-btn .icon{font-size:22px}
-.nav-btn .label{font-size:11px;color:var(--smoke)}
-.nav-btn.active-c .label{color:var(--rust);font-weight:700}
-.nav-btn.active-d .label{color:var(--green);font-weight:700}
-
-/* CARDS */
+.nav-btn .icon{font-size:22px}.nav-btn .label{font-size:11px;color:var(--smoke)}
+.nav-btn.active-c .label{color:var(--rust);font-weight:700}.nav-btn.active-d .label{color:var(--green);font-weight:700}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
 .dcard{background:var(--dcard);border:1px solid var(--dborder);border-radius:16px;padding:18px;margin-bottom:14px}
 .section-title{font-size:16px;font-weight:700;margin-bottom:14px}
-
-/* HERO */
 .hero{background:linear-gradient(135deg,var(--rust) 0%,#8B1A10 100%);border-radius:20px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-20px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
 .hero h2{font-size:26px;font-weight:900;margin-bottom:8px}
 .hero-desc{color:rgba(255,255,255,.85);font-size:13px;line-height:1.7;margin-bottom:20px}
-.btn-white{background:var(--white);color:var(--rust);border:none;border-radius:12px;padding:12px 28px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;position:relative;z-index:1}
-
-/* STATS */
+.btn-white{background:var(--white);color:var(--rust);border:none;border-radius:12px;padding:12px 28px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
 .stats-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center}
 .dstat-card{background:var(--dcard);border:1px solid var(--dborder);border-radius:14px;padding:16px;text-align:center}
-.stat-val{color:var(--gold);font-size:22px;font-weight:900}
-.stat-lbl{color:var(--smoke);font-size:11px;margin-top:2px}
-
-/* FIELDS */
+.stat-val{color:var(--gold);font-size:22px;font-weight:900}.stat-lbl{color:var(--smoke);font-size:11px;margin-top:2px}
 .field-label{color:var(--smoke);font-size:12px;letter-spacing:.5px;display:block;margin-bottom:6px}
 .field{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;appearance:none}
 textarea.field{resize:none}
 .dfield{width:100%;background:var(--dnav);border:1.5px solid var(--dborder);border-radius:10px;padding:12px 14px;color:#F4FAF4;font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;outline:none;appearance:none;margin-bottom:4px}
 .dfield::placeholder{color:var(--dsmoke)}
 .dlabel{color:var(--dsmoke);font-size:12px;display:block;margin-bottom:6px;margin-top:12px}
-
-/* BUTTONS */
-.btn-primary{width:100%;background:var(--rust);color:var(--white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer}
+.btn-primary{width:100%;background:var(--rust);color:var(--white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;margin-top:8px}
 .btn-primary:disabled{background:var(--border);color:var(--smoke);cursor:not-allowed}
 .btn-green{width:100%;background:var(--green);color:var(--white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;margin-top:8px}
 .btn-green:disabled{background:#1E3B1E;color:var(--dsmoke);cursor:not-allowed}
@@ -103,32 +53,18 @@ textarea.field{resize:none}
 .btn-row{display:flex;gap:12px}
 .step-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
 .back-btn{background:transparent;border:none;color:var(--smoke);font-size:22px;cursor:pointer}
-
-/* TRUCK OPTIONS */
 .truck-opt{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;transition:all .2s}
 .truck-opt.sel{border-color:var(--rust);background:#1A2E42}
-.truck-icon{font-size:30px}
-.truck-info{flex:1}
-.truck-name{font-weight:700;font-size:15px;margin-bottom:3px}
-.truck-cap{color:var(--smoke);font-size:12px}
-.truck-price{font-size:18px;font-weight:900;color:var(--gold)}
+.truck-icon{font-size:30px}.truck-info{flex:1}.truck-name{font-weight:700;font-size:15px;margin-bottom:3px}
+.truck-cap{color:var(--smoke);font-size:12px}.truck-price{font-size:18px;font-weight:900;color:var(--gold)}
 .truck-price small{font-size:11px;font-weight:400}
-
-/* ORDER */
 .order-row{display:flex;justify-content:space-between;align-items:flex-start}
-.order-id{color:var(--smoke);font-size:11px;margin-bottom:4px}
-.order-route{font-weight:700;font-size:14px;margin-bottom:4px}
-.order-meta{color:var(--smoke);font-size:12px}
-.status-badge{border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;display:inline-block;margin-bottom:6px}
+.order-id{color:var(--smoke);font-size:11px;margin-bottom:4px}.order-route{font-weight:700;font-size:14px;margin-bottom:4px}
+.order-meta{color:var(--smoke);font-size:12px}.status-badge{border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;display:inline-block;margin-bottom:6px}
 .order-price{font-size:14px;font-weight:700;color:var(--gold);text-align:center}
-
-/* SUM */
 .sum-row{display:flex;justify-content:space-between;margin-bottom:10px}
-.sum-row span:first-child{color:var(--smoke);font-size:13px}
-.sum-row span:last-child{font-weight:600;font-size:13px}
+.sum-row span:first-child{color:var(--smoke);font-size:13px}.sum-row span:last-child{font-weight:600;font-size:13px}
 .err-msg{color:var(--rust);font-size:13px;text-align:center;margin-bottom:12px;display:none}
-
-/* TRACKING */
 .searching{text-align:center;padding-top:60px}
 .spin{font-size:64px;display:inline-block;animation:spin 1.5s linear infinite;margin-bottom:20px}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
@@ -137,13 +73,8 @@ textarea.field{resize:none}
 .live-route{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 .map-container{height:220px;border-radius:16px;margin-bottom:14px;overflow:hidden}
 .call-btn{background:var(--green);color:var(--white);border-radius:12px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none;font-family:'Cairo',sans-serif}
-
-/* RATING */
 .star-row{display:flex;gap:8px;justify-content:center;margin:14px 0}
-.star{font-size:32px;cursor:pointer;filter:grayscale(1);transition:filter .2s}
-.star.lit{filter:none}
-
-/* DRIVER */
+.star{font-size:32px;cursor:pointer;filter:grayscale(1);transition:filter .2s}.star.lit{filter:none}
 .status-toggle{background:var(--dcard);border:1px solid var(--dborder);border-radius:20px;padding:20px;margin-bottom:20px;text-align:center}
 .toggle-label{font-size:13px;color:var(--dsmoke);margin-bottom:12px}
 .big-toggle{width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;transition:all .3s;margin:0 auto;display:flex;align-items:center;justify-content:center}
@@ -158,40 +89,29 @@ textarea.field{resize:none}
 .inc-badge{background:#27AE6022;color:var(--green);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700}
 .inc-timer{color:var(--rust);font-weight:900;font-size:20px}
 .inc-route{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.inc-point{flex:1}
-.inc-point p:first-child{font-weight:700;font-size:15px}
-.inc-point p:last-child{color:var(--dsmoke);font-size:11px;margin-top:2px}
+.inc-point{flex:1}.inc-point p:first-child{font-weight:700;font-size:15px}.inc-point p:last-child{color:var(--dsmoke);font-size:11px;margin-top:2px}
 .inc-arrow{color:var(--green);font-size:20px}
 .inc-details{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
 .inc-detail{background:#0A2A0A;border-radius:10px;padding:10px;text-align:center}
-.inc-detail .v{font-weight:700;font-size:14px}
-.inc-detail .l{color:var(--dsmoke);font-size:10px;margin-top:2px}
+.inc-detail .v{font-weight:700;font-size:14px}.inc-detail .l{color:var(--dsmoke);font-size:10px;margin-top:2px}
 .inc-btns{display:flex;gap:10px}
 .btn-accept{flex:2;background:var(--green);color:var(--white);border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer}
 .btn-reject{flex:1;background:transparent;border:1.5px solid var(--rust);border-radius:14px;padding:14px;color:var(--rust);font-size:14px;font-family:'Cairo',sans-serif;cursor:pointer}
 .trip-phase{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px}
 .phase{background:#0A2A0A;border-radius:10px;padding:8px 14px;font-size:12px;white-space:nowrap;color:var(--dsmoke)}
-.phase.active-phase{background:var(--gold);color:#000;font-weight:700}
-.phase.done{background:#27AE6022;color:var(--green)}
-
-/* CALC */
+.phase.active-phase{background:var(--gold);color:#000;font-weight:700}.phase.done{background:#27AE6022;color:var(--green)}
 .calc-opt{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer}
 .calc-opt.sel{border-color:var(--rust)}
-
-/* OFFLINE */
 .offline-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C0392B;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
 .back-online-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#27AE60;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
 </style>
-
 </head>
 <body>
 
-<!-- OFFLINE BANNERS -->
-
-<div class="offline-banner" id="offline-banner">⚠ لا يوجد اتصال بالإنترنت — البيانات محفوظة محلياً</div>
+<div class="offline-banner" id="offline-banner">⚠ لا يوجد اتصال — البيانات محفوظة محلياً</div>
 <div class="back-online-banner" id="online-banner">✅ عاد الاتصال — جاري المزامنة...</div>
 
-<!-- ===== ROLE SELECTION ===== -->
+<!-- ROLE SELECTION -->
 
 <div id="role-screen" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:var(--bg)">
   <div style="font-size:56px;margin-bottom:20px">🚚</div>
@@ -207,10 +127,9 @@ textarea.field{resize:none}
   </div>
 </div>
 
-<!-- ===== CUSTOMER APP ===== -->
+<!-- CUSTOMER APP -->
 
 <div id="customer-app" style="display:none">
-
 <div class="header header-customer">
   <div><h1>كرية <span>•</span></h1><p>تطبيق الزبون — طرابلس</p></div>
   <div class="badge" style="background:#27AE6020;color:var(--green)">● مفتوح</div>
@@ -231,7 +150,7 @@ textarea.field{resize:none}
     <input type="tel" class="field" id="creg-phone" placeholder="09xxxxxxxx" oninput="chkCReg()"/>
   </div>
   <button class="btn-primary" id="creg-btn" disabled onclick="registerCustomer()">ابدأ الاستخدام ✓</button>
-  <button onclick="selectRole(null)" style="width:100%;background:transparent;border:none;color:var(--smoke);font-family:'Cairo',sans-serif;font-size:13px;margin-top:14px;cursor:pointer">← العودة لاختيار الدور</button>
+  <button onclick="selectRole(null)" style="width:100%;background:transparent;border:none;color:var(--smoke);font-family:'Cairo',sans-serif;font-size:13px;margin-top:14px;cursor:pointer">← العودة</button>
 </div>
 
 <!-- C: HOME -->
@@ -240,7 +159,7 @@ textarea.field{resize:none}
   <div class="hero">
     <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:4px">مرحباً <span id="customer-name">بك</span> في</p>
     <h2>كرية 🚚</h2>
-    <p class="hero-desc">توصيل البضائع بالشاحنات الصغيرة<br/>داخل مدينة طرابلس</p>
+    <p class="hero-desc">توصيل البضائع بالشاحنات الصغيرة داخل طرابلس</p>
     <button class="btn-white" onclick="cgo('book1')">احجز شاحنة الآن</button>
   </div>
   <div class="stats">
@@ -251,8 +170,7 @@ textarea.field{resize:none}
   <div class="section-title">طلباتي الأخيرة</div>
   <div id="my-orders">
     <div class="card" style="text-align:center;color:var(--smoke);padding:30px">
-      <div style="font-size:36px;margin-bottom:10px">📦</div>
-      <p>لا توجد طلبات بعد</p>
+      <div style="font-size:36px;margin-bottom:10px">📦</div><p>لا توجد طلبات بعد</p>
     </div>
   </div>
 </div>
@@ -263,10 +181,10 @@ textarea.field{resize:none}
   <div class="step-header"><button class="back-btn" onclick="cgo('chome')">←</button><h2>📍 المسار</h2></div>
   <div class="card">
     <label class="field-label">نقطة الانطلاق</label>
-    <button id="gps-btn" onclick="getMyLocation()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--smoke);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;cursor:pointer;text-align:right;display:flex;align-items:center;gap:10px;justify-content:flex-end">
+    <button id="gps-btn" onclick="getMyLocation()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--smoke);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;cursor:pointer;text-align:right">
       <span id="gps-txt">📍 استخدم موقعي الحالي</span>
     </button>
-    <p id="gps-address" style="color:var(--green);font-size:12px;margin-top:6px;text-align:right;display:none"></p>
+    <p id="gps-address" style="color:var(--green);font-size:12px;margin-top:6px;display:none"></p>
   </div>
   <div class="card">
     <label class="field-label">نقطة الوصول</label>
@@ -280,7 +198,6 @@ textarea.field{resize:none}
       <button onclick="setTo('الكريمية')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">الكريمية</button>
     </div>
   </div>
-  <p class="err-msg" id="same-err">⚠ نقطة الانطلاق والوصول متطابقتان</p>
   <button class="btn-primary" id="btn1" disabled onclick="cgo('book2')">التالي →</button>
 </div>
 
@@ -384,7 +301,7 @@ textarea.field{resize:none}
       <a id="live-call-btn" href="tel:+" class="call-btn">📞 اتصال</a>
     </div>
   </div>
-  <button class="btn-primary" onclick="cgo('rate')" style="margin-top:4px">تم الاستلام ✓</button>
+  <button class="btn-primary" onclick="completeTrip()">تم الاستلام ✓</button>
 </div>
 
 <!-- C: RATE -->
@@ -415,20 +332,15 @@ textarea.field{resize:none}
       <div class="calc-opt" onclick="calcSel(this,40,8)"><span style="font-size:26px">🚛</span><div><div style="font-weight:700">شاحنة متوسطة</div><div style="color:var(--smoke);font-size:12px">40 د.ل + 8 د.ل/كم</div></div></div>
     </div>
     <label class="field-label">المسافة بالكيلومتر</label>
-    <input type="number" id="calc-km" min="1" max="100" placeholder="مثال: 10" oninput="calcPrice()"
-      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:18px;font-family:'Cairo',sans-serif;direction:rtl;outline:none"/>
+    <input type="number" id="calc-km" min="1" max="100" placeholder="مثال: 10" oninput="calcPrice()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--white);font-size:18px;font-family:'Cairo',sans-serif;direction:rtl;outline:none"/>
   </div>
   <div class="card" id="calc-result" style="display:none;background:#0A1520;text-align:center">
     <p style="color:var(--smoke);font-size:13px;margin-bottom:8px">السعر التقديري</p>
     <p id="calc-total" style="color:var(--gold);font-size:42px;font-weight:900;margin-bottom:4px">0</p>
     <p style="color:var(--smoke);font-size:12px">دينار ليبي</p>
     <div style="border-top:1px solid var(--border);margin:14px 0"></div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-      <span style="color:var(--smoke);font-size:13px">سعر البداية</span><span id="calc-base" style="font-size:13px;font-weight:600">—</span>
-    </div>
-    <div style="display:flex;justify-content:space-between">
-      <span style="color:var(--smoke);font-size:13px">سعر المسافة</span><span id="calc-dist" style="font-size:13px;font-weight:600">—</span>
-    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--smoke);font-size:13px">سعر البداية</span><span id="calc-base" style="font-size:13px;font-weight:600">—</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--smoke);font-size:13px">سعر المسافة</span><span id="calc-dist" style="font-size:13px;font-weight:600">—</span></div>
   </div>
   <button class="btn-primary" onclick="cgo('book1')" style="margin-top:4px">احجز بهذا السعر</button>
 </div>
@@ -454,13 +366,11 @@ textarea.field{resize:none}
   <button class="nav-btn" id="cnb-ccalc" onclick="ctab('ccalc')"><span class="icon">🧮</span><span class="label">الأسعار</span></button>
   <button class="nav-btn" id="cnb-cprofile" onclick="ctab('cprofile')"><span class="icon">👤</span><span class="label">حسابي</span></button>
 </div>
+</div>
 
-</div><!-- end customer-app -->
-
-<!-- ===== DRIVER APP ===== -->
+<!-- DRIVER APP -->
 
 <div id="driver-app" style="display:none">
-
 <div class="header header-driver">
   <div><h1>كرية <span>•</span></h1><p>تطبيق السائق — طرابلس</p></div>
   <div id="hdr-badge" style="background:#C0392B20;color:var(--rust);border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700">● غير متاح</div>
@@ -498,7 +408,7 @@ textarea.field{resize:none}
     </select>
   </div>
   <button class="btn-green" id="dreg-btn" disabled onclick="registerDriver()">تسجيل والبدء ✓</button>
-  <button onclick="selectRole(null)" style="width:100%;background:transparent;border:none;color:var(--dsmoke);font-family:'Cairo',sans-serif;font-size:13px;margin-top:14px;cursor:pointer">← العودة لاختيار الدور</button>
+  <button onclick="selectRole(null)" style="width:100%;background:transparent;border:none;color:var(--dsmoke);font-family:'Cairo',sans-serif;font-size:13px;margin-top:14px;cursor:pointer">← العودة</button>
 </div>
 
 <!-- D: HOME -->
@@ -543,7 +453,6 @@ textarea.field{resize:none}
 
 <div class="screen" id="s-dtrip">
   <div id="driver-map" style="height:200px;border-radius:16px;margin-bottom:14px;overflow:hidden;background:#0A1A0A"></div>
-
   <div class="dcard" style="border-color:var(--gold)">
     <div style="color:var(--gold);font-size:13px;margin-bottom:12px;font-weight:700">🚛 رحلة نشطة</div>
     <div class="trip-phase">
@@ -579,9 +488,7 @@ textarea.field{resize:none}
   </div>
   <div class="section-title">سجل الرحلات</div>
   <div id="driver-trips-list">
-    <div class="dcard" style="text-align:center;color:var(--dsmoke);padding:30px">
-      <p>لا توجد رحلات بعد</p>
-    </div>
+    <div class="dcard" style="text-align:center;color:var(--dsmoke);padding:30px"><p>لا توجد رحلات بعد</p></div>
   </div>
 </div>
 
@@ -592,7 +499,6 @@ textarea.field{resize:none}
     <div style="width:80px;height:80px;border-radius:50%;background:var(--dcard);border:3px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px">🧑‍✈️</div>
     <h3 id="d-profile-name" style="font-size:18px;font-weight:900">—</h3>
     <p id="d-profile-truck" style="color:var(--dsmoke);font-size:13px;margin-top:4px">—</p>
-    <p id="d-profile-zone" style="color:var(--dsmoke);font-size:12px;margin-top:2px">—</p>
   </div>
   <div class="dcard" style="cursor:pointer;border-color:#C0392B33" onclick="logoutDriver()">
     <div style="color:var(--rust);text-align:center;font-weight:700">تغيير الدور / الخروج</div>
@@ -607,573 +513,438 @@ textarea.field{resize:none}
   <button class="nav-btn" id="dnb-dearn" onclick="dtab('dearn')"><span class="icon">💰</span><span class="label">أرباحي</span></button>
   <button class="nav-btn" id="dnb-dprofile" onclick="dtab('dprofile')"><span class="icon">👤</span><span class="label">حسابي</span></button>
 </div>
+</div>
 
-</div><!-- end driver-app -->
+<!-- ===== JAVASCRIPT في نهاية body ===== -->
 
 <script>
-let driverLocationInterval=null;
-function startDriverLocationTracking(driverId){
-  if(!driverId)return;
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(pos=>{
-      db.ref('drivers/'+driverId).update({
-        lat:pos.coords.latitude,
-        lng:pos.coords.longitude,
-        lastSeen:Date.now()
-      });
+// Error handler
+window.onerror = function(msg, url, line, col, err) {
+  if(url && url.indexOf(location.hostname) === -1) return true;
+  console.error('Karia Error:', msg, 'Line:', line);
+  return false;
+};
+
+// Firebase init
+var db;
+try {
+  if(!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyCPFgzcEXc0A7CQR-7eOQIWT67MdO1-Bj0",
+      databaseURL: "https://maria-26135-default-rtdb.europe-west1.firebasedatabase.app",
+      authDomain: "maria-26135.firebaseapp.com",
+      projectId: "maria-26135",
+      storageBucket: "maria-26135.firebasestorage.app",
+      messagingSenderId: "989218013644",
+      appId: "1:989218013644:web:e06ceb9e237606fd4e9d69"
     });
-    // تحديث كل 30 ثانية
-    driverLocationInterval=setInterval(()=>{
-      navigator.geolocation.getCurrentPosition(pos=>{
-        db.ref('drivers/'+driverId).update({
-          lat:pos.coords.latitude,
-          lng:pos.coords.longitude,
-          lastSeen:Date.now()
-        });
-      });
-    },30000);
   }
-}
-
-function stopDriverLocationTracking(){
-  if(driverLocationInterval){
-    clearInterval(driverLocationInterval);
-    driverLocationInterval=null;
-  }
-}
-
-// ===== OFFLINE SUPPORT =====
-let isOnline = navigator.onLine;
-let pendingOrders = JSON.parse(localStorage.getItem('karia_pending_orders')||'[]');
-
-function showOfflineBanner(){
-  document.getElementById('offline-banner').style.display='block';
-  document.getElementById('online-banner').style.display='none';
-}
-function showOnlineBanner(){
-  document.getElementById('offline-banner').style.display='none';
-  document.getElementById('online-banner').style.display='block';
-  setTimeout(()=>document.getElementById('online-banner').style.display='none',3000);
-  syncPendingOrders();
-}
-
-window.addEventListener('offline',()=>{
-  isOnline=false;
-  showOfflineBanner();
-});
-window.addEventListener('online',()=>{
-  isOnline=true;
-  showOnlineBanner();
-});
-
-if(!navigator.onLine) showOfflineBanner();
-
-// حفظ الطلب محلياً إذا لا يوجد إنترنت
-function saveOrderLocally(order){
-  pendingOrders.push({...order, savedAt: Date.now()});
-  localStorage.setItem('karia_pending_orders', JSON.stringify(pendingOrders));
-}
-
-// مزامنة الطلبات المحفوظة عند عودة الإنترنت
-function syncPendingOrders(){
-  if(!pendingOrders.length) return;
-  pendingOrders.forEach(order=>{
-    const ref=db.ref('orders').push();
-    ref.set(order).then(()=>{
-      console.log('تم مزامنة طلب محفوظ:', ref.key);
-    });
+  db = firebase.database();
+  db.ref('.info/connected').on('value', function(snap) {
+    var off = document.getElementById('offline-banner');
+    var on = document.getElementById('online-banner');
+    if(snap.val() === false) {
+      if(off) off.style.display='block';
+      if(on) on.style.display='none';
+    } else {
+      if(off) off.style.display='none';
+      if(on) { on.style.display='block'; setTimeout(function(){on.style.display='none';},3000); }
+    }
   });
-  pendingOrders=[];
-  localStorage.setItem('karia_pending_orders','[]');
+} catch(e) { console.error('Firebase error:', e.message); }
+
+// Google Maps globals
+var map, directionsService, directionsRenderer;
+var driverMap, driverDirService;
+
+function initMap() {
+  try {
+    directionsService = new google.maps.DirectionsService();
+    driverDirService = new google.maps.DirectionsService();
+  } catch(e) { console.error('Maps init error:', e); }
 }
 
-// حفظ بيانات الرحلة الحالية محلياً
-function saveTripLocally(tripData){
-  localStorage.setItem('karia_current_trip', JSON.stringify(tripData));
-}
-function loadSavedTrip(){
-  return JSON.parse(localStorage.getItem('karia_current_trip')||'null');
-}
+// Zones
+var zones = {
+  'الكريمية':{lat:32.8750,lng:13.1800},'سوق الجمعة':{lat:32.8872,lng:13.1913},
+  'قرجي':{lat:32.8773,lng:13.1654},'تاجوراء':{lat:32.8867,lng:13.3572},
+  'سوق الثلاثاء':{lat:32.8943,lng:13.1802},'أبو سليم':{lat:32.8601,lng:13.2134},
+  'عين زارة':{lat:32.8234,lng:13.2345},'فشلوم':{lat:32.9012,lng:13.1923},
+  'حي الأندلس':{lat:32.8756,lng:13.2234},'السياحية':{lat:32.9123,lng:13.2012},
+  'الظهرة':{lat:32.8645,lng:13.1756},'بئر اسطى ميلاد':{lat:32.8820,lng:13.2100}
+};
 
-// ===== ROLE SELECTION =====
-function selectRole(role){
-  document.getElementById('role-screen').style.display='none';
-  document.getElementById('customer-app').style.display='none';
-  document.getElementById('driver-app').style.display='none';
-
-  if(!role){
-    document.getElementById('role-screen').style.display='flex';
-    return;
-  }
-  if(role==='customer'){
-    document.getElementById('customer-app').style.display='block';
+// ===== ROLE =====
+function selectRole(role) {
+  document.getElementById('role-screen').style.display = 'none';
+  document.getElementById('customer-app').style.display = 'none';
+  document.getElementById('driver-app').style.display = 'none';
+  if(!role) { document.getElementById('role-screen').style.display='flex'; return; }
+  if(role === 'customer') {
+    document.getElementById('customer-app').style.display = 'block';
     document.body.classList.remove('driver-mode');
-    const savedId=localStorage.getItem('kariaCustomerId');
-    const savedName=localStorage.getItem('kariaCustomerName');
-    if(savedId&&savedName) startCustomerApp(savedName,savedId);
+    var cId = localStorage.getItem('kariaCustomerId');
+    var cName = localStorage.getItem('kariaCustomerName');
+    if(cId && cName) startCustomerApp(cName, cId);
   }
-  if(role==='driver'){
-    document.getElementById('driver-app').style.display='block';
+  if(role === 'driver') {
+    document.getElementById('driver-app').style.display = 'block';
     document.body.classList.add('driver-mode');
-    const savedId=localStorage.getItem('kariaDriverId');
-    if(savedId) startDriverApp();
+    if(localStorage.getItem('kariaDriverId')) startDriverApp();
   }
 }
 
 // ===== CUSTOMER =====
-const trucks={pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
-let selTruckId=null, calcBase=0, calcPerKm=0, currentOrderKey=null;
-const cNoNav=['book1','book2','book3','searching','found','live','rate'];
+var trucks = {pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
+var selTruckId = null, calcBase = 0, calcPerKm = 0;
+var customerLat = null, customerLng = null, customerAddress = '';
+var currentOrderKey = null, isOnline = navigator.onLine;
+var routeRequested = false;
+var cNoNav = ['book1','book2','book3','searching','found','live','rate'];
 
-function cgo(id){
-  document.querySelectorAll('#customer-app .screen').forEach(s=>s.classList.remove('active'));
+function cgo(id) {
+  document.querySelectorAll('#customer-app .screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById('s-'+id).classList.add('active');
-  document.getElementById('cbnav').style.display=cNoNav.includes(id)?'none':'flex';
+  document.getElementById('cbnav').style.display = cNoNav.indexOf(id)>-1 ? 'none' : 'flex';
   if(id==='book3') fillSummary();
   if(id==='searching') startTracking();
+  if(id==='live') { setTimeout(function(){showRoute(customerAddress, document.getElementById('to').value);}, 800); }
   window.scrollTo(0,0);
 }
-function ctab(id){
+function ctab(id) {
   cgo(id);
-  document.querySelectorAll('#customer-app .nav-btn').forEach(b=>b.classList.remove('active-c'));
-  const nb=document.getElementById('cnb-'+id);
+  document.querySelectorAll('#customer-app .nav-btn').forEach(function(b){b.classList.remove('active-c');});
+  var nb = document.getElementById('cnb-'+id);
   if(nb) nb.classList.add('active-c');
 }
-
-function chkCReg(){
-  const n=document.getElementById('creg-name').value.trim();
-  const p=document.getElementById('creg-phone').value.trim();
-  document.getElementById('creg-btn').disabled=!(n.length>2&&p.length>7);
+function chkCReg() {
+  var n = document.getElementById('creg-name').value.trim();
+  var p = document.getElementById('creg-phone').value.trim();
+  document.getElementById('creg-btn').disabled = !(n.length>2 && p.length>7);
 }
-function registerCustomer(){
-  const name=document.getElementById('creg-name').value.trim();
-  const phone=document.getElementById('creg-phone').value.trim();
-  const id='customer_'+Date.now();
-  db.ref('customers/'+id).set({name,phone,timestamp:Date.now()}).then(()=>{
-    localStorage.setItem('kariaCustomerId',id);
-    localStorage.setItem('kariaCustomerName',name);
-    localStorage.setItem('kariaCustomerPhone',phone);
-    startCustomerApp(name,id);
-  });
+function registerCustomer() {
+  var name = document.getElementById('creg-name').value.trim();
+  var phone = document.getElementById('creg-phone').value.trim();
+  var id = 'customer_' + Date.now();
+  if(db) {
+    db.ref('customers/'+id).set({name:name,phone:phone,timestamp:Date.now()}).then(function(){
+      localStorage.setItem('kariaCustomerId', id);
+      localStorage.setItem('kariaCustomerName', name);
+      localStorage.setItem('kariaCustomerPhone', phone);
+      startCustomerApp(name, id);
+    });
+  }
 }
-function startCustomerApp(name,id){
+function startCustomerApp(name, id) {
   document.getElementById('s-creg').classList.remove('active');
   document.getElementById('s-chome').classList.add('active');
-  document.getElementById('customer-name').textContent=name;
-  document.getElementById('profile-name').textContent=name;
-  document.getElementById('profile-phone').textContent=localStorage.getItem('kariaCustomerPhone')||'';
-  loadStats(); loadMyOrders();
+  document.getElementById('customer-name').textContent = name;
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('profile-phone').textContent = localStorage.getItem('kariaCustomerPhone')||'';
+  if(db) loadStats();
+  if(db) loadMyOrders();
 }
-function loadStats(){
-  db.ref('drivers').on('value',snap=>{
-    let a=0; snap.forEach(d=>{if(d.val().status==='متاح')a++;});
-    document.getElementById('stat-drivers').textContent=a||'0';
+function loadStats() {
+  db.ref('drivers').on('value', function(snap){
+    var a=0; snap.forEach(function(d){if(d.val().status==='متاح')a++;}); 
+    document.getElementById('stat-drivers').textContent = a||'0';
   });
-  db.ref('orders').on('value',snap=>{
-    document.getElementById('stat-trips').textContent=snap.numChildren()||'0';
-  });
-}
-function loadMyOrders(){
-  const phone=localStorage.getItem('kariaCustomerPhone');
-  if(!phone)return;
-  db.ref('orders').orderByChild('phone').equalTo(phone).limitToLast(5).on('value',snap=>{
-    const orders=[];
-    snap.forEach(o=>orders.unshift({id:o.key,...o.val()}));
-    const c=document.getElementById('my-orders');
-    if(!orders.length){c.innerHTML='<div class="card" style="text-align:center;color:var(--smoke);padding:30px"><div style="font-size:36px;margin-bottom:10px">📦</div><p>لا توجد طلبات بعد</p></div>';return;}
-    const sc={'بانتظار':'#D4A017','جارية':'#27AE60','مكتملة':'#8A9BB0'};
-    c.innerHTML=orders.map(o=>`<div class="card"><div class="order-row"><div><div class="order-id">${o.id.slice(-6).toUpperCase()}</div><div class="order-route">${o.from} ← ${o.to}</div><div class="order-meta">${o.truck}</div></div><div style="text-align:center"><span class="status-badge" style="background:${sc[o.status]||'#8A9BB0'}22;color:${sc[o.status]||'#8A9BB0'}">${o.status}</span><div class="order-price">${o.price}</div></div></div></div>`).join('');
+  db.ref('orders').on('value', function(snap){
+    document.getElementById('stat-trips').textContent = snap.numChildren()||'0';
   });
 }
-function logoutCustomer(){
+function loadMyOrders() {
+  var phone = localStorage.getItem('kariaCustomerPhone');
+  if(!phone) return;
+  db.ref('orders').orderByChild('phone').equalTo(phone).limitToLast(5).on('value', function(snap){
+    var orders = [];
+    snap.forEach(function(o){orders.unshift({id:o.key, v:o.val()});});
+    var c = document.getElementById('my-orders');
+    if(!orders.length){ c.innerHTML='<div class="card" style="text-align:center;color:var(--smoke);padding:30px"><div style="font-size:36px;margin-bottom:10px">📦</div><p>لا توجد طلبات بعد</p></div>'; return; }
+    var sc = {'بانتظار':'#D4A017','جارية':'#27AE60','مكتملة':'#8A9BB0'};
+    c.innerHTML = orders.map(function(o){
+      return '<div class="card"><div class="order-row"><div><div class="order-id">'+o.id.slice(-6).toUpperCase()+'</div><div class="order-route">'+(o.v.from||'—')+' ← '+(o.v.to||'—')+'</div><div class="order-meta">'+(o.v.truck||'')+'</div></div><div style="text-align:center"><span class="status-badge" style="background:'+(sc[o.v.status]||'#8A9BB0')+'22;color:'+(sc[o.v.status]||'#8A9BB0')+'">'+(o.v.status||'—')+'</span><div class="order-price">'+(o.v.price||'—')+'</div></div></div></div>';
+    }).join('');
+  });
+}
+function logoutCustomer() {
   localStorage.removeItem('kariaCustomerId');
   localStorage.removeItem('kariaCustomerName');
   localStorage.removeItem('kariaCustomerPhone');
   selectRole(null);
 }
-
-let customerLat=null, customerLng=null, customerAddress='';
-
-function getMyLocation(){
-  const btn=document.getElementById('gps-btn');
-  const txt=document.getElementById('gps-txt');
-  txt.textContent='⏳ جاري تحديد موقعك...';
-  btn.style.color='var(--gold)';
-
-  if(!navigator.geolocation){
-    txt.textContent='⚠ GPS غير متاح';
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(pos=>{
-    customerLat=pos.coords.latitude;
-    customerLng=pos.coords.longitude;
-
-    // عكس الإحداثيات لعنوان نصي
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${customerLat}&lon=${customerLng}&format=json&accept-language=ar`)
-      .then(r=>r.json())
-      .then(data=>{
-        const addr=data.address;
-        customerAddress=addr.suburb||addr.neighbourhood||addr.quarter||addr.city_district||addr.road||'موقعك الحالي';
-        txt.textContent='✅ '+customerAddress;
-        btn.style.color='var(--green)';
-        btn.style.borderColor='var(--green)';
+function getMyLocation() {
+  var txt = document.getElementById('gps-txt');
+  var btn = document.getElementById('gps-btn');
+  txt.textContent = '⏳ جاري تحديد موقعك...';
+  if(!navigator.geolocation){ txt.textContent='⚠ GPS غير متاح'; return; }
+  navigator.geolocation.getCurrentPosition(function(pos){
+    customerLat = pos.coords.latitude;
+    customerLng = pos.coords.longitude;
+    fetch('https://nominatim.openstreetmap.org/reverse?lat='+customerLat+'&lon='+customerLng+'&format=json&accept-language=ar')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        var addr = data.address;
+        customerAddress = addr.suburb||addr.neighbourhood||addr.quarter||addr.road||'موقعك الحالي';
+        txt.textContent = '✅ '+customerAddress;
+        btn.style.borderColor = 'var(--green)';
         document.getElementById('gps-address').style.display='block';
-        document.getElementById('gps-address').textContent=`${customerLat.toFixed(5)}, ${customerLng.toFixed(5)}`;
+        document.getElementById('gps-address').textContent = customerLat.toFixed(5)+', '+customerLng.toFixed(5);
         chk1();
-      })
-      .catch(()=>{
-        customerAddress='موقعك الحالي';
-        txt.textContent='✅ تم تحديد موقعك';
-        btn.style.color='var(--green)';
-        btn.style.borderColor='var(--green)';
+      }).catch(function(){
+        customerAddress = 'موقعك الحالي';
+        txt.textContent = '✅ تم تحديد موقعك';
         chk1();
       });
-  }, err=>{
-    txt.textContent='⚠ لم يتم السماح بالوصول للموقع';
-    btn.style.color='var(--rust)';
-  },{enableHighAccuracy:true,timeout:10000});
+  }, function(){ txt.textContent='⚠ لم يتم السماح بالوصول للموقع'; }, {enableHighAccuracy:true,timeout:10000});
 }
-
-function setTo(zone){
-  document.getElementById('to').value=zone;
-  // تحديث لون الأزرار
-  document.querySelectorAll('#s-book1 button[onclick^="setTo"]').forEach(b=>{
-    b.style.background='var(--card)';
-    b.style.color='var(--smoke)';
-    b.style.borderColor='var(--border)';
-  });
-  event.target.style.background='var(--rust)';
-  event.target.style.color='white';
-  event.target.style.borderColor='var(--rust)';
+function setTo(zone) {
+  document.getElementById('to').value = zone;
   chk1();
 }
-
-function chk1(){
-  const from=customerAddress||customerLat;
-  const t=document.getElementById('to').value.trim();
-  document.getElementById('btn1').disabled=!(from&&t);
+function chk1() {
+  var from = customerAddress || customerLat;
+  var t = document.getElementById('to').value.trim();
+  document.getElementById('btn1').disabled = !(from && t);
 }
-
-function setTo(zone){
-  document.getElementById('to').value=zone;
-  document.querySelectorAll('#s-book1 .zone-btn').forEach(b=>{
-    b.style.background='var(--card)';b.style.color='var(--smoke)';b.style.borderColor='var(--border)';
-  });
-  chk1();
+function selTruck(id, el) {
+  document.querySelectorAll('#s-book2 .truck-opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel'); selTruckId = id;
+  document.getElementById('btn2').disabled = false;
 }
-function selTruck(id,el){
-  document.querySelectorAll('.truck-opt').forEach(o=>o.classList.remove('sel'));
-  el.classList.add('sel'); selTruckId=id;
-  document.getElementById('btn2').disabled=false;
-}
-function chk3(){
-  const g=document.getElementById('goods').value.trim();
-  const p=document.getElementById('cphone').value.trim();
-  document.getElementById('btn3').disabled=!(g.length>2&&p.length>7);
+function chk3() {
+  var g = document.getElementById('goods').value.trim();
+  var p = document.getElementById('cphone').value.trim();
+  document.getElementById('btn3').disabled = !(g.length>2 && p.length>7);
   fillSummary();
 }
-function fillSummary(){
-  const f=document.getElementById('from').value||'—';
-  const t=document.getElementById('to').value||'—';
-  const tk=trucks[selTruckId]||{};
-  document.getElementById('s-from').textContent=f;
-  document.getElementById('s-to').textContent=t;
-  document.getElementById('s-truck').textContent=tk.label||'—';
-  document.getElementById('s-price').textContent=tk.price||'—';
+function fillSummary() {
+  var t = document.getElementById('to').value||'—';
+  var tk = trucks[selTruckId]||{};
+  document.getElementById('s-from').textContent = customerAddress||'—';
+  document.getElementById('s-to').textContent = t;
+  document.getElementById('s-truck').textContent = tk.label||'—';
+  document.getElementById('s-price').textContent = tk.price||'—';
 }
-function confirmOrder(){
-  const f=customerAddress||'موقع الزبون';
-  const t=document.getElementById('to').value;
-  const tk=trucks[selTruckId]||{};
-  const phone=document.getElementById('cphone').value;
-  const goods=document.getElementById('goods').value;
-  const order={
-    from: customerAddress||'موقع الزبون',
-    fromLat: customerLat,
-    fromLng: customerLng,
-    to:t,truck:tk.label||'—',price:tk.price||'—',phone,goods,
+function confirmOrder() {
+  var f = customerAddress||'موقع الزبون';
+  var t = document.getElementById('to').value;
+  var tk = trucks[selTruckId]||{};
+  var phone = document.getElementById('cphone').value;
+  var goods = document.getElementById('goods').value;
+  var order = {
+    from:f, fromLat:customerLat, fromLng:customerLng, to:t,
+    truck:tk.label||'—', price:tk.price||'—', phone:phone, goods:goods,
     customerName:localStorage.getItem('kariaCustomerName')||'—',
-    status:'بانتظار',time:new Date().toLocaleString('ar-LY'),timestamp:Date.now()};
-  const ref=db.ref('orders').push();
-  currentOrderKey=ref.key;
-
-  if(!isOnline){
-    // حفظ محلياً إذا لا يوجد إنترنت
-    saveOrderLocally({...order, tempId: currentOrderKey});
-    saveTripLocally({from:f,to:t,truck:tk.label,price:tk.price});
-    ['f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
-    ['f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
-    document.getElementById('f-truck').textContent=tk.label||'—';
-    document.getElementById('f-price').textContent=tk.price||'—';
-    cgo('searching');
-    // انتقل للشاشة التالية بعد 5 ثواني حتى يعود الإنترنت
-    setTimeout(()=>{ if(!isOnline) cgo('found'); },5000);
-    return;
-  }
-
-  ref.set(order).then(()=>{
-    ['f-from','l-from'].forEach(id=>document.getElementById(id).textContent=f);
-    ['f-to','l-to'].forEach(id=>document.getElementById(id).textContent=t);
-    document.getElementById('f-truck').textContent=tk.label||'—';
-    document.getElementById('f-price').textContent=tk.price||'—';
+    status:'بانتظار', time:new Date().toLocaleString('ar-LY'), timestamp:Date.now()
+  };
+  if(!db){ cgo('searching'); return; }
+  var ref = db.ref('orders').push();
+  currentOrderKey = ref.key;
+  ref.set(order).then(function(){
+    document.getElementById('f-from').textContent = f;
+    document.getElementById('f-to').textContent = t;
+    document.getElementById('l-from').textContent = f;
+    document.getElementById('l-to').textContent = t;
+    document.getElementById('f-truck').textContent = tk.label||'—';
+    document.getElementById('f-price').textContent = tk.price||'—';
     cgo('searching');
     listenForDriver();
   });
 }
-function listenForDriver(){
-  if(!currentOrderKey)return;
-  db.ref('orders/'+currentOrderKey).on('value',snap=>{
-    const o=snap.val();
-    if(o&&o.status==='جارية'&&o.driver){
-      db.ref('drivers').orderByChild('name').equalTo(o.driver).once('value',dSnap=>{
-        dSnap.forEach(d=>{
-          const dr=d.val();
-          document.getElementById('found-driver-name').textContent=dr.name||o.driver;
-          document.getElementById('found-driver-info').textContent=`⭐ ${dr.rating||5} · ${dr.plate||''}`;
-          document.getElementById('live-driver-name').textContent=dr.name||o.driver;
-          document.getElementById('live-driver-info').textContent=`${dr.truck||''} · ${dr.plate||''}`;
-          document.getElementById('live-call-btn').href='tel:'+dr.phone;
+function listenForDriver() {
+  if(!currentOrderKey||!db) return;
+  db.ref('orders/'+currentOrderKey).on('value', function(snap){
+    var o = snap.val();
+    if(o && o.status==='جارية' && o.driver) {
+      db.ref('drivers').orderByChild('name').equalTo(o.driver).once('value', function(dSnap){
+        dSnap.forEach(function(d){
+          var dr = d.val();
+          document.getElementById('found-driver-name').textContent = dr.name||o.driver;
+          document.getElementById('found-driver-info').textContent = '⭐ '+(dr.rating||5)+' · '+(dr.plate||'');
+          document.getElementById('live-driver-name').textContent = dr.name||o.driver;
+          document.getElementById('live-driver-info').textContent = (dr.truck||'')+' · '+(dr.plate||'');
+          document.getElementById('live-call-btn').href = 'tel:'+(dr.phone||'');
         });
       });
       cgo('found');
-      setTimeout(()=>{cgo('live');showRoute(o.from,o.to);},3000);
+      setTimeout(function(){cgo('live');},3000);
     }
   });
 }
-function startTracking(){
-  setTimeout(()=>{
-    if(currentOrderKey){
-      db.ref('orders/'+currentOrderKey).once('value',snap=>{
+function startTracking() {
+  setTimeout(function(){
+    if(currentOrderKey&&db){
+      db.ref('orders/'+currentOrderKey).once('value',function(snap){
         if(snap.val()&&snap.val().status!=='جارية') cgo('found');
       });
     }
-  },30000);
+  }, 30000);
 }
-function rate(n){document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<n));}
-
-// Calc
+function completeTrip() {
+  if(currentOrderKey&&db) db.ref('orders/'+currentOrderKey).update({status:'مكتملة',completedAt:Date.now()});
+  cgo('rate');
+}
+function rate(n){ document.querySelectorAll('.star').forEach(function(s,i){s.classList.toggle('lit',i<n);}); }
 function calcSel(el,base,perKm){
-  document.querySelectorAll('.calc-opt').forEach(o=>o.classList.remove('sel'));
+  document.querySelectorAll('.calc-opt').forEach(function(o){o.classList.remove('sel');});
   el.classList.add('sel'); calcBase=base; calcPerKm=perKm; calcPrice();
 }
 function calcPrice(){
-  const km=parseFloat(document.getElementById('calc-km').value)||0;
+  var km=parseFloat(document.getElementById('calc-km').value)||0;
   if(!calcBase||!km){document.getElementById('calc-result').style.display='none';return;}
-  const dist=km*calcPerKm,total=calcBase+dist;
+  var dist=km*calcPerKm,total=calcBase+dist;
   document.getElementById('calc-result').style.display='block';
   document.getElementById('calc-total').textContent=total;
   document.getElementById('calc-base').textContent=calcBase+' د.ل';
   document.getElementById('calc-dist').textContent=dist+' د.ل ('+km+' كم × '+calcPerKm+')';
 }
 
-// Google Maps - Driver
-let driverMap, driverDirService, driverDirRenderer;
-const zones={'الكريمية':{lat:32.8750,lng:13.1800},'سوق الجمعة':{lat:32.8872,lng:13.1913},'قرجي':{lat:32.8773,lng:13.1654},'تاجوراء':{lat:32.8867,lng:13.3572},'سوق الثلاثاء':{lat:32.8943,lng:13.1802},'أبو سليم':{lat:32.8601,lng:13.2134},'عين زارة':{lat:32.8234,lng:13.2345},'فشلوم':{lat:32.9012,lng:13.1923},'حي الأندلس':{lat:32.8756,lng:13.2234},'السياحية':{lat:32.9123,lng:13.2012},'الظهرة':{lat:32.8645,lng:13.1756},'بئر اسطى ميلاد':{lat:32.8820,lng:13.2100}};
-
-function initMap(){
-  // Customer map
-  const el=document.getElementById('real-map');
-  if(el){
-    map=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:12,styles:[{elementType:'geometry',stylers:[{color:'#0D1B2A'}]},{elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}]});
-    directionsService=new google.maps.DirectionsService();
-    directionsRenderer=new google.maps.DirectionsRenderer({map,polylineOptions:{strokeColor:'#C0392B',strokeWeight:4}});
-  }
-  driverDirService=new google.maps.DirectionsService();
+// Maps
+function loadCustomerMap() {
+  if(map) return;
+  var el = document.getElementById('real-map');
+  if(!el || typeof google==='undefined') return;
+  try {
+    map = new google.maps.Map(el, {
+      center:{lat:32.8872,lng:13.1913}, zoom:12,
+      styles:[{elementType:'geometry',stylers:[{color:'#0D1B2A'}]},{elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}]
+    });
+    directionsRenderer = new google.maps.DirectionsRenderer({map:map, polylineOptions:{strokeColor:'#C0392B',strokeWeight:4}});
+  } catch(e){ console.error('Customer map error:', e); }
 }
-
-function loadDriverMap(from, to){
-  const el=document.getElementById('driver-map');
-  if(!el)return;
-  if(!driverMap){
-    driverMap=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:13,styles:[{elementType:'geometry',stylers:[{color:'#0A1A0A'}]},{elementType:'labels.text.fill',stylers:[{color:'#7A9B7A'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3B1E'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#071407'}]}]});
-  }
-
-  const origin = zones[from]||null;
-  const dest = zones[to]||null;
-
-  // علامة نقطة الاستلام
-  if(origin){
-    new google.maps.Marker({
-      position:origin, map:driverMap,
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#D4A017',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-      title:'نقطة الاستلام'
-    });
-    driverMap.setCenter(origin);
-  }
-
-  // علامة الوجهة
-  if(dest){
-    new google.maps.Marker({
-      position:dest, map:driverMap,
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-      title:'الوجهة'
-    });
-  }
-
-  // خط مباشر بين النقطتين
-  if(origin&&dest){
-    new google.maps.Polyline({
-      path:[origin,dest], geodesic:true,
-      strokeColor:'#27AE60', strokeOpacity:0.7, strokeWeight:3, map:driverMap
-    });
-    const bounds=new google.maps.LatLngBounds();
-    bounds.extend(origin); bounds.extend(dest);
-    driverMap.fitBounds(bounds);
-  }
-
-  // محاولة Directions API
-  if(driverDirService&&origin&&dest){
-    if(!driverDirRenderer) driverDirRenderer=new google.maps.DirectionsRenderer({map:driverMap,polylineOptions:{strokeColor:'#27AE60',strokeWeight:4}});
-    driverDirService.route({origin,destination:dest,travelMode:google.maps.TravelMode.DRIVING},(result,status)=>{
-      if(status==='OK') driverDirRenderer.setDirections(result);
-    });
-  }
-}
-function showRoute(from,to){
-  if(!map)return;
-  const origin = customerLat&&customerLng ? {lat:customerLat,lng:customerLng} : zones[from];
-
-  if(zones[to]){
-    drawRoute(origin, zones[to]);
-  } else {
-    // تحويل العنوان النصي لإحداثيات
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({address: to + '، طرابلس، ليبيا'}, (results, status)=>{
-      if(status==='OK'&&results[0]){
-        drawRoute(origin, results[0].geometry.location);
-      } else {
-        drawRoute(origin, {lat:32.8872,lng:13.1913});
-      }
-    });
-  }
-}
-
-function drawRoute(origin, dest){
-  if(!origin||!dest)return;
-
-  new google.maps.Marker({
-    position:origin, map:map,
-    icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#C0392B',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-    title:'موقعك'
+function showRoute(from, to) {
+  loadCustomerMap();
+  if(!map) return;
+  var origin = customerLat&&customerLng ? {lat:customerLat,lng:customerLng} : zones[from];
+  if(!origin) return;
+  if(zones[to]) { drawRoute(origin, zones[to]); return; }
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode({address: to+'، طرابلس، ليبيا'}, function(results, status){
+    drawRoute(origin, status==='OK'&&results[0] ? results[0].geometry.location : {lat:32.8872,lng:13.1913});
   });
-
-  new google.maps.Marker({
-    position:dest, map:map,
-    icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
-    title:'الوجهة'
-  });
-
-  if(directionsService){
-    directionsService.route({
-      origin, destination:dest,
-      travelMode:google.maps.TravelMode.DRIVING
-    },(result,status)=>{
-      if(status==='OK'&&directionsRenderer){
-        directionsRenderer.setDirections(result);
-      } else {
-        new google.maps.Polyline({
-          path:[origin,dest], geodesic:true,
-          strokeColor:'#C0392B', strokeOpacity:0.8, strokeWeight:4, map:map
-        });
-        const bounds=new google.maps.LatLngBounds();
-        bounds.extend(origin); bounds.extend(dest);
-        map.fitBounds(bounds);
+}
+function drawRoute(origin, dest) {
+  if(!origin||!dest||!map) return;
+  new google.maps.Marker({position:origin,map:map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#C0392B',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'موقعك'});
+  new google.maps.Marker({position:dest,map:map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'الوجهة'});
+  if(directionsService && !routeRequested) {
+    routeRequested = true;
+    directionsService.route({origin:origin,destination:dest,travelMode:google.maps.TravelMode.DRIVING}, function(result,status){
+      if(status==='OK'&&directionsRenderer) directionsRenderer.setDirections(result);
+      else {
+        new google.maps.Polyline({path:[origin,dest],geodesic:true,strokeColor:'#C0392B',strokeOpacity:0.8,strokeWeight:4,map:map});
+        var b=new google.maps.LatLngBounds(); b.extend(origin); b.extend(dest); map.fitBounds(b);
       }
     });
   }
 }
 
 // ===== DRIVER =====
-let online=false,timerVal=30,timerInt=null,tripPhase=1,currentOrderKeyD=null;
-const dNoNav=['dreg','dtrip'];
+var online=false, timerVal=30, timerInt=null, tripPhase=1, currentOrderKeyD=null;
+var driverLocationInterval=null;
+var dNoNav=['dreg'];
 
-function dgo(id){
-  document.querySelectorAll('#driver-app .screen').forEach(s=>s.classList.remove('active'));
+function dgo(id) {
+  document.querySelectorAll('#driver-app .screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById('s-'+id).classList.add('active');
-  document.getElementById('dbnav').style.display=dNoNav.includes(id)?'none':'flex';
+  document.getElementById('dbnav').style.display = dNoNav.indexOf(id)>-1 ? 'none' : 'flex';
   window.scrollTo(0,0);
 }
-function dtab(id){
+function dtab(id) {
   dgo(id);
-  document.querySelectorAll('#driver-app .nav-btn').forEach(b=>b.classList.remove('active-d'));
-  const nb=document.getElementById('dnb-'+id);
+  document.querySelectorAll('#driver-app .nav-btn').forEach(function(b){b.classList.remove('active-d');});
+  var nb = document.getElementById('dnb-'+id);
   if(nb) nb.classList.add('active-d');
 }
-
-function chkDReg(){
-  const n=document.getElementById('dreg-name').value.trim();
-  const p=document.getElementById('dreg-phone').value.trim();
-  const t=document.getElementById('dreg-truck').value;
-  const pl=document.getElementById('dreg-plate').value.trim();
-  const z=document.getElementById('dreg-zone').value;
+function chkDReg() {
+  var n=document.getElementById('dreg-name').value.trim();
+  var p=document.getElementById('dreg-phone').value.trim();
+  var t=document.getElementById('dreg-truck').value;
+  var pl=document.getElementById('dreg-plate').value.trim();
+  var z=document.getElementById('dreg-zone').value;
   document.getElementById('dreg-btn').disabled=!(n&&p&&t&&pl&&z);
 }
-function registerDriver(){
-  const driver={
+function registerDriver() {
+  var driver = {
     name:document.getElementById('dreg-name').value.trim(),
     phone:document.getElementById('dreg-phone').value.trim(),
     truck:document.getElementById('dreg-truck').value,
     plate:document.getElementById('dreg-plate').value.trim(),
     zone:document.getElementById('dreg-zone').value,
-    status:'غير متاح',rating:5,trips:0,timestamp:Date.now()
+    status:'غير متاح', rating:5, trips:0, timestamp:Date.now()
   };
-  const id='driver_'+Date.now();
-  db.ref('drivers/'+id).set(driver).then(()=>{
-    localStorage.setItem('kariaDriverId',id);
-    localStorage.setItem('kariaDriverData',JSON.stringify(driver));
-    startDriverApp();
-  });
-}
-function startDriverApp(){
-  document.getElementById('s-dreg').classList.remove('active');
-  document.getElementById('s-dhome').classList.add('active');
-  const data=JSON.parse(localStorage.getItem('kariaDriverData')||'{}');
-  if(data.name){
-    document.getElementById('d-profile-name').textContent=data.name;
-    document.getElementById('d-profile-truck').textContent=data.truck||'';
-    document.getElementById('d-profile-zone').textContent=data.zone||'';
+  var id = 'driver_'+Date.now();
+  if(db) {
+    db.ref('drivers/'+id).set(driver).then(function(){
+      localStorage.setItem('kariaDriverId', id);
+      localStorage.setItem('kariaDriverData', JSON.stringify(driver));
+      startDriverApp();
+    });
   }
 }
-function logoutDriver(){
-  if(online){online=false;const id=localStorage.getItem('kariaDriverId');if(id)db.ref('drivers/'+id+'/status').set('غير متاح');}
+function startDriverApp() {
+  document.getElementById('s-dreg').classList.remove('active');
+  document.getElementById('s-dhome').classList.add('active');
+  var data = JSON.parse(localStorage.getItem('kariaDriverData')||'{}');
+  if(data.name) {
+    document.getElementById('d-profile-name').textContent=data.name;
+    document.getElementById('d-profile-truck').textContent=data.truck||'';
+  }
+}
+function logoutDriver() {
+  if(online) { var id=localStorage.getItem('kariaDriverId'); if(id&&db) db.ref('drivers/'+id+'/status').set('غير متاح'); }
+  stopAllTracking();
   localStorage.removeItem('kariaDriverId');
   localStorage.removeItem('kariaDriverData');
   selectRole(null);
 }
-
-function toggleStatus(){
+function toggleStatus() {
   online=!online;
-  const btn=document.getElementById('toggle-btn');
-  const txt=document.getElementById('toggle-txt');
-  const badge=document.getElementById('hdr-badge');
-  const driverId=localStorage.getItem('kariaDriverId');
-  if(online){
-    btn.className='big-toggle online';btn.textContent='✅';
-    txt.className='toggle-status on';txt.textContent='متاح — تستقبل الطلبات';
-    badge.style.background='#27AE6020';badge.style.color='#27AE60';badge.textContent='● متاح';
+  var btn=document.getElementById('toggle-btn');
+  var txt=document.getElementById('toggle-txt');
+  var badge=document.getElementById('hdr-badge');
+  var driverId=localStorage.getItem('kariaDriverId');
+  if(online) {
+    btn.className='big-toggle online'; btn.textContent='✅';
+    txt.className='toggle-status on'; txt.textContent='متاح — تستقبل الطلبات';
+    badge.style.background='#27AE6020'; badge.style.color='#27AE60'; badge.textContent='● متاح';
     document.getElementById('no-orders').style.display='none';
-    if(driverId)db.ref('drivers/'+driverId+'/status').set('متاح');
-    // تحديث موقع السائق تلقائياً
+    if(driverId&&db) db.ref('drivers/'+driverId+'/status').set('متاح');
     startDriverLocationTracking(driverId);
     listenForOrders();
-  }else{
-    btn.className='big-toggle offline';btn.textContent='🔌';
-    txt.className='toggle-status off';txt.textContent='غير متاح';
-    badge.style.background='#C0392B20';badge.style.color='var(--rust)';badge.textContent='● غير متاح';
+  } else {
+    btn.className='big-toggle offline'; btn.textContent='🔌';
+    txt.className='toggle-status off'; txt.textContent='غير متاح';
+    badge.style.background='#C0392B20'; badge.style.color='var(--rust)'; badge.textContent='● غير متاح';
     document.getElementById('inc-order').style.display='none';
     document.getElementById('no-orders').style.display='block';
     clearInterval(timerInt);
-    if(driverId)db.ref('drivers/'+driverId+'/status').set('غير متاح');
-    db.ref('orders').off();
+    if(driverId&&db) db.ref('drivers/'+driverId+'/status').set('غير متاح');
+    stopAllTracking();
+    if(db) db.ref('orders').off();
   }
 }
-
-function listenForOrders(){
-  db.ref('orders').orderByChild('status').equalTo('بانتظار').limitToLast(1).on('child_added',snap=>{
-    if(!online)return;
-    const o=snap.val();
-    currentOrderKeyD=snap.key;
+function startDriverLocationTracking(driverId) {
+  if(!driverId||!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(function(pos){
+    if(db) db.ref('drivers/'+driverId).update({lat:pos.coords.latitude,lng:pos.coords.longitude,lastSeen:Date.now()});
+  });
+  driverLocationInterval = setInterval(function(){
+    navigator.geolocation.getCurrentPosition(function(pos){
+      if(db) db.ref('drivers/'+driverId).update({lat:pos.coords.latitude,lng:pos.coords.longitude,lastSeen:Date.now()});
+    });
+  }, 30000);
+}
+function stopAllTracking() {
+  if(driverLocationInterval){ clearInterval(driverLocationInterval); driverLocationInterval=null; }
+  routeRequested=false;
+}
+function listenForOrders() {
+  if(!db) return;
+  db.ref('orders').orderByChild('status').equalTo('بانتظار').limitToLast(1).on('child_added', function(snap){
+    if(!online) return;
+    var o=snap.val(); currentOrderKeyD=snap.key;
     document.getElementById('inc-from').textContent=o.from||'—';
     document.getElementById('inc-to').textContent=o.to||'—';
     document.getElementById('inc-truck').textContent=o.truck||'—';
@@ -1181,69 +952,107 @@ function listenForOrders(){
     showIncoming();
   });
 }
-function showIncoming(){
+function showIncoming() {
   timerVal=30;
   document.getElementById('inc-order').style.display='block';
   clearInterval(timerInt);
-  timerInt=setInterval(()=>{
+  timerInt=setInterval(function(){
     timerVal--;
     document.getElementById('inc-timer').textContent=timerVal;
     if(timerVal<=0){clearInterval(timerInt);rejectOrder();}
   },1000);
 }
-function acceptOrder(){
+function acceptOrder() {
   clearInterval(timerInt);
   document.getElementById('inc-order').style.display='none';
-  const driverData=JSON.parse(localStorage.getItem('kariaDriverData')||'{}');
-  if(currentOrderKeyD){
+  var driverData=JSON.parse(localStorage.getItem('kariaDriverData')||'{}');
+  if(currentOrderKeyD&&db){
     db.ref('orders/'+currentOrderKeyD).update({status:'جارية',driver:driverData.name||'السائق'});
-    db.ref('orders/'+currentOrderKeyD).once('value',snap=>{
-      const o=snap.val();
+    db.ref('orders/'+currentOrderKeyD).once('value',function(snap){
+      var o=snap.val();
       if(o){
         document.getElementById('trip-from').textContent=o.from||'—';
         document.getElementById('trip-to').textContent=o.to||'—';
         document.getElementById('trip-goods').textContent=o.goods||'—';
         document.getElementById('trip-customer').textContent=o.customerName||'—';
         document.getElementById('trip-price').textContent=o.price||'—';
-        document.getElementById('trip-call').href='tel:'+o.phone;
-        setTimeout(()=>loadDriverMap(o.from,o.to),800);
+        document.getElementById('trip-call').href='tel:'+(o.phone||'');
+        setTimeout(function(){loadDriverTripMap(o.from,o.to);},800);
       }
     });
   }
   dtab('dtrip');
 }
-function rejectOrder(){
+function rejectOrder() {
   clearInterval(timerInt);
   document.getElementById('inc-order').style.display='none';
   document.getElementById('no-orders').style.display='block';
 }
-
-const phases=['','في الطريق للاستلام','عند العميل — استلام البضاعة','في الطريق للتوصيل','تم التوصيل ✓'];
+function loadDriverTripMap(from,to) {
+  var el=document.getElementById('driver-map');
+  if(!el||typeof google==='undefined') return;
+  try {
+    if(!driverMap){
+      driverMap=new google.maps.Map(el,{center:{lat:32.8872,lng:13.1913},zoom:12,styles:[{elementType:'geometry',stylers:[{color:'#0A1A0A'}]},{elementType:'labels.text.fill',stylers:[{color:'#7A9B7A'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#1E3B1E'}]},{featureType:'water',elementType:'geometry',stylers:[{color:'#071407'}]}]});
+    }
+    var o=zones[from], d=zones[to];
+    if(o) new google.maps.Marker({position:o,map:driverMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#D4A017',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'الاستلام'});
+    if(d) new google.maps.Marker({position:d,map:driverMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#27AE60',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'الوجهة'});
+    if(o&&d&&driverDirService){
+      driverDirService.route({origin:o,destination:d,travelMode:google.maps.TravelMode.DRIVING},function(result,status){
+        if(status==='OK'){
+          var r=new google.maps.DirectionsRenderer({map:driverMap,polylineOptions:{strokeColor:'#27AE60',strokeWeight:4}});
+          r.setDirections(result);
+        } else {
+          new google.maps.Polyline({path:[o,d],geodesic:true,strokeColor:'#27AE60',strokeOpacity:0.8,strokeWeight:4,map:driverMap});
+          var b=new google.maps.LatLngBounds(); b.extend(o); b.extend(d); driverMap.fitBounds(b);
+        }
+      });
+    }
+  } catch(e){ console.error('Driver map error:',e); }
+}
+var phases=['','في الطريق للاستلام','عند العميل — استلام البضاعة','في الطريق للتوصيل','تم التوصيل ✓'];
 function nextPhase(){
   tripPhase++;
   if(tripPhase>4){
-    if(currentOrderKeyD)db.ref('orders/'+currentOrderKeyD).update({status:'مكتملة'});
-    tripPhase=1;
-    document.querySelectorAll('.phase').forEach((p,i)=>{p.className='phase'+(i===1?' active-phase':'');});
+    if(currentOrderKeyD&&db){
+      db.ref('orders/'+currentOrderKeyD).update({status:'مكتملة',completedAt:Date.now()});
+      db.ref('orders/'+currentOrderKeyD).once('value',function(snap){
+        if(snap.val()&&db) db.ref('trips/'+currentOrderKeyD).set(Object.assign({},snap.val(),{status:'مكتملة',completedAt:Date.now()}));
+      });
+    }
+    stopAllTracking();
+    tripPhase=1; currentOrderKeyD=null;
+    document.querySelectorAll('.phase').forEach(function(p,i){p.className='phase'+(i===1?' active-phase':'');});
     dtab('dearn');
-    if(online)db.ref('orders').off(),listenForOrders();
+    if(online&&db){db.ref('orders').off();listenForOrders();}
     return;
   }
-  document.querySelectorAll('.phase').forEach((p,i)=>{
-    if(i+1<tripPhase)p.className='phase done';
-    else if(i+1===tripPhase)p.className='phase active-phase';
+  document.querySelectorAll('.phase').forEach(function(p,i){
+    if(i+1<tripPhase) p.className='phase done';
+    else if(i+1===tripPhase) p.className='phase active-phase';
     else p.className='phase';
-    if(phases[i+1])p.textContent=(i+1<tripPhase?'✓ ':'')+phases[i+1];
+    if(phases[i+1]) p.textContent=(i+1<tripPhase?'✓ ':'')+phases[i+1];
   });
 }
 
-// Auto-login check
-window.addEventListener('load',()=>{
-  const savedRole=localStorage.getItem('kariaRole');
-  const cId=localStorage.getItem('kariaCustomerId');
-  const dId=localStorage.getItem('kariaDriverId');
-  if(cId) { localStorage.setItem('kariaRole','customer'); }
-  if(dId) { localStorage.setItem('kariaRole','driver'); }
+// Offline support
+var pendingOrders=JSON.parse(localStorage.getItem('karia_pending_orders')||'[]');
+window.addEventListener('online',function(){isOnline=true;syncPendingOrders();});
+window.addEventListener('offline',function(){isOnline=false;});
+function syncPendingOrders(){
+  if(!pendingOrders.length||!db) return;
+  pendingOrders.forEach(function(order){db.ref('orders').push().set(order);});
+  pendingOrders=[]; localStorage.setItem('karia_pending_orders','[]');
+}
+
+// Auto-login on page load
+document.addEventListener('DOMContentLoaded', function(){
+  var cId=localStorage.getItem('kariaCustomerId');
+  var dId=localStorage.getItem('kariaDriverId');
+  if(cId||dId){
+    // User already registered - show role screen for them to choose
+  }
 });
 </script>
 
