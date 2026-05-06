@@ -182,6 +182,10 @@ textarea.field{resize:none}
   </div>
   <div class="card">
     <label class="field-label">نقطة الوصول</label>
+    <button id="gps-to-btn" onclick="getDestLocation()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--smoke);font-size:14px;font-family:'Cairo',sans-serif;direction:rtl;cursor:pointer;text-align:right;margin-bottom:8px">
+      <span id="gps-to-txt">📍 استخدم موقعي الحالي كوجهة</span>
+    </button>
+    <p style="color:var(--smoke);font-size:12px;text-align:center;margin-bottom:8px">— أو اكتب العنوان —</p>
     <input type="text" class="field" id="to" placeholder="أدخل العنوان أو المنطقة" oninput="chk1()" style="margin-bottom:8px"/>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
       <button onclick="setTo('سوق الجمعة')" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;color:var(--smoke);font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">سوق الجمعة</button>
@@ -585,6 +589,7 @@ function selectRole(role) {
 var trucks = {pickup:{label:'بيك أب 🛻',price:'35 د.ل'},small:{label:'شاحنة صغيرة 🚚',price:'65 د.ل'},medium:{label:'شاحنة متوسطة 🚛',price:'110 د.ل'}};
 var selTruckId = null, calcBase = 0, calcPerKm = 0;
 var customerLat = null, customerLng = null, customerAddress = '';
+var destLat = null, destLng = null, destAddress = '';
 var currentOrderKey = null, isOnline = navigator.onLine;
 var routeRequested = false;
 var cNoNav = ['book1','book2','book3','searching','found','live','rate'];
@@ -691,6 +696,32 @@ function getMyLocation() {
       });
   }, function(){ txt.textContent='⚠ لم يتم السماح بالوصول للموقع'; }, {enableHighAccuracy:true,timeout:10000});
 }
+
+function getDestLocation() {
+  var txt = document.getElementById('gps-to-txt');
+  var btn = document.getElementById('gps-to-btn');
+  txt.textContent = '⏳ جاري تحديد الوجهة...';
+  if(!navigator.geolocation){ txt.textContent='⚠ GPS غير متاح'; return; }
+  navigator.geolocation.getCurrentPosition(function(pos){
+    destLat = pos.coords.latitude;
+    destLng = pos.coords.longitude;
+    fetch('https://nominatim.openstreetmap.org/reverse?lat='+destLat+'&lon='+destLng+'&format=json&accept-language=ar')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        var addr = data.address;
+        destAddress = addr.suburb||addr.neighbourhood||addr.quarter||addr.road||'وجهتك الحالية';
+        document.getElementById('to').value = destAddress;
+        txt.textContent = '✅ '+destAddress;
+        btn.style.borderColor = 'var(--green)';
+        chk1();
+      }).catch(function(){
+        destAddress = 'وجهتك الحالية';
+        document.getElementById('to').value = destAddress;
+        txt.textContent = '✅ تم تحديد الوجهة';
+        chk1();
+      });
+  }, function(){ txt.textContent='⚠ لم يتم السماح بالوصول للموقع'; }, {enableHighAccuracy:true,timeout:10000});
+}
 function setTo(zone) {
   document.getElementById('to').value = zone;
   chk1();
@@ -726,7 +757,8 @@ function confirmOrder() {
   var phone = document.getElementById('cphone').value;
   var goods = document.getElementById('goods').value;
   var order = {
-    from:f, fromLat:customerLat, fromLng:customerLng, to:t,
+    from:f, fromLat:customerLat, fromLng:customerLng,
+    to:t, toLat:destLat, toLng:destLng,
     truck:tk.label||'—', price:tk.price||'—', phone:phone, goods:goods,
     customerName:localStorage.getItem('kariaCustomerName')||'—',
     status:'بانتظار', time:new Date().toLocaleString('ar-LY'), timestamp:Date.now()
@@ -745,6 +777,8 @@ function confirmOrder() {
     listenForDriver();
   });
 }
+var driverLiveMarker = null;
+
 function listenForDriver() {
   if(!currentOrderKey||!db) return;
   db.ref('orders/'+currentOrderKey).on('value', function(snap){
@@ -758,12 +792,64 @@ function listenForDriver() {
           document.getElementById('live-driver-name').textContent = dr.name||o.driver;
           document.getElementById('live-driver-info').textContent = (dr.truck||'')+' · '+(dr.plate||'');
           document.getElementById('live-call-btn').href = 'tel:'+(dr.phone||'');
+
+          // تتبع موقع السائق الحي
+          trackDriverLive(d.key);
         });
       });
       cgo('found');
       setTimeout(function(){cgo('live');},3000);
     }
   });
+}
+
+function trackDriverLive(driverId) {
+  if(!db) return;
+  db.ref('drivers/'+driverId).on('value', function(snap){
+    var dr = snap.val();
+    if(!dr || !dr.lat || !dr.lng) return;
+    if(!map) return;
+
+    var pos = {lat: dr.lat, lng: dr.lng};
+
+    if(!driverLiveMarker) {
+      // أيقونة شاحنة متحركة
+      driverLiveMarker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        icon: {
+          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">' +
+            '<circle cx="20" cy="20" r="18" fill="#27AE60" stroke="white" stroke-width="2"/>' +
+            '<text x="20" y="26" text-anchor="middle" font-size="18">🚚</text>' +
+            '</svg>'
+          ),
+          scaledSize: new google.maps.Size(40, 40),
+          anchor: new google.maps.Point(20, 20)
+        },
+        title: 'السائق'
+      });
+    } else {
+      // تحريك الأيقونة بسلاسة
+      animateMarker(driverLiveMarker, pos);
+    }
+
+    // تحريك الخريطة لتتبع السائق
+    map.panTo(pos);
+  });
+}
+
+function animateMarker(marker, newPos) {
+  var startPos = marker.getPosition();
+  var steps = 20;
+  var step = 0;
+  var interval = setInterval(function(){
+    step++;
+    var lat = startPos.lat() + (newPos.lat - startPos.lat()) * step/steps;
+    var lng = startPos.lng() + (newPos.lng - startPos.lng()) * step/steps;
+    marker.setPosition({lat:lat, lng:lng});
+    if(step >= steps) clearInterval(interval);
+  }, 50);
 }
 function startTracking() {
   setTimeout(function(){
@@ -829,13 +915,19 @@ function loadCustomerMap() {
 function showRoute(from, to) {
   loadCustomerMap();
   if(!map) return;
+  // موقع الزبون الحقيقي
   var origin = customerLat&&customerLng ? {lat:customerLat,lng:customerLng} : zones[from];
-  if(!origin) return;
-  if(zones[to]) { drawRoute(origin, zones[to]); return; }
-  var geocoder = new google.maps.Geocoder();
-  geocoder.geocode({address: to+'، طرابلس، ليبيا'}, function(results, status){
-    drawRoute(origin, status==='OK'&&results[0] ? results[0].geometry.location : {lat:32.8872,lng:13.1913});
-  });
+  // وجهة حقيقية إذا تم تحديدها بـ GPS
+  if(destLat&&destLng) {
+    drawRoute(origin, {lat:destLat,lng:destLng});
+  } else if(zones[to]) {
+    drawRoute(origin, zones[to]);
+  } else {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({address: to+'، طرابلس، ليبيا'}, function(results, status){
+      drawRoute(origin, status==='OK'&&results[0] ? results[0].geometry.location : {lat:32.8872,lng:13.1913});
+    });
+  }
 }
 function drawRoute(origin, dest) {
   if(!origin||!dest||!map) return;
