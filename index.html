@@ -100,8 +100,16 @@ textarea.field{resize:none}
 .trip-phase{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px}
 .phase{background:#0A2A0A;border-radius:10px;padding:8px 14px;font-size:12px;white-space:nowrap;color:var(--dsmoke)}
 .phase.active-phase{background:var(--gold);color:#000;font-weight:700}.phase.done{background:#27AE6022;color:var(--green)}
-.calc-opt{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer}
-.calc-opt.sel{border-color:var(--rust)}
+/* Uber-style map interface */
+.map-fullscreen{position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;background:#0D1B2A}
+.map-fullscreen #home-map{width:100%;height:100%}
+.map-top-bar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(10,21,32,0.95),transparent)}
+.map-bottom-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:var(--nav);border-radius:24px 24px 0 0;padding:16px 20px 30px;box-shadow:0 -4px 30px rgba(0,0,0,0.5)}
+.map-bottom-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.map-driver-card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;border:1px solid var(--border)}
+.map-driver-avatar{width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pulse-ring{position:absolute;border-radius:50%;border:3px solid var(--rust);animation:pulseRing 2s infinite;pointer-events:none}
+@keyframes pulseRing{0%{transform:scale(1);opacity:1}100%{transform:scale(2.5);opacity:0}}
 .offline-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C0392B;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
 .back-online-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#27AE60;color:white;text-align:center;padding:8px;font-size:13px;font-weight:700;display:none;font-family:'Cairo',sans-serif}
 </style>
@@ -130,14 +138,27 @@ textarea.field{resize:none}
 <!-- CUSTOMER APP -->
 
 <div id="customer-app" style="display:none">
-<div class="header header-customer">
-  <div><h1>كرية <span>•</span></h1><p>تطبيق الزبون — طرابلس</p></div>
-  <div class="badge" style="background:#27AE6020;color:var(--green)">● مفتوح</div>
+
+<!-- خريطة الرئيسية — تعمل دائماً في الخلفية -->
+
+<div class="map-fullscreen" id="home-map-container" style="display:none">
+  <div id="home-map"></div>
+</div>
+
+<!-- شريط أعلى -->
+
+<div class="map-top-bar" id="customer-topbar" style="display:none">
+  <div><h1 style="font-size:20px;font-weight:900;color:var(--white)">كرية <span style="color:var(--rust)">•</span></h1></div>
+  <div class="badge" style="background:#27AE6020;color:var(--green)" id="customer-status-badge">● مفتوح</div>
 </div>
 
 <!-- C: REGISTER -->
 
 <div class="screen active" id="s-creg">
+  <div class="header header-customer">
+    <div><h1>كرية <span>•</span></h1><p>تطبيق الزبون — طرابلس</p></div>
+    <div class="badge" style="background:#27AE6020;color:var(--green)">● مفتوح</div>
+  </div>
   <div style="text-align:center;padding:40px 0 24px">
     <div style="font-size:56px;margin-bottom:12px">📦</div>
     <h2 style="font-size:22px;font-weight:900;margin-bottom:6px">مرحباً في كرية</h2>
@@ -153,25 +174,39 @@ textarea.field{resize:none}
   <button onclick="selectRole(null)" style="width:100%;background:transparent;border:none;color:var(--smoke);font-family:'Cairo',sans-serif;font-size:13px;margin-top:14px;cursor:pointer">← العودة</button>
 </div>
 
-<!-- C: HOME -->
+<!-- C: HOME — Uber Style -->
 
 <div class="screen" id="s-chome">
-  <div class="hero">
-    <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:4px">مرحباً <span id="customer-name">بك</span> في</p>
-    <h2>كرية 🚚</h2>
-    <p class="hero-desc">توصيل البضائع بالشاحنات الصغيرة داخل طرابلس</p>
-    <button class="btn-white" onclick="cgo('book1')">احجز شاحنة الآن</button>
+  <!-- لوحة سفلية -->
+  <div class="map-bottom-panel">
+    <div class="map-bottom-handle"></div>
+
+```
+<!-- إحصائيات سريعة -->
+<div style="display:flex;justify-content:space-around;margin-bottom:16px">
+  <div style="text-align:center">
+    <div style="font-size:20px;font-weight:900;color:var(--gold)" id="stat-drivers">--</div>
+    <div style="font-size:11px;color:var(--smoke)">سائق نشط</div>
   </div>
-  <div class="stats">
-    <div class="stat-card"><div class="stat-val" id="stat-drivers">--</div><div class="stat-lbl">سائق نشط</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-trips">--</div><div class="stat-lbl">رحلة اليوم</div></div>
-    <div class="stat-card"><div class="stat-val">~15</div><div class="stat-lbl">دقيقة وصول</div></div>
+  <div style="text-align:center">
+    <div style="font-size:20px;font-weight:900;color:var(--gold)" id="stat-trips">--</div>
+    <div style="font-size:11px;color:var(--smoke)">رحلة اليوم</div>
   </div>
-  <div class="section-title">طلباتي الأخيرة</div>
-  <div id="my-orders">
-    <div class="card" style="text-align:center;color:var(--smoke);padding:30px">
-      <div style="font-size:36px;margin-bottom:10px">📦</div><p>لا توجد طلبات بعد</p>
-    </div>
+  <div style="text-align:center">
+    <div style="font-size:20px;font-weight:900;color:var(--gold)">~15</div>
+    <div style="font-size:11px;color:var(--smoke)">دقيقة وصول</div>
+  </div>
+</div>
+
+<!-- زر الحجز الرئيسي -->
+<button class="btn-primary" onclick="cgo('book1')" style="font-size:17px;padding:16px;margin-bottom:12px">
+  📦 احجز شاحنة الآن
+</button>
+
+<!-- آخر الطلبات -->
+<div id="my-orders-mini" style="max-height:120px;overflow-y:auto"></div>
+```
+
   </div>
 </div>
 
@@ -683,11 +718,28 @@ function cgo(id) {
   document.querySelectorAll('#customer-app .screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById('s-'+id).classList.add('active');
   document.getElementById('cbnav').style.display = cNoNav.indexOf(id)>-1 ? 'none' : 'flex';
+
+  var homeMapContainer = document.getElementById('home-map-container');
+  var topbar = document.getElementById('customer-topbar');
+
+  if(id==='chome'){
+    // خريطة كاملة في الخلفية مع لوحة سفلية
+    if(homeMapContainer) homeMapContainer.style.display='block';
+    if(topbar) topbar.style.display='flex';
+    var chome = document.getElementById('s-chome');
+    chome.style.cssText='display:block;position:fixed;bottom:0;left:0;right:0;padding:0;z-index:50;background:transparent';
+  } else {
+    if(homeMapContainer) homeMapContainer.style.display='none';
+    if(topbar) topbar.style.display='none';
+    var chome2 = document.getElementById('s-chome');
+    if(chome2) chome2.style.cssText='';
+    document.body.style.background='var(--bg)';
+  }
+
   if(id==='book1') autoGetLocation();
   if(id==='book3') fillSummary();
   if(id==='searching') startTracking();
   if(id==='live') {
-    // ✅ النقطة 4: الخريطة تظهر أولاً بدون انتظار Firebase
     setTimeout(function(){
       loadCustomerMap();
       showRoute(customerAddress, document.getElementById('to').value);
@@ -722,11 +774,104 @@ function registerCustomer() {
 function startCustomerApp(name, id) {
   document.getElementById('s-creg').classList.remove('active');
   document.getElementById('s-chome').classList.add('active');
-  document.getElementById('customer-name').textContent = name;
-  document.getElementById('profile-name').textContent = name;
-  document.getElementById('profile-phone').textContent = localStorage.getItem('kariaCustomerPhone')||'';
+
+  // تفعيل خريطة الرئيسية
+  document.getElementById('home-map-container').style.display='block';
+  document.getElementById('customer-topbar').style.display='flex';
+  document.getElementById('cbnav').style.display='flex';
+
+  // تهيئة خريطة الرئيسية
+  setTimeout(function(){
+    initHomeMap();
+  }, 500);
+
+  if(document.getElementById('customer-name'))
+    document.getElementById('customer-name').textContent = name;
+  if(document.getElementById('profile-name'))
+    document.getElementById('profile-name').textContent = name;
+  if(document.getElementById('profile-phone'))
+    document.getElementById('profile-phone').textContent = localStorage.getItem('kariaCustomerPhone')||'';
   if(db) loadStats();
   if(db) loadMyOrders();
+}
+
+// خريطة الرئيسية
+var homeMap = null;
+var homeDriverMarkers = {};
+
+function initHomeMap() {
+  var el = document.getElementById('home-map');
+  if(!el || homeMap || typeof google==='undefined') return;
+  try {
+    homeMap = new google.maps.Map(el, {
+      center: {lat:32.8872, lng:13.1913}, zoom:13,
+      disableDefaultUI: true,
+      styles:[
+        {elementType:'geometry',stylers:[{color:'#0D1B2A'}]},
+        {elementType:'labels.text.fill',stylers:[{color:'#8A9BB0'}]},
+        {featureType:'road',elementType:'geometry',stylers:[{color:'#1E3048'}]},
+        {featureType:'water',elementType:'geometry',stylers:[{color:'#0A1520'}]}
+      ]
+    });
+
+    // تحديد موقع الزبون وعرضه
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(pos){
+        customerLat = pos.coords.latitude;
+        customerLng = pos.coords.longitude;
+        var myPos = {lat:customerLat, lng:customerLng};
+        homeMap.setCenter(myPos);
+        homeMap.setZoom(15);
+
+        // نقطة موقعي
+        new google.maps.Marker({
+          position:myPos, map:homeMap,
+          icon:{
+            path:google.maps.SymbolPath.CIRCLE,
+            scale:12, fillColor:'#C0392B', fillOpacity:1,
+            strokeColor:'#fff', strokeWeight:3
+          },
+          title:'موقعك'
+        });
+
+        // جلب عنوان الموقع
+        fetch('https://nominatim.openstreetmap.org/reverse?lat='+customerLat+'&lon='+customerLng+'&format=json&accept-language=ar')
+          .then(function(r){return r.json();})
+          .then(function(data){
+            var addr = data.address;
+            customerAddress = addr.suburb||addr.neighbourhood||addr.quarter||addr.road||'موقعك الحالي';
+          }).catch(function(){ customerAddress='موقعك الحالي'; });
+      });
+    }
+
+    // عرض السائقين المتاحين على الخريطة
+    if(db){
+      db.ref('drivers').on('value', function(snap){
+        // مسح القديم
+        Object.values(homeDriverMarkers).forEach(function(m){ m.setMap(null); });
+        homeDriverMarkers = {};
+
+        snap.forEach(function(d){
+          var dr = d.val();
+          if(!dr.lat||!dr.lng||dr.status!=='متاح') return;
+          homeDriverMarkers[d.key] = new google.maps.Marker({
+            position:{lat:dr.lat,lng:dr.lng}, map:homeMap,
+            icon:{
+              url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">'+
+                '<circle cx="16" cy="16" r="14" fill="#27AE60" stroke="white" stroke-width="2"/>'+
+                '<text x="16" y="21" text-anchor="middle" font-size="14">🚚</text>'+
+                '</svg>'
+              ),
+              scaledSize:new google.maps.Size(32,32),
+              anchor:new google.maps.Point(16,16)
+            },
+            title: dr.name||'سائق متاح'
+          });
+        });
+      });
+    }
+  } catch(e){ console.error('Home map error:', e); }
 }
 function loadStats() {
   db.ref('drivers').on('value', function(snap){
